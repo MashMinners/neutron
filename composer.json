@@ -1,0 +1,24 @@
+{
+    "name": "f16inkin/neutron",
+    "type": "project",
+    "description": "Quality assessment system and monitoring",
+    "keywords": [],
+    "license": "GNU GPL-3.0-only",
+    "autoload": {
+        "psr-4": {
+            "Application\\": "src/Application",
+            "Engine\\": "src/Engine"
+        }
+    },
+    "require": {
+        "league/route": "^5.1",
+        "laminas/laminas-diactoros": "^2.23",
+        "laminas/laminas-httphandlerrunner": "^2.4",
+        "league/container": "^4.2",
+        "php-di/php-di": "^7.0",
+        "ext-pdo": "*",
+        "ramsey/uuid": "^4.7",
+        "tecnickcom/tcpdf": "^6.6",
+        "phpoffice/phpspreadsheet": "^5.0"
+    }
+}
