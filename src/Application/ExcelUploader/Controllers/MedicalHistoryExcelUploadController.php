@@ -16,7 +16,7 @@ class MedicalHistoryExcelUploadController
     }
 
     public function index(ServerRequestInterface $request) : ResponseInterface {
-        $data = $this->uploader->readExcel();
+        $data = $this->uploader->readExcel('TAP');
         return new JsonResponse($data);
     }
 

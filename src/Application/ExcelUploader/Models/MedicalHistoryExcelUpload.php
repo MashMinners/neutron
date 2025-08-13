@@ -27,9 +27,9 @@ class MedicalHistoryExcelUpload
      * Метод считывает файл Excel в массив данных, для дальнейшей обработки
      * @return array
      */
-    public function readExcel() : array{
+    public function readExcel($fileName) : array{
         $data = [];
-        $file = $_SERVER['DOCUMENT_ROOT']."/IB.xlsx";
+        $file = $_SERVER['DOCUMENT_ROOT'].'/'.$fileName.".xlsx";
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($file);
         $sheet = $spreadsheet->getActiveSheet();
         /*$columns = [];
