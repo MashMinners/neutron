@@ -16,8 +16,15 @@ class MedicalHistoryExcelUploadController
     }
 
     public function index(ServerRequestInterface $request) : ResponseInterface {
-        $data = $this->uploader->readExcel('TAP');
-        return new JsonResponse($data);
+        $fileName = 'IB';
+        $file = $_SERVER['DOCUMENT_ROOT'].'/'.$fileName.".xlsx";
+        $result = $this->uploader->excelDataToMySQLData($file);
+        return new JsonResponse($result);
+    }
+
+    public function getMedicalHistories(ServerRequestInterface $request) : ResponseInterface {
+        $result = $this->uploader->getMedicalHistories();
+        return new JsonResponse($result);
     }
 
 }
