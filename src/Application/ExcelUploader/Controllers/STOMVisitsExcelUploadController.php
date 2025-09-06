@@ -14,8 +14,7 @@ class STOMVisitsExcelUploadController
     public function __construct(private STOMVisitsExcelUploader $uploader){}
 
     public function index(ServerRequestInterface $request) : ResponseInterface{
-        $fileName = 'VISITS';
-        $file = $_SERVER['DOCUMENT_ROOT'].'/'.$fileName.".xlsx";
+        $file = 'storage/VISITS.xlsx';
         $result = $this->uploader->excelDataToMySQLData($file);
         return new JsonResponse($result);
     }
