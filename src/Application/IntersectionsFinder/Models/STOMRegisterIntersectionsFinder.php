@@ -12,6 +12,16 @@ class STOMRegisterIntersectionsFinder
         $this->pdo = $connector::connect();
     }
 
+    private function dateConvert($intersections){
+        foreach ($intersections AS $intersection){
+            $intersection['stom_register_treatment_start'] = date('d.m.Y', $intersection['stom_register_treatment_start']);
+            $intersection['stom_register_treatment_end'] = date('d.m.Y', $intersection['stom_register_treatment_end']);
+            $intersection['visit_date'] = date('d.m.Y', $intersection['visit_date']);
+            $result[] = $intersection;
+        }
+        return $result;
+    }
+
     private function findIntersections(){
         $query = ("SELECT register.stom_register_patient, register.stom_register_treatment_start, register.stom_register_treatment_end, register.stom_register_diagnosis, register.stom_register_doctor, Max(visits.stom_visits_date_of_visit) AS visit_date
                    FROM stom_visits AS visits
@@ -31,7 +41,8 @@ class STOMRegisterIntersectionsFinder
                $badIntersections[] = $row;
            }
        }
-       return $badIntersections;
+       $result = $this->dateConvert($badIntersections);
+       return $result;
     }
 
     private function goodIntersections(array $intersections){
@@ -42,7 +53,8 @@ class STOMRegisterIntersectionsFinder
                 $goodIntersections[] = $row;
             }
         }
-        return $goodIntersections;
+        $result = $this->dateConvert($goodIntersections);
+        return $result;
     }
 
     private function dubiousIntersections(array $intersections){
@@ -54,7 +66,8 @@ class STOMRegisterIntersectionsFinder
                 $dubiousIntersections[] = $row;
             }
         }
-        return $dubiousIntersections;
+        $result = $this->dateConvert($dubiousIntersections);
+        return $result;
     }
 
     public function find(){
