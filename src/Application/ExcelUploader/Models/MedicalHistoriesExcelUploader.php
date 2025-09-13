@@ -24,7 +24,7 @@ class MedicalHistoriesExcelUploader
             $case[2] = strtotime($case[2]);
             $case[5] = strtotime($case[5]);
             if($case[6] === null){
-                $case[6] = null;
+                $case[6] = 0;
             }
             else {
                 $case[6] = strtotime($case[6]);
@@ -78,7 +78,7 @@ class MedicalHistoriesExcelUploader
     private function removeDuplicatesFromDatabase(array $duplicates){
         $duplicatesString = '';
         foreach ($duplicates as $duplicate){
-            $duplicatesString .= "'".$duplicate[0]."'".', ';
+            $duplicatesString .= "'".$duplicate."'".', ';
         }
         $duplicatesString = substr($duplicatesString,0,-2);
         $query = ("DELETE FROM medical_histories WHERE medical_histories.medical_history_unique_number IN ($duplicatesString)");
@@ -94,7 +94,7 @@ class MedicalHistoriesExcelUploader
             $this->removeDuplicatesFromDatabase($duplicates);
             $result['deleted'] = 'Удалено записей '.count($duplicates);
         }
-        $query = ("INSERT INTO medical_histories (medical_history_unique_number, medical_history_patient, 
+        $query = ("INSERT INTO medical_histories (medical_history_unique_number, medical_history_patient,
                                medical_history_patient_date_birth, medical_history_patient_age, medical_history_insurance_policy, 
                                medical_history_date_in, medical_history_date_out, medical_history_hospital_department, medical_history_doctor) 
                    VALUES");
