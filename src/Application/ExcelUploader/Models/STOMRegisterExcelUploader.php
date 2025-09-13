@@ -74,7 +74,7 @@ class STOMRegisterExcelUploader
         $stmt->execute();
     }
 
-    public function excelDataToMySQLData ($file, string $type) {
+    public function excelDataToMySQLData ($file) {
         //Получаем данные из Excel
         $excelData = $this->readExcel($file);
         //получаю уникальный идентификатор записи в реестре счетов
@@ -87,18 +87,11 @@ class STOMRegisterExcelUploader
             $result['deleted'] = 'Удалено записей '.count($duplicates);
         }
         //пишем SQL запрос, в зависимости от типа реестра
-        switch ($type) {
-            case 'STOM':
-                $query = ("INSERT INTO stom_register (stom_register_unique_entry, stom_register_patient, stom_register_patient_date_birth, stom_register_patient_insurance_policy,
+        $query = ("INSERT INTO stom_register (stom_register_unique_entry, stom_register_patient, stom_register_patient_date_birth, stom_register_patient_insurance_policy,
                            stom_register_treatment_start, stom_register_treatment_end, stom_register_diagnosis, stom_register_doctor) VALUES");
-                foreach ($excelData AS $row) {
-                    $query .= (" ('$row[0]', '$row[1]', '$row[2]', $row[3],  $row[4], '$row[5]', '$row[6]', '$row[7]'),");
-                };
-                break;
-            case 'DISP':
-                // Code to be executed if expression matches value2
-                break;
-        }
+        foreach ($excelData AS $row) {
+            $query .= (" ('$row[0]', '$row[1]', '$row[2]', $row[3],  $row[4], '$row[5]', '$row[6]', '$row[7]'),");
+        };
         //Вставляем данные в БД
         $query = substr($query,0,-1);
         $stmt = $this->pdo->prepare($query);

@@ -16,10 +16,8 @@ class STOMRegisterExcelUploadController
     }
 
     public function index(ServerRequestInterface $request) : ResponseInterface{
-        $fileName = 'REESTR';
-       // $file = $_SERVER['DOCUMENT_ROOT'].'/'.$fileName.".xlsx";
-        $file = 'storage/REESTR.xlsx';
-        $result = $this->uploader->excelDataToMySQLData($file, 'STOM');
+        $file = 'storage/STOM.xlsx';
+        $result = $this->uploader->excelDataToMySQLData($file);
         return new JsonResponse($result);
     }
 
