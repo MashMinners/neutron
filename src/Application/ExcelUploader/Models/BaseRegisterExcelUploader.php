@@ -9,7 +9,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class BaseRegisterExcelUploader
 {
-    protected function __construct(IConnector $connector){
+    public function __construct(IConnector $connector){
         $this->pdo = $connector::connect();
     }
 
