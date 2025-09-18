@@ -7,11 +7,18 @@ namespace Application\ExcelUploader\Models;
 use Engine\Database\IConnector;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
+/**
+ * Загрузка в БД записи по ПЕРВОМУ ЭТАПУ ДИСПАНСЕРИЗАЦИИ
+ */
 class DPRegisterExcelUploader extends BaseRegisterExcelUploader
 {
     protected $_table = 'dp_register';
     protected $_unique_entry = 'dp_register_unique_entry';
 
+    /**
+     * @param $file
+     * @return array
+     */
     public function excelDataToMySQLData ($file) {
         //Получаем данные из Excel
         $excelData = $this->readExcel($file);
