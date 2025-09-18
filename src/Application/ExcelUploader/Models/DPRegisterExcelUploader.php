@@ -9,25 +9,8 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class DPRegisterExcelUploader extends BaseRegisterExcelUploader
 {
-    private function findEntryDuplicatesInDatabase(string $uniqueEntries){
-        $duplicates = [];
-        $query = ("SELECT dp_register_unique_entry FROM dp_register
-                   WHERE dp_register_unique_entry IN ($uniqueEntries)");
-        $stmt = $this->pdo->prepare($query);
-        $stmt->execute();
-        $result = $stmt->fetchAll();
-        foreach ($result as $key=>$value){
-            $duplicates[] = $value['dp_register_unique_entry'];
-        }
-        return $duplicates;
-    }
-
-    private function removeDuplicatesFromDatabase(array $duplicates){
-        $duplicates = implode(', ', $duplicates);
-        $query = ("DELETE FROM dp_register WHERE dp_register_unique_entry IN ($duplicates)");
-        $stmt = $this->pdo->prepare($query);
-        $stmt->execute();
-    }
+    protected $_table = 'dp_register';
+    protected $_unique_entry = 'dp_register_unique_entry';
 
     public function excelDataToMySQLData ($file) {
         //Получаем данные из Excel
