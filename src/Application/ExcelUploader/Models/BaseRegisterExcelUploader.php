@@ -74,4 +74,31 @@ class BaseRegisterExcelUploader
         return $duplicates;
     }
 
+    public function excelDataToMySQLData ($file) {
+        //Получаем данные из Excel
+        $excelData = $this->readExcel($file);
+        //получаю уникальный идентификатор записи в реестре счетов
+        $uniqueEntries = $this->getUniqueEntries($excelData);
+        //Ищу дубликаты этих записей в базе данных
+        $duplicates = $this->findEntryDuplicatesInDatabase($uniqueEntries);
+        //Удаляю дубликаты из БД, на основании той мысли, что эти данные устарели
+        if (!empty($duplicates)){
+            $this->removeDuplicatesFromDatabase($duplicates);
+            $result['deleted'] = 'Удалено записей '.count($duplicates);
+        }
+        //пишем SQL запрос, в зависимости от типа реестра
+        $query = ("INSERT INTO $this->_table ($this->_unique_entry, $this->_register_patient, $this->_register_patient_date_birth, 
+                               $this->_register_patient_insurance_policy, $this->_register_treatment_start, $this->_register_treatment_end, 
+                               $this->_register_diagnosis, $this->_register_doctor) VALUES");
+        foreach ($excelData AS $row) {
+            $query .= (" ('$row[0]', '$row[1]', '$row[2]', $row[3],  $row[4], '$row[5]', '$row[6]', '$row[7]'),");
+        };
+        //Вставляем данные в БД
+        $query = substr($query,0,-1);
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        $result['inserted'] = 'Вставлено записей '.count($excelData);
+        return $result;
+    }
+
 }
