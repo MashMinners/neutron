@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Application\ExcelUploader\Models;
 
-use Engine\Database\IConnector;
-use PhpOffice\PhpSpreadsheet\IOFactory;
-
 /**
  * Загрузка в БД записи по ПЕРВОМУ ЭТАПУ ДИСПАНСЕРИЗАЦИИ
  */
