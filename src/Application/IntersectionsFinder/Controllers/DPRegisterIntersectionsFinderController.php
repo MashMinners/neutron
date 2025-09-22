@@ -15,7 +15,7 @@ class DPRegisterIntersectionsFinderController
 
     }
 
-    public function index(ServerRequestInterface $request) : ResponseInterface{
+    public function find(ServerRequestInterface $request) : ResponseInterface{
         $result = $this->finder->find();
         return new JsonResponse($result);
     }
