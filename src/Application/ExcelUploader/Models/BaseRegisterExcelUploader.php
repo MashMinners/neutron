@@ -101,4 +101,10 @@ class BaseRegisterExcelUploader
         return $result;
     }
 
+    public function truncate() : void {
+        $query = ("TRUNCATE TABLE $this->_table");
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+    }
+
 }

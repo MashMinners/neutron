@@ -13,8 +13,9 @@ $this->get('stom/intersections', '\Application\IntersectionsFinder\Controllers\S
 
 #РЕЕСТРЫ СЧЕТОВ ПО ДИСПАНСЕРИЗАЦИИ
 //Заливка реестра 1 этапа диспансеризации в БД
-$this->get('dp/registry', '\Application\ExcelUploader\Controllers\DPRegisterExcelUploadController::index');
-$this->get('dp/intersections', '\Application\IntersectionsFinder\Controllers\DPRegisterIntersectionsFinderController::index');
+$this->get('dp/registry/upload', '\Application\ExcelUploader\Controllers\DPRegisterExcelUploadController::upload');
+$this->get('dp/intersections/find', '\Application\IntersectionsFinder\Controllers\DPRegisterIntersectionsFinderController::find');
+$this->delete('dp/registry/truncate', '\Application\ExcelUploader\Controllers\DPRegisterExcelUploadController::truncate');
 //Заливка реестра 2 этапа диспансеризации
 $this->get('dv/registry', '\Application\ExcelUploader\Controllers\DVRegisterExcelUploadController::index');
 $this->get('dv/intersections', '\Application\IntersectionsFinder\Controllers\DVRegisterIntersectionsFinderController::index');
@@ -30,6 +31,7 @@ $this->get('dpr/intersections', '\Application\IntersectionsFinder\Controllers\DP
 //Заливка реестра репродуктивке 2 этап
 $this->get('dvr/registry', '\Application\ExcelUploader\Controllers\DVRRegisterExcelUploadController::index');
 $this->get('dvr/intersections', '\Application\IntersectionsFinder\Controllers\DVRRegisterIntersectionsFinderController::index');
+
 
 
 
