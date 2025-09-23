@@ -17,8 +17,9 @@ class BufferRegisterExcelUploadController
     public function __construct(private BufferRegisterExcelUploader $uploader){
 
     }
-    public function index(ServerRequestInterface $request) : ResponseInterface{
-        $file = $request->getQueryParams()['registerType'].'.xlsx';
+    public function upload(ServerRequestInterface $request) : ResponseInterface{
+        $params = $request->getQueryParams()['registerType'];
+        $file = 'storage/'.$params.'.xlsx';
         $result = $this->uploader->excelDataToMySQLData($file);
         return new JsonResponse($result);
     }

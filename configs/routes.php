@@ -12,6 +12,9 @@ $this->get('stom/visits', '\Application\ExcelUploader\Controllers\STOMVisitsExce
 $this->get('stom/intersections', '\Application\IntersectionsFinder\Controllers\STOMRegisterIntersectionsFinderController::index');
 
 #РЕЕСТРЫ СЧЕТОВ ПО ДИСПАНСЕРИЗАЦИИ
+//Заливка в буферную таблицу любого реестра
+$this->get('buffer/registry/upload', '\Application\ExcelUploader\Controllers\BufferRegisterExcelUploadController::upload');
+$this->delete('buffer/registry/truncate', '\Application\ExcelUploader\Controllers\BufferRegisterExcelUploadController::truncate');
 //Заливка реестра 1 этапа диспансеризации в БД
 $this->get('dp/registry/upload', '\Application\ExcelUploader\Controllers\DPRegisterExcelUploadController::upload');
 $this->delete('dp/registry/truncate', '\Application\ExcelUploader\Controllers\DPRegisterExcelUploadController::truncate');
