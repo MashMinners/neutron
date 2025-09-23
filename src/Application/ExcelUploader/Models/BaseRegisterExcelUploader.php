@@ -54,13 +54,6 @@ class BaseRegisterExcelUploader
         return $entries;
     }
 
-    protected function removeDuplicatesFromDatabase(array $duplicates){
-        $duplicates = implode(', ', $duplicates);
-        $query = ("DELETE FROM $this->_table WHERE $this->_unique_entry IN ($duplicates)");
-        $stmt = $this->pdo->prepare($query);
-        $stmt->execute();
-    }
-
     protected function findEntryDuplicatesInDatabase(string $uniqueEntries){
         $duplicates = [];
         $query = ("SELECT $this->_unique_entry FROM $this->_table
@@ -69,9 +62,16 @@ class BaseRegisterExcelUploader
         $stmt->execute();
         $result = $stmt->fetchAll();
         foreach ($result as $key=>$value){
-            $duplicates[] = $value['dp_register_unique_entry'];
+            $duplicates[] = $value[$this->_unique_entry];
         }
         return $duplicates;
+    }
+
+    protected function removeDuplicatesFromDatabase(array $duplicates){
+        $duplicates = implode(', ', $duplicates);
+        $query = ("DELETE FROM $this->_table WHERE $this->_unique_entry IN ($duplicates)");
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
     }
 
     public function excelDataToMySQLData ($file) {

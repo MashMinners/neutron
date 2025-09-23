@@ -5,7 +5,7 @@ $this->get('histories', '\Application\ExcelUploader\Controllers\MedicalHistories
 
 #РЕЕСТРЫ СЧЕТОВ ПО СТОМАТОЛОГИИ
 //Заливка реестра по стоматологии в БД
-$this->get('stom/reestr', '\Application\ExcelUploader\Controllers\STOMRegisterExcelUploadController::index');
+$this->get('stom//registry/upload', '\Application\ExcelUploader\Controllers\STOMRegisterExcelUploadController::upload');
 //Заливка посещений по стоматологии в БД
 $this->get('stom/visits', '\Application\ExcelUploader\Controllers\STOMVisitsExcelUploadController::index');
 //Поиск пересечений в 30-ти дневный период между посещениями и случаям ипопавшими в реестр

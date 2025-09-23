@@ -15,7 +15,7 @@ class STOMRegisterExcelUploadController
 
     }
 
-    public function index(ServerRequestInterface $request) : ResponseInterface{
+    public function upload(ServerRequestInterface $request) : ResponseInterface{
         $file = 'storage/STOM.xlsx';
         $result = $this->uploader->excelDataToMySQLData($file);
         return new JsonResponse($result);
