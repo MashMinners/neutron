@@ -23,10 +23,10 @@ class STOMRegisterIntersectionsFinder
     }
 
     private function findIntersections(){
-        $query = ("SELECT visits.stom_visits_patient, register.stom_register_treatment_start, register.stom_register_treatment_end, register.stom_register_diagnosis, register.stom_register_doctor, Max(visits.stom_visits_date_of_visit) AS visit_date
+        $query = ("SELECT visits.stom_visits_patient, visits.stom_visits_patient_insurance_policy, register.stom_register_treatment_start, register.stom_register_treatment_end, register.stom_register_diagnosis, register.stom_register_doctor, Max(visits.stom_visits_date_of_visit) AS visit_date
                    FROM stom_visits AS visits
                    INNER JOIN stom_register AS register ON visits.stom_visits_patient_insurance_policy = register.stom_register_patient_insurance_policy
-                   GROUP BY visits.stom_visits_patient, register.stom_register_treatment_start, register.stom_register_treatment_end, register.stom_register_diagnosis, register.stom_register_doctor");
+                   GROUP BY visits.stom_visits_patient, visits.stom_visits_patient_insurance_policy, register.stom_register_treatment_start, register.stom_register_treatment_end, register.stom_register_diagnosis, register.stom_register_doctor");
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
         $result = $stmt->fetchAll();
