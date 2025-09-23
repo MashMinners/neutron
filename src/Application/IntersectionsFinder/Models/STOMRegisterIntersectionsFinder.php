@@ -13,6 +13,7 @@ class STOMRegisterIntersectionsFinder
     }
 
     private function dateConvert($intersections){
+        $result = [];
         foreach ($intersections AS $intersection){
             $intersection['stom_register_treatment_start'] = date('d.m.Y', $intersection['stom_register_treatment_start']);
             $intersection['stom_register_treatment_end'] = date('d.m.Y', $intersection['stom_register_treatment_end']);

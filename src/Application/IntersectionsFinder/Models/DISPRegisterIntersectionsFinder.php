@@ -6,13 +6,14 @@ namespace Application\IntersectionsFinder\Models;
 
 use Engine\Database\IConnector;
 
-class DPRegisterIntersectionsFinder
+class DISPRegisterIntersectionsFinder
 {
     public function __construct(IConnector $connector){
         $this->pdo = $connector::connect();
     }
 
     private function dateConvert(array $intersections){
+        $result = [];
         foreach ($intersections AS $intersection){
             $intersection['dp_register_treatment_start'] = date('d.m.Y', $intersection['dp_register_treatment_start']);
             $intersection['dp_register_treatment_end'] = date('d.m.Y', $intersection['dp_register_treatment_end']);
@@ -68,6 +69,7 @@ class DPRegisterIntersectionsFinder
         }
         return $badIntersections;
     }
+
     public function find(){
         /**
          * В ДП попадают только закрытые карты ибо эта карта берется из реестра

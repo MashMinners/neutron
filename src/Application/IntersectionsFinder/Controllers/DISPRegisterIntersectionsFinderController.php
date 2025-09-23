@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Application\IntersectionsFinder\Controllers;
 
-use Application\IntersectionsFinder\Models\DPRegisterIntersectionsFinder;
+use Application\IntersectionsFinder\Models\DISPRegisterIntersectionsFinder;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class DPRegisterIntersectionsFinderController
+class DISPRegisterIntersectionsFinderController
 {
-    public function __construct(private DPRegisterIntersectionsFinder $finder){
+    public function __construct(private DISPRegisterIntersectionsFinder $finder){
 
     }
 

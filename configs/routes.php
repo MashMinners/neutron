@@ -15,7 +15,7 @@ $this->get('stom/intersections', '\Application\IntersectionsFinder\Controllers\S
 //Заливка реестра 1 этапа диспансеризации в БД
 $this->get('dp/registry/upload', '\Application\ExcelUploader\Controllers\DPRegisterExcelUploadController::upload');
 $this->delete('dp/registry/truncate', '\Application\ExcelUploader\Controllers\DPRegisterExcelUploadController::truncate');
-$this->get('dp/intersections/find', '\Application\IntersectionsFinder\Controllers\DPRegisterIntersectionsFinderController::find');
+$this->get('dp/intersections/find', '\Application\IntersectionsFinder\Controllers\DISPRegisterIntersectionsFinderController::find');
 //Заливка реестра 2 этапа диспансеризации
 $this->get('dv/registry', '\Application\ExcelUploader\Controllers\DVRegisterExcelUploadController::index');
 $this->get('dv/intersections', '\Application\IntersectionsFinder\Controllers\DVRegisterIntersectionsFinderController::index');
