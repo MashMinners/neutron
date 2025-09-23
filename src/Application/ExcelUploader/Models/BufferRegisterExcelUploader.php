@@ -16,5 +16,4 @@ class BufferRegisterExcelUploader extends BaseRegisterExcelUploader
     protected $_register_diagnosis = 'buffer_register_diagnosis';
     protected $_register_doctor = 'buffer_register_doctor';
 
-
 }

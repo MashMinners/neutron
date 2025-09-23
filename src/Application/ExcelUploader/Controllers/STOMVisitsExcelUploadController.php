@@ -13,10 +13,15 @@ class STOMVisitsExcelUploadController
 {
     public function __construct(private STOMVisitsExcelUploader $uploader){}
 
-    public function index(ServerRequestInterface $request) : ResponseInterface{
+    public function upload(ServerRequestInterface $request) : ResponseInterface{
         $file = 'storage/VISITS.xlsx';
         $result = $this->uploader->excelDataToMySQLData($file);
         return new JsonResponse($result);
+    }
+
+    public function truncate(ServerRequestInterface $request) : ResponseInterface{
+        $this->uploader->truncate();
+        return new JsonResponse('Таблица очищена');
     }
 
 }

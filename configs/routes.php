@@ -6,8 +6,10 @@ $this->get('histories', '\Application\ExcelUploader\Controllers\MedicalHistories
 #РЕЕСТРЫ СЧЕТОВ ПО СТОМАТОЛОГИИ
 //Заливка реестра по стоматологии в БД
 $this->get('stom//registry/upload', '\Application\ExcelUploader\Controllers\STOMRegisterExcelUploadController::upload');
-//Заливка посещений по стоматологии в БД
-$this->get('stom/visits', '\Application\ExcelUploader\Controllers\STOMVisitsExcelUploadController::index');
+
+//Заливка/удаление посещений по стоматологии в БД
+$this->get('stom/visits/upload', '\Application\ExcelUploader\Controllers\STOMVisitsExcelUploadController::upload');
+$this->delete('stom/visits/truncate', '\Application\ExcelUploader\Controllers\STOMVisitsExcelUploadController::truncate');
 //Поиск пересечений в 30-ти дневный период между посещениями и случаям ипопавшими в реестр
 $this->get('stom/intersections', '\Application\IntersectionsFinder\Controllers\STOMRegisterIntersectionsFinderController::index');
 

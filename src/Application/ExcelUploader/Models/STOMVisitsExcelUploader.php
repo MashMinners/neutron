@@ -103,4 +103,10 @@ class STOMVisitsExcelUploader
         return $result;
     }
 
+    public function truncate() : void {
+        $query = ("TRUNCATE TABLE `stom_visits`");
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+    }
+
 }
