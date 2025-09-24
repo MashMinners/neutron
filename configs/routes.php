@@ -36,6 +36,8 @@ $this->get('dpr/intersections', '\Application\IntersectionsFinder\Controllers\DP
 //Заливка реестра репродуктивке 2 этап
 $this->get('dvr/registry', '\Application\ExcelUploader\Controllers\DVRRegisterExcelUploadController::index');
 $this->get('dvr/intersections', '\Application\IntersectionsFinder\Controllers\DVRRegisterIntersectionsFinderController::index');
+//Поиск разорванных случаев, являются дубликатами записей по полису
+$this->get('buffer/registry/duplicates', '\Application\Registry\Controllers\STOMRegistryController::findDuplicates');
 
 
 
