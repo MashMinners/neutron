@@ -86,4 +86,70 @@ class BufferSTOMRegistryIntersectionsFinder
         return $result;
     }
 
+    private function getBufferRecords(){
+        $query = ("SELECT * FROM buffer_stom_register");
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        return $result;
+    }
+
+    private function purposesDateConvert(array $intersections){
+        $result = [];
+        foreach ($intersections AS $intersection){
+            $intersection['buffer_stom_register_patient_date_birth'] = date('d.m.Y', $intersection['buffer_stom_register_patient_date_birth']);
+            $intersection['buffer_stom_register_treatment_start'] = date('d.m.Y', $intersection['buffer_stom_register_treatment_start']);
+            $intersection['buffer_stom_register_treatment_end'] = date('d.m.Y', $intersection['buffer_stom_register_treatment_end']);
+            $result[] = $intersection;
+        }
+        return $result;
+    }
+
+    private function devidePurposes(array $records){
+        $purpose = [];
+        foreach ($records as $record){
+            if ($record['buffer_stom_register_treatment_end']-$record['buffer_stom_register_treatment_start'] === 0){
+                $purpose['single'][] = $record;
+            }
+            else{
+                $purpose['multi'][] = $record;
+            }
+        }
+        return $purpose;
+    }
+
+    private function devideSingleVisit(array $visits){
+        $result = [];
+        foreach ($visits as $visit){
+            if ($visit['buffer_stom_register_purpose'] === '1.0'){
+                $result['correct'][] = $visit;
+            }else{
+                $result['incorrect'][] = $visit;
+            }
+        }
+        return $result;
+    }
+
+    private function devideMultiVisits(array $visits){
+        $result = [];
+        foreach ($visits as $visit){
+            if ($visit['buffer_stom_register_purpose'] === '3.0'){
+                $result['correct'][] = $visit;
+            }else{
+                $result['incorrect'][] = $visit;
+            }
+        }
+        return $result;
+    }
+
+    public function findIncorrectPurposeDevided(){
+        $records = $this->getBufferRecords();
+        $devided = $this->devidePurposes($records);
+        $converted['single'] = $this->purposesDateConvert($devided['single']);
+        $converted['multi'] = $this->purposesDateConvert($devided['multi']);
+        $result['single'] = $this->devideSingleVisit($converted['single']);
+        $result['multi'] = $this->devideMultiVisits($converted['multi']);
+        return $result;
+    }
+
 }

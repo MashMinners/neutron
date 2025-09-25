@@ -26,5 +26,6 @@ $this->delete('buffer/stom/truncate', '\Application\ExcelUploader\Controllers\Bu
 //Пересечения
 $this->get('buffer/disp/intersections', '\Application\IntersectionsFinder\Controllers\DISPRegisterIntersectionsFinderController::find');
 $this->get('buffer/stom/intersections', '\Application\IntersectionsFinder\Controllers\BufferSTOMRegistryIntersectionsFinderController::find');
+$this->get('buffer/stom/purposes', '\Application\IntersectionsFinder\Controllers\BufferSTOMRegistryIntersectionsFinderController::findIncorrectPurposes');
 
 

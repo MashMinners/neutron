@@ -21,4 +21,12 @@ class BufferSTOMRegistryIntersectionsFinderController
         return new JsonResponse($result);
     }
 
+    public function findIncorrectPurposes(ServerRequestInterface $request) : ResponseInterface{
+        $result = $this->finder->findIncorrectPurposeDevided();
+        $incorrect['single'] = $result['single']['incorrect'];
+        $incorrect['multi'] = $result['multi']['incorrect'];
+        $merged = array_merge($incorrect['single'], $incorrect['multi']);
+        return new JsonResponse($merged);
+    }
+
 }
