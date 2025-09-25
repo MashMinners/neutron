@@ -25,7 +25,7 @@ class DISPRegisterIntersectionsFinder
     }
 
     private function findIntersections(){
-        $query = ("SELECT register.buffer_register_patient, register.buffer_register_treatment_start, register.buffer_register_treatment_end,
+        $query = ("SELECT register.buffer_register_unique_entry, register.buffer_register_patient, register.buffer_register_treatment_start, register.buffer_register_treatment_end,
                           register.buffer_register_diagnosis, register.buffer_register_doctor, histories.medical_history_date_in, histories.medical_history_date_out  
                    FROM medical_histories AS histories
                    INNER JOIN buffer_register as register ON histories.medical_history_insurance_policy = register.buffer_register_patient_insurance_policy");
@@ -61,19 +61,19 @@ class DISPRegisterIntersectionsFinder
              */
             //Если медицинская история болезни ОТКРЫТА во время того как была сделана диспансеризация
             if ($row['medical_history_date_in'] >= $row['buffer_register_treatment_start'] AND $row['medical_history_date_in'] < $row['buffer_register_treatment_end']) {
-                $badIntersections[] = $row;
+                $badIntersections[$row['buffer_register_unique_entry']] = $row;
             }
             //Если медицинская история болезни ЗАКРЫТА во время того как была сделана диспансеризация
             if ($row['medical_history_date_out'] >= $row['buffer_register_treatment_start'] AND $row['medical_history_date_out'] < $row['buffer_register_treatment_end']) {
-                $badIntersections[] = $row;
+                $badIntersections[$row['buffer_register_unique_entry']] = $row;
             }
             //Если карта диспансеризации ОТКРЫТА во время истории болезни
             if ($row['buffer_register_treatment_start'] >= $row['medical_history_date_in'] AND $row['buffer_register_treatment_start'] < $row['medical_history_date_out']){
-                $badIntersections[] = $row;
+                $badIntersections[$row['buffer_register_unique_entry']] = $row;
             }
             //Если карта диспансеризации ЗАКРЫТА во время истории болезни
             if ($row['buffer_register_treatment_end'] >= $row['medical_history_date_in'] AND $row['buffer_register_treatment_end'] < $row['medical_history_date_out']){
-                $badIntersections[] = $row;
+                $badIntersections[$row['buffer_register_unique_entry']] = $row;
             }
         }
         return $badIntersections;
