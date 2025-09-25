@@ -59,10 +59,20 @@ class DISPRegisterIntersectionsFinder
              * в двух сравнениях а именно в $row['medical_history_date_in'] < $row['dp_register_treatment_end']
              * и ($row['dp_register_treatment_start'] >= $row['medical_history_date_in']
              */
+            //Если медицинская история болезни ОТКРЫТА во время того как была сделана диспансеризация
             if ($row['medical_history_date_in'] >= $row['buffer_register_treatment_start'] AND $row['medical_history_date_in'] < $row['buffer_register_treatment_end']) {
                 $badIntersections[] = $row;
             }
+            //Если медицинская история болезни ЗАКРЫТА во время того как была сделана диспансеризация
+            if ($row['medical_history_date_out'] >= $row['buffer_register_treatment_start'] AND $row['medical_history_date_out'] < $row['buffer_register_treatment_end']) {
+                $badIntersections[] = $row;
+            }
+            //Если карта диспансеризации ОТКРЫТА во время истории болезни
             if ($row['buffer_register_treatment_start'] >= $row['medical_history_date_in'] AND $row['buffer_register_treatment_start'] < $row['medical_history_date_out']){
+                $badIntersections[] = $row;
+            }
+            //Если карта диспансеризации ЗАКРЫТА во время истории болезни
+            if ($row['buffer_register_treatment_end'] >= $row['medical_history_date_in'] AND $row['buffer_register_treatment_end'] < $row['medical_history_date_out']){
                 $badIntersections[] = $row;
             }
         }
