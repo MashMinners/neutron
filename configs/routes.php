@@ -39,6 +39,8 @@ $this->get('dvr/intersections', '\Application\IntersectionsFinder\Controllers\DV
 //Поиск разорванных случаев, являются дубликатами записей по полису
 $this->get('buffer/registry/duplicates', '\Application\Registry\Controllers\STOMRegistryController::findDuplicates');
 
+$this->get('disp/intersections', '\Application\IntersectionsFinder\Controllers\DISPRegisterIntersectionsFinderController::find');
+
 
 
 
