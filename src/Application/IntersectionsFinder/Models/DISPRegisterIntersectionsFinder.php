@@ -15,8 +15,8 @@ class DISPRegisterIntersectionsFinder
     private function dateConvert(array $intersections){
         $result = [];
         foreach ($intersections AS $intersection){
-            $intersection['dp_register_treatment_start'] = date('d.m.Y', $intersection['dp_register_treatment_start']);
-            $intersection['dp_register_treatment_end'] = date('d.m.Y', $intersection['dp_register_treatment_end']);
+            $intersection['buffer_register_treatment_start'] = date('d.m.Y', $intersection['buffer_register_treatment_start']);
+            $intersection['buffer_register_treatment_end'] = date('d.m.Y', $intersection['buffer_register_treatment_end']);
             $intersection['medical_history_date_in'] = date('d.m.Y', $intersection['medical_history_date_in']);
             $intersection['medical_history_date_out'] = date('d.m.Y', $intersection['medical_history_date_out']);
             $result[] = $intersection;
@@ -59,10 +59,10 @@ class DISPRegisterIntersectionsFinder
              * в двух сравнениях а именно в $row['medical_history_date_in'] < $row['dp_register_treatment_end']
              * и ($row['dp_register_treatment_start'] >= $row['medical_history_date_in']
              */
-            if ($row['medical_history_date_in'] >= $row['dp_register_treatment_start'] AND $row['medical_history_date_in'] < $row['dp_register_treatment_end']) {
+            if ($row['medical_history_date_in'] >= $row['buffer_register_treatment_start'] AND $row['medical_history_date_in'] < $row['buffer_register_treatment_end']) {
                 $badIntersections[] = $row;
             }
-            if ($row['dp_register_treatment_start'] >= $row['medical_history_date_in'] AND $row['dp_register_treatment_start'] < $row['medical_history_date_out']){
+            if ($row['buffer_register_treatment_start'] >= $row['medical_history_date_in'] AND $row['buffer_register_treatment_start'] < $row['medical_history_date_out']){
                 $badIntersections[] = $row;
             }
         }
