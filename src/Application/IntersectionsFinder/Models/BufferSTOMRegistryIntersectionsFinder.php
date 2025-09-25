@@ -6,7 +6,7 @@ namespace Application\IntersectionsFinder\Models;
 
 use Engine\Database\IConnector;
 
-class STOMRegisterIntersectionsFinder
+class BufferSTOMRegistryIntersectionsFinder
 {
     public function __construct(IConnector $connector){
         $this->pdo = $connector::connect();
@@ -15,8 +15,8 @@ class STOMRegisterIntersectionsFinder
     private function dateConvert($intersections){
         $result = [];
         foreach ($intersections AS $intersection){
-            $intersection['buffer_register_treatment_start'] = date('d.m.Y', $intersection['buffer_register_treatment_start']);
-            $intersection['buffer_register_treatment_end'] = date('d.m.Y', $intersection['buffer_register_treatment_end']);
+            $intersection['buffer_stom_register_treatment_start'] = date('d.m.Y', $intersection['buffer_stom_register_treatment_start']);
+            $intersection['buffer_stom_register_treatment_end'] = date('d.m.Y', $intersection['buffer_stom_register_treatment_end']);
             $intersection['visit_date'] = date('d.m.Y', $intersection['visit_date']);
             $result[] = $intersection;
         }
@@ -24,10 +24,14 @@ class STOMRegisterIntersectionsFinder
     }
 
     private function findIntersections(){
-        $query = ("SELECT visits.stom_visits_patient, visits.stom_visits_patient_insurance_policy, register.buffer_register_treatment_start, register.buffer_register_treatment_end, register.buffer_register_diagnosis, register.buffer_register_doctor, Max(visits.stom_visits_date_of_visit) AS visit_date
+        $query = ("SELECT visits.stom_visits_patient, visits.stom_visits_patient_insurance_policy, register.buffer_stom_register_treatment_start, 
+                          register.buffer_stom_register_treatment_end, register.buffer_stom_register_diagnosis, register.buffer_stom_register_doctor,
+                          register.buffer_stom_register_purpose, Max(visits.stom_visits_date_of_visit) AS visit_date
                    FROM stom_visits AS visits
-                   INNER JOIN buffer_register AS register ON visits.stom_visits_patient_insurance_policy = register.buffer_register_patient_insurance_policy
-                   GROUP BY visits.stom_visits_patient, visits.stom_visits_patient_insurance_policy, register.buffer_register_treatment_start, register.buffer_register_treatment_end, register.buffer_register_diagnosis, register.buffer_register_doctor");
+                   INNER JOIN buffer_stom_register AS register ON visits.stom_visits_patient_insurance_policy = register.buffer_stom_register_patient_insurance_policy
+                   GROUP BY visits.stom_visits_patient, visits.stom_visits_patient_insurance_policy, register.buffer_stom_register_treatment_start, 
+                            register.buffer_stom_register_treatment_end, register.buffer_stom_register_diagnosis, register.buffer_stom_register_doctor,
+                            register.buffer_stom_register_purpose");
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
         $result = $stmt->fetchAll();
@@ -37,7 +41,7 @@ class STOMRegisterIntersectionsFinder
     private function badIntersections(array $intersections){
        $badIntersections = [];
        foreach ($intersections as $row){
-           $dateDiff = $row['buffer_register_treatment_start'] - $row['visit_date'];
+           $dateDiff = $row['buffer_stom_register_treatment_start'] - $row['visit_date'];
            if ($dateDiff < 2592000) {
                $badIntersections[] = $row;
            }
@@ -49,7 +53,7 @@ class STOMRegisterIntersectionsFinder
     private function goodIntersections(array $intersections){
         $goodIntersections = [];
         foreach ($intersections as $row){
-            $dateDiff = $row['buffer_register_treatment_start'] - $row['visit_date'];
+            $dateDiff = $row['buffer_stom_register_treatment_start'] - $row['visit_date'];
             if ($dateDiff > 2592000) {
                 $goodIntersections[] = $row;
             }
@@ -61,8 +65,8 @@ class STOMRegisterIntersectionsFinder
     private function dubiousIntersections(array $intersections){
         $dubiousIntersections = [];
         foreach ($intersections as $row){
-            $dateDiffStart = $row['buffer_register_treatment_start'] - $row['visit_date'];
-            $dateDiffEnd = $row['buffer_register_treatment_end'] - $row['visit_date'];
+            $dateDiffStart = $row['buffer_stom_register_treatment_start'] - $row['visit_date'];
+            $dateDiffEnd = $row['buffer_stom_register_treatment_end'] - $row['visit_date'];
             if ($dateDiffStart < 2592000 AND $dateDiffEnd > 2592000) {
                 $dubiousIntersections[] = $row;
             }

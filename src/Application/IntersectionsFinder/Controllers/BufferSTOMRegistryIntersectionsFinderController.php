@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Application\IntersectionsFinder\Controllers;
 
-use Application\IntersectionsFinder\Models\STOMRegisterIntersectionsFinder;
+use Application\IntersectionsFinder\Models\BufferSTOMRegistryIntersectionsFinder;
 
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class STOMRegisterIntersectionsFinderController
+class BufferSTOMRegistryIntersectionsFinderController
 {
-    public function __construct(private STOMRegisterIntersectionsFinder $finder){
+    public function __construct(private BufferSTOMRegistryIntersectionsFinder $finder){
 
     }
 
-    public function index(ServerRequestInterface $request) : ResponseInterface{
+    public function find(ServerRequestInterface $request) : ResponseInterface{
         $result = $this->finder->find();
         return new JsonResponse($result);
     }

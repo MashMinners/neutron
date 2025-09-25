@@ -8,6 +8,15 @@ use Engine\Database\IConnector;
 
 class DISPRegisterIntersectionsFinder
 {
+    private $_dispCodes = [
+        'ОПВ' => 'Проф. осмотры',
+        'ДВ4' => 'Диспансеризация 1 этап',
+        'ДВ2' => 'Диспансеризация 2 этап',
+        'УД1' => 'Углубленная диспансеризация 1',
+        'УД2' => 'Углубленная диспансеризация 2',
+        'ДР1' => 'Репродуктивное женщины',
+        'ДР2' => 'Репродуктивное мужчины',
+    ];
     public function __construct(IConnector $connector){
         $this->pdo = $connector::connect();
     }
@@ -19,14 +28,16 @@ class DISPRegisterIntersectionsFinder
             $intersection['buffer_register_treatment_end'] = date('d.m.Y', $intersection['buffer_register_treatment_end']);
             $intersection['medical_history_date_in'] = date('d.m.Y', $intersection['medical_history_date_in']);
             $intersection['medical_history_date_out'] = date('d.m.Y', $intersection['medical_history_date_out']);
+            $intersection['buffer_register_disp_sign'] = $this->_dispCodes[$intersection['buffer_register_disp_sign']];
             $result[] = $intersection;
         }
         return $result;
     }
 
     private function findIntersections(){
-        $query = ("SELECT register.buffer_register_unique_entry, register.buffer_register_patient, register.buffer_register_treatment_start, register.buffer_register_treatment_end,
-                          register.buffer_register_diagnosis, register.buffer_register_doctor, histories.medical_history_date_in, histories.medical_history_date_out  
+        $query = ("SELECT register.buffer_register_unique_entry, register.buffer_register_patient, register.buffer_register_treatment_start, 
+                          register.buffer_register_treatment_end, register.buffer_register_diagnosis, register.buffer_register_doctor, 
+                          histories.medical_history_date_in, histories.medical_history_date_out, buffer_register_disp_sign, buffer_register_purpose  
                    FROM medical_histories AS histories
                    INNER JOIN buffer_register as register ON histories.medical_history_insurance_policy = register.buffer_register_patient_insurance_policy");
         $stmt = $this->pdo->prepare($query);

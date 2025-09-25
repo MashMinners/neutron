@@ -7,7 +7,7 @@ namespace Application\ExcelUploader\Models;
 use Engine\Database\IConnector;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
-class STOMVisitsExcelUploader
+class VisitsExcelUploader
 {
     public function __construct(IConnector $connector){
         $this->pdo = $connector::connect();
