@@ -56,9 +56,48 @@ class BufferDISPRegistryExcelUploader
         return $excelData;
     }
 
+    private function getUniqueIDs(array $excelData){
+        $entries = '';
+        foreach ($excelData as $row){
+            $entries .= "'".$row[8]."'".', ';
+        }
+        $entries = substr($entries,0,-2);
+        return $entries;
+    }
+
+    private function findEntryDuplicatesInDatabase(string $uniqueIDs){
+        $duplicates = [];
+        $query = ("SELECT buffer_disp_register_unique_entry FROM buffer_disp_register
+                   WHERE buffer_disp_register.buffer_disp_register_unique_entry IN ($uniqueIDs)");
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        foreach ($result as $key=>$value){
+            $duplicates[] = $value['buffer_disp_register_unique_entry'];
+        }
+        return $duplicates;
+    }
+
+    private function removeDuplicatesFromDatabase(array $duplicates){
+        $duplicatesString = '';
+        foreach ($duplicates as $duplicate){
+            $duplicatesString .= "'".$duplicate."'".', ';
+        }
+        $duplicatesString = substr($duplicatesString,0,-2);
+        $query = ("DELETE FROM buffer_disp_register WHERE buffer_disp_register.buffer_disp_register_unique_entry IN ($duplicatesString)");
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+    }
+
     public function excelDataToMySQLData ($file) {
         //Получаем данные из Excel
         $excelData = $this->readExcel($file);
+        $uniqueIDs = $this->getUniqueIDs($excelData);
+        $duplicates = $this->findEntryDuplicatesInDatabase($uniqueIDs);
+        if (!empty($duplicates)){
+            $this->removeDuplicatesFromDatabase($duplicates);
+            $result['deleted'] = 'Удалено записей '.count($duplicates);
+        }
         //пишем SQL запрос, в зависимости от типа реестра
         $query = ("INSERT INTO buffer_disp_register (buffer_disp_register_patient, buffer_disp_register_patient_date_birth, 
                                buffer_disp_register_patient_insurance_policy, buffer_disp_register_treatment_start, buffer_disp_register_treatment_end, 
