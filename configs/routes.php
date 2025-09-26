@@ -8,8 +8,7 @@ $this->get('histories/truncate', '\Application\ExcelUploader\Controllers\Medical
 $this->get('visits/upload', '\Application\ExcelUploader\Controllers\VisitsExcelUploadController::upload');
 $this->delete('visits/truncate', '\Application\ExcelUploader\Controllers\VisitsExcelUploadController::truncate');
 
-//Поиск разорванных случаев, являются дубликатами записей по полису
-$this->get('buffer/registry/duplicates', '\Application\Registry\Controllers\STOMRegistryController::findDuplicates');
+
 
 
 #РАБОТА С БУФЕРНОЙ ТАБЛИЦЕЙ СТОМАТОЛОГИИ
@@ -21,6 +20,13 @@ $this->delete('buffer/stom/truncate', '\Application\ExcelUploader\Controllers\Bu
 $this->get('buffer/stom/intersections', '\Application\IntersectionsFinder\Controllers\BufferSTOMRegistryIntersectionsFinderController::find');
 //Цели посещения 1.0/3.0
 $this->get('buffer/stom/purposes', '\Application\IntersectionsFinder\Controllers\BufferSTOMRegistryIntersectionsFinderController::findIncorrectPurposes');
+//Поиск разорванных случаев, являются дубликатами записей по полису
+$this->get('buffer/stom/duplicates', '\Application\Registry\Controllers\STOMRegistryController::findDuplicates');
+/**
+ * Сначала ищем дубликаты - это разорванные случаи!
+ * Потом объединяем их в один случай
+ * Далее мы ищем PURPOSES чтобы знать где поменять цели с 1.0 на 3.0
+ */
 
 #РАБОТА С БУФЕРНОЙ ТАБЛИЦЕЙ ДИСПАНСЕРИЗАЦИИ
 //Загрузка реестров
