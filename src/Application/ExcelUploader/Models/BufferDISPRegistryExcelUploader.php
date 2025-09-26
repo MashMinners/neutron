@@ -60,10 +60,10 @@ class BufferDISPRegistryExcelUploader
         //Получаем данные из Excel
         $excelData = $this->readExcel($file);
         //пишем SQL запрос, в зависимости от типа реестра
-        $query = ("INSERT INTO buffer_register (buffer_register_patient, buffer_register_patient_date_birth, 
-                               buffer_register_patient_insurance_policy, buffer_register_treatment_start, buffer_register_treatment_end, 
-                               buffer_register_diagnosis, buffer_register_doctor, buffer_register_disp_sign, 
-                               buffer_register_unique_entry, buffer_register_purpose) VALUES");
+        $query = ("INSERT INTO buffer_disp_register (buffer_disp_register_patient, buffer_disp_register_patient_date_birth, 
+                               buffer_disp_register_patient_insurance_policy, buffer_disp_register_treatment_start, buffer_disp_register_treatment_end, 
+                               buffer_disp_register_diagnosis, buffer_disp_register_doctor, buffer_disp_register_disp_sign, 
+                               buffer_disp_register_unique_entry, buffer_disp_register_purpose) VALUES");
         foreach ($excelData AS $row) {
             $query .= (" ('$row[0]', '$row[1]', '$row[2]', $row[3],  $row[4], '$row[5]', '$row[6]', '$row[7]', '$row[8]', '$row[9]'),");
         };

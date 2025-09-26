@@ -6,7 +6,7 @@ namespace Application\IntersectionsFinder\Models;
 
 use Engine\Database\IConnector;
 
-class DISPRegisterIntersectionsFinder
+class BufferDISPRegistryIntersectionsFinder
 {
     private $_dispCodes = [
         'ОПВ' => 'Проф. осмотры',
@@ -24,22 +24,22 @@ class DISPRegisterIntersectionsFinder
     private function dateConvert(array $intersections){
         $result = [];
         foreach ($intersections AS $intersection){
-            $intersection['buffer_register_treatment_start'] = date('d.m.Y', $intersection['buffer_register_treatment_start']);
-            $intersection['buffer_register_treatment_end'] = date('d.m.Y', $intersection['buffer_register_treatment_end']);
+            $intersection['buffer_disp_register_treatment_start'] = date('d.m.Y', $intersection['buffer_disp_register_treatment_start']);
+            $intersection['buffer_disp_register_treatment_end'] = date('d.m.Y', $intersection['buffer_disp_register_treatment_end']);
             $intersection['medical_history_date_in'] = date('d.m.Y', $intersection['medical_history_date_in']);
             $intersection['medical_history_date_out'] = date('d.m.Y', $intersection['medical_history_date_out']);
-            $intersection['buffer_register_disp_sign'] = $this->_dispCodes[$intersection['buffer_register_disp_sign']];
+            $intersection['buffer_disp_register_disp_sign'] = $this->_dispCodes[$intersection['buffer_disp_register_disp_sign']];
             $result[] = $intersection;
         }
         return $result;
     }
 
     private function findIntersections(){
-        $query = ("SELECT register.buffer_register_unique_entry, register.buffer_register_patient, register.buffer_register_treatment_start, 
-                          register.buffer_register_treatment_end, register.buffer_register_diagnosis, register.buffer_register_doctor, 
-                          histories.medical_history_date_in, histories.medical_history_date_out, buffer_register_disp_sign, buffer_register_purpose  
+        $query = ("SELECT register.buffer_disp_register_unique_entry, register.buffer_disp_register_patient, register.buffer_disp_register_treatment_start, 
+                          register.buffer_disp_register_treatment_end, register.buffer_disp_register_diagnosis, register.buffer_disp_register_doctor, 
+                          histories.medical_history_date_in, histories.medical_history_date_out, buffer_disp_register_disp_sign, buffer_disp_register_purpose  
                    FROM medical_histories AS histories
-                   INNER JOIN buffer_register as register ON histories.medical_history_insurance_policy = register.buffer_register_patient_insurance_policy");
+                   INNER JOIN buffer_disp_register as register ON histories.medical_history_insurance_policy = register.buffer_disp_register_patient_insurance_policy");
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
         $result = $stmt->fetchAll();
@@ -71,20 +71,20 @@ class DISPRegisterIntersectionsFinder
              * и ($row['dp_register_treatment_start'] >= $row['medical_history_date_in']
              */
             //Если медицинская история болезни ОТКРЫТА во время того как была сделана диспансеризация
-            if ($row['medical_history_date_in'] >= $row['buffer_register_treatment_start'] AND $row['medical_history_date_in'] < $row['buffer_register_treatment_end']) {
-                $badIntersections[$row['buffer_register_unique_entry']] = $row;
+            if ($row['medical_history_date_in'] >= $row['buffer_disp_register_treatment_start'] AND $row['medical_history_date_in'] < $row['buffer_disp_register_treatment_end']) {
+                $badIntersections[$row['buffer_disp_register_unique_entry']] = $row;
             }
             //Если медицинская история болезни ЗАКРЫТА во время того как была сделана диспансеризация
-            if ($row['medical_history_date_out'] >= $row['buffer_register_treatment_start'] AND $row['medical_history_date_out'] < $row['buffer_register_treatment_end']) {
-                $badIntersections[$row['buffer_register_unique_entry']] = $row;
+            if ($row['medical_history_date_out'] >= $row['buffer_disp_register_treatment_start'] AND $row['medical_history_date_out'] < $row['buffer_disp_register_treatment_end']) {
+                $badIntersections[$row['buffer_disp_register_unique_entry']] = $row;
             }
             //Если карта диспансеризации ОТКРЫТА во время истории болезни
-            if ($row['buffer_register_treatment_start'] >= $row['medical_history_date_in'] AND $row['buffer_register_treatment_start'] < $row['medical_history_date_out']){
-                $badIntersections[$row['buffer_register_unique_entry']] = $row;
+            if ($row['buffer_disp_register_treatment_start'] >= $row['medical_history_date_in'] AND $row['buffer_disp_register_treatment_start'] < $row['medical_history_date_out']){
+                $badIntersections[$row['buffer_disp_register_unique_entry']] = $row;
             }
             //Если карта диспансеризации ЗАКРЫТА во время истории болезни
-            if ($row['buffer_register_treatment_end'] >= $row['medical_history_date_in'] AND $row['buffer_register_treatment_end'] < $row['medical_history_date_out']){
-                $badIntersections[$row['buffer_register_unique_entry']] = $row;
+            if ($row['buffer_disp_register_treatment_end'] >= $row['medical_history_date_in'] AND $row['buffer_disp_register_treatment_end'] < $row['medical_history_date_out']){
+                $badIntersections[$row['buffer_disp_register_unique_entry']] = $row;
             }
         }
         return $badIntersections;
