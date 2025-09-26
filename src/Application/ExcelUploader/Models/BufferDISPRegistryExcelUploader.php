@@ -75,4 +75,10 @@ class BufferDISPRegistryExcelUploader
         return $result;
     }
 
+    public function truncate() : void {
+        $query = ("TRUNCATE TABLE `buffer_disp_register`");
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+    }
+
 }

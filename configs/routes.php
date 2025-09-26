@@ -2,7 +2,7 @@
 #ИСТОРИИ БОЛЕЗНИ
 //Заливает в базу данные по случаям стационара
 $this->get('histories/upload', '\Application\ExcelUploader\Controllers\MedicalHistoriesExcelUploadController::upload');
-$this->get('histories/truncate', '\Application\ExcelUploader\Controllers\MedicalHistoriesExcelUploadController::truncate');
+$this->delete('histories/truncate', '\Application\ExcelUploader\Controllers\MedicalHistoriesExcelUploadController::truncate');
 
 #ПОСЕЩЕНИЯ ПОЛИКЛИНИКИ
 $this->get('visits/upload', '\Application\ExcelUploader\Controllers\VisitsExcelUploadController::upload');
@@ -32,7 +32,7 @@ $this->get('buffer/stom/duplicates', '\Application\Registry\Controllers\STOMRegi
 //Загрузка реестров
 $this->get('buffer/disp/upload', '\Application\ExcelUploader\Controllers\BufferDISPRegistryExcelUploaderController::upload');
 //Очистка буфера
-$this->get('buffer/disp/truncate', '\Application\ExcelUploader\Controllers\BufferDISPRegistryExcelUploaderController::truncate');
+$this->delete('buffer/disp/truncate', '\Application\ExcelUploader\Controllers\BufferDISPRegistryExcelUploaderController::truncate');
 //Пересечения
 $this->get('buffer/disp/intersections', '\Application\IntersectionsFinder\Controllers\BufferDISPRegistryIntersectionsFinderController::find');
 

@@ -23,4 +23,9 @@ class BufferDISPRegistryExcelUploaderController
         return new JsonResponse($result);
     }
 
+    public function truncate(ServerRequestInterface $request) : ResponseInterface{
+        $this->uploader->truncate();
+        return new JsonResponse('Таблица буфер по диспансеризации очищена');
+    }
+
 }

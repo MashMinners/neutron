@@ -21,4 +21,9 @@ class MedicalHistoriesExcelUploadController
         return new JsonResponse($result);
     }
 
+    public function truncate(ServerRequestInterface $request) : ResponseInterface{
+        $this->uploader->truncate();
+        return new JsonResponse('Таблица с историями болезни очищена');
+    }
+
 }

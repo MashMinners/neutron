@@ -37,7 +37,8 @@ class BufferDISPRegistryIntersectionsFinder
     private function findIntersections(){
         $query = ("SELECT register.buffer_disp_register_unique_entry, register.buffer_disp_register_patient, register.buffer_disp_register_treatment_start, 
                           register.buffer_disp_register_treatment_end, register.buffer_disp_register_diagnosis, register.buffer_disp_register_doctor, 
-                          histories.medical_history_date_in, histories.medical_history_date_out, buffer_disp_register_disp_sign, buffer_disp_register_purpose  
+                          histories.medical_history_date_in, histories.medical_history_date_out, buffer_disp_register_disp_sign, buffer_disp_register_purpose,
+                          medical_history_insurance_policy, medical_history_hospital_department
                    FROM medical_histories AS histories
                    INNER JOIN buffer_disp_register as register ON histories.medical_history_insurance_policy = register.buffer_disp_register_patient_insurance_policy");
         $stmt = $this->pdo->prepare($query);

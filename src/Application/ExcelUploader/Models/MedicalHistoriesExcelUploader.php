@@ -109,4 +109,10 @@ class MedicalHistoriesExcelUploader
         return $result;
     }
 
+    public function truncate() : void {
+        $query = ("TRUNCATE TABLE `medical_histories`");
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+    }
+
 }
