@@ -36,4 +36,9 @@ $this->delete('buffer/disp/truncate', '\Application\ExcelUploader\Controllers\Bu
 //Пересечения
 $this->get('buffer/disp/intersections', '\Application\IntersectionsFinder\Controllers\BufferDISPRegistryIntersectionsFinderController::find');
 
+#РАБОТА С БУФЕРНОЙ ТАБЛИЦЕЙ ПО ЛИСТКАМ НЕТРУДОСПОСОБНОСТИ
+$this->get('ln/upload', '\Application\ExcelUploader\Controllers\SickNoteExcelUploaderController::upload');
+$this->get('ln/truncate', '\Application\ExcelUploader\Controllers\SickNoteExcelUploaderController::truncate');
+$this->get('ln/intersections', '\Application\IntersectionsFinder\Controllers\SickNoteIntersectionsFinderController::find');
+
 
