@@ -24,7 +24,18 @@ class SickNoteExcelUploader
         foreach ($cases as $case){
             $case[9] = strtotime($case[9]);
             $case[10] = strtotime($case[10]);
-            $case[11] = strtotime($case[11]);
+            if($case[11] === null){
+                $case[11] = 0;
+            }
+            else {
+                $case[11] = strtotime($case[11]);
+            }
+            if($case[12] === null){
+                $case[12] = 0;
+            }
+            else {
+                $case[12] = strtotime($case[12]);
+            }
             $formattedCases[$case[0]] = $case;
         }
         return $formattedCases;
@@ -91,12 +102,12 @@ class SickNoteExcelUploader
             $result['deleted'] = 'Удалено записей '.count($duplicates);
         }
         //пишем SQL запрос, в зависимости от типа реестра
-        $query = ("INSERT INTO sick_notes (sick_note_unique_id, sick_note_type, sick_note_patient, issuing_doctor,
-                        closed_doctor, sick_note_open_opent_date, sick_note_finish_date, sick_note_closed_date, sick_note_get_to_work)
+        $query = ("INSERT INTO sick_notes (sick_note_unique_id,  sick_note_patient, issuing_doctor, closed_doctor, 
+                        sick_note_open_opent_date, sick_note_finish_date, sick_note_closed_date, sick_note_get_to_work)
                         
                    VALUES");
         foreach ($excelData AS $row) {
-            $query .= (" ('$row[0]', '$row[1]', '$row[3]', $row[5],  '$row[7]', '$row[9]', '$row[10]', '$row[11]', '$row[12]'),");
+            $query .= (" ('$row[0]', '$row[3]', '$row[5]',  '$row[7]', '$row[9]', '$row[10]', '$row[11]', '$row[12]'),");
         };
         //Вставляем данные в БД
         $query = substr($query,0,-1);
