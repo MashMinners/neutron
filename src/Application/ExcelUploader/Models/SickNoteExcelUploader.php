@@ -13,28 +13,22 @@ class SickNoteExcelUploader
 
     private function validateExcelSchema(array $excelTableHeader) : bool {
         $workSchema = [
-            'Номер листка', 'Тип', 'Дубл.', 'Пациент', 'Листок выдан', 'Выдавший врач', 'Должность выдавшего врача',
-            'Закрывший врач', 'Должность закрывшего врача', 'С какого числа', 'По какое число', 'Дата закрытия',
-            'Приступить к работе', 'Выдан в нашей МО', 'Тип ЛН', 'Статус ЭЛН в СФР', 'Статус подписи'
+            'Номер', 'Тип', 'Пациент', 'Дата рождения пациента', 'Выдавший врач', 'Закрывший врач', 'С', 'По',
+            'Дата закрытия', 'Заключительный диагноз', 'Количество дней', 'Закрыт'
         ];
         return array_diff($excelTableHeader, $workSchema) === [] ? true : false;
     }
 
     private function formatCases (array $cases) : array{
         foreach ($cases as $case){
-            $case[9] = strtotime($case[9]);
-            $case[10] = strtotime($case[10]);
-            if($case[11] === null){
-                $case[11] = 0;
+            $case[3] = strtotime($case[3]);
+            $case[6] = strtotime($case[6]);
+            $case[7] = strtotime($case[7]);
+            if($case[8] === null){
+                $case[8] = 0;
             }
             else {
-                $case[11] = strtotime($case[11]);
-            }
-            if($case[12] === null){
-                $case[12] = 0;
-            }
-            else {
-                $case[12] = strtotime($case[12]);
+                $case[8] = strtotime($case[8]);
             }
             $formattedCases[$case[0]] = $case;
         }
@@ -102,12 +96,14 @@ class SickNoteExcelUploader
             $result['deleted'] = 'Удалено записей '.count($duplicates);
         }
         //пишем SQL запрос, в зависимости от типа реестра
-        $query = ("INSERT INTO sick_notes (sick_note_unique_id,  sick_note_patient, issuing_doctor, closed_doctor, 
-                        sick_note_open_opent_date, sick_note_finish_date, sick_note_closed_date, sick_note_get_to_work)
+        $query = ("INSERT INTO sick_notes (sick_note_unique_id, sick_note_type, sick_note_patient, sick_note_patient_date_birth,
+                        sick_note_issuing_doctor, sick_note_closed_doctor, sick_note_open_date, sick_note_finish_date, 
+                        sick_note_closed_date, sick_note_diagnosis, sick_note_days_count, sick_note_is_closed)
                         
                    VALUES");
         foreach ($excelData AS $row) {
-            $query .= (" ('$row[0]', '$row[3]', '$row[5]',  '$row[7]', '$row[9]', '$row[10]', '$row[11]', '$row[12]'),");
+            $query .= (" ('$row[0]', '$row[1]', '$row[2]', $row[3], '$row[4]', '$row[5]', $row[6], $row[7], $row[8], 
+            '$row[9]', '$row[10]', '$row[11]'),");
         };
         //Вставляем данные в БД
         $query = substr($query,0,-1);
