@@ -88,9 +88,9 @@ class VisitsExcelUploader
             $result['deleted'] = 'Удалено записей '.count($duplicates);
         }
         //пишем SQL запрос, в зависимости от типа реестра
-        $query = ("INSERT INTO stom_visits (stom_visits_unique_id, stom_visits_doctor, stom_visits_patient, 
-                               stom_visits_patient_date_birth, stom_visits_service_status, stom_visits_patient_insurance_policy, 
-                               stom_visits_date_of_visit) 
+        $query = ("INSERT INTO visits (visits_unique_id, visits_doctor, visits_patient, 
+                               visits_patient_date_birth, visits_service_status, visits_patient_insurance_policy, 
+                               visits_date_of_visit) 
                    VALUES");
         foreach ($excelData AS $row) {
             $query .= (" ('$row[0]', '$row[1]', '$row[2]', $row[3],  '$row[4]', '$row[5]', '$row[6]'),");

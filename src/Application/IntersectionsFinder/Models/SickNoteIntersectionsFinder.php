@@ -133,9 +133,9 @@ class SickNoteIntersectionsFinder
     private function findAmbulatoryIntersections(){
         $query = ("SELECT sick_note_unique_id, sick_note_type, sick_note_patient, sick_note_patient_date_birth, 
                           sick_note_issuing_doctor, sick_note_closed_doctor, sick_note_open_date, sick_note_closed_date, sick_note_days_count, 
-                          sick_note_is_closed, stom_visits_date_of_visit, stom_visits_doctor
+                          sick_note_is_closed, visits_date_of_visit, visits_doctor
                    FROM sick_notes
-                   INNER JOIN stom_visits ON stom_visits_patient = sick_note_patient");
+                   INNER JOIN visits ON visits_patient = sick_note_patient");
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
         $result = $stmt->fetchAll();

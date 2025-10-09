@@ -24,12 +24,12 @@ class BufferSTOMRegistryIntersectionsFinder
     }
 
     private function findIntersections(){
-        $query = ("SELECT visits.stom_visits_patient, visits.stom_visits_patient_insurance_policy, register.buffer_stom_register_treatment_start, 
+        $query = ("SELECT visits_patient, visits_patient_insurance_policy, register.buffer_stom_register_treatment_start, 
                           register.buffer_stom_register_treatment_end, register.buffer_stom_register_diagnosis, register.buffer_stom_register_doctor,
-                          register.buffer_stom_register_purpose, Max(visits.stom_visits_date_of_visit) AS visit_date
-                   FROM stom_visits AS visits
-                   INNER JOIN buffer_stom_register AS register ON visits.stom_visits_patient_insurance_policy = register.buffer_stom_register_patient_insurance_policy
-                   GROUP BY visits.stom_visits_patient, visits.stom_visits_patient_insurance_policy, register.buffer_stom_register_treatment_start, 
+                          register.buffer_stom_register_purpose, Max(visits_date_of_visit) AS visit_date
+                   FROM visits
+                   INNER JOIN buffer_stom_register AS register ON visits_patient_insurance_policy = register.buffer_stom_register_patient_insurance_policy
+                   GROUP BY visits_patient, visits_patient_insurance_policy, register.buffer_stom_register_treatment_start, 
                             register.buffer_stom_register_treatment_end, register.buffer_stom_register_diagnosis, register.buffer_stom_register_doctor,
                             register.buffer_stom_register_purpose");
         $stmt = $this->pdo->prepare($query);
