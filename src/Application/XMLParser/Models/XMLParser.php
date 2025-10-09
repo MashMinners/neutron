@@ -27,7 +27,18 @@ class XMLParser
         $PM = simplexml_load_file('storage/PM.xml');
         //Персональные данные пациента и ID_PAC
         $LM = simplexml_load_file('storage/LM.xml');
-        $result = $this->zubFilter($PM);
+        //$result = $this->zubFilter($PM);
+        $IDs = [];
+        foreach ($LM->PERS AS $pers){
+            $id = (string)$pers->ID_PAC;
+            $all['PERS'][$id] = $pers;
+            $PERSON[] = $pers;
+            $IDs[] = $id;
+        }
+        foreach ($PERSON AS $single){
+            $single[] = 2;
+        }
+
         return true;
     }
 
