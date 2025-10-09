@@ -43,7 +43,7 @@ class SickNoteIntersectionsFinder
             else{
                 $intersection['sick_note_closed_date'] = date('d.m.Y', $intersection['sick_note_closed_date']);
             }
-            $intersection['stom_visits_date_of_visit'] = date('d.m.Y', $intersection['stom_visits_date_of_visit']);
+            $intersection['visits_date_of_visit'] = date('d.m.Y', $intersection['visits_date_of_visit']);
             $result[] = $intersection;
         }
         return $result;
