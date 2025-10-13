@@ -77,12 +77,16 @@ class XMLParser
             if (count($sl['STOM']) === count($sl['USL'])){
                 foreach ($sl['STOM'] as $key => $value){
                     $sl['STOM'][$key]['IDSERV'] = $sl['USL'][$key]['IDSERV'];
+                    $sl['STOM'][$key]['SL_ID'] = $sl['SL_ID'];
+                    $sl['STOM'][$key]['ZUB'] = $sl['STOM'][$key]['ZUB'] ?? null;
                 }
             }
             //В противном случае алогоритм будет таким, что во все уеты будет проставлятся код одной единственной услуги
             else{
                 foreach ($sl['STOM'] as $key => $value){
                     $sl['STOM'][$key]['IDSERV'] = $sl['USL'][0]['IDSERV'];
+                    $sl['STOM'][$key]['SL_ID'] = $sl['SL_ID'];
+                    $sl['STOM'][$key]['ZUB'] = $sl['STOM'][$key]['ZUB'] ?? null;
                 }
             }
             unset($sl['USL']);
@@ -123,18 +127,27 @@ class XMLParser
         $pers = $this->simpleXmlToArray($LM)['PERS'];
         return $pers;
     }
-    public function parse(){
+    private function formatLM(array $LM){
+        foreach ($LM as $case){
+            $case['DR'] = strtotime($case['DR']);
+            //$formattedCases[$case[0]] = $case;
+            $formattedCases[] = $case;
+        }
+        return $formattedCases;
+    }
+    public function parse() : array{
         $HM = simplexml_load_file('storage/HM.xml');
         //
         $PM = simplexml_load_file('storage/PM.xml');
         //Персональные данные пациента и ID_PAC
         $LM = simplexml_load_file('storage/LM.xml');
-        $pmSL = $this->parsePM($PM);
-        $hmZAP = $this->parseHM($HM);
-        $lmPERS = $this->parseLM($LM);
+        $LM = $this->parseLM($LM);
+        $result['PM'] = $this->parsePM($PM);
+        $result['HM'] = $this->parseHM($HM);
+        $result['LM']= $this->formatLM($LM);
 
 
-        return true;
+        return $result;
     }
 
 }

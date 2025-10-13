@@ -43,3 +43,4 @@ $this->get('ln/intersections', '\Application\IntersectionsFinder\Controllers\Sic
 
 #РАБОТА С ПАРСЕРОМ XML
 $this->get('xml/parse', '\Application\XMLParser\Controllers\XMLParserController::parse');
+$this->get('xml/stom/upload', '\Application\XMLParser\Controllers\StomXMLUploaderController::upload');
