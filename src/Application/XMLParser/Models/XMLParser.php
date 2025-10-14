@@ -117,6 +117,8 @@ class XMLParser
                     $sl['USL_COUNT'] = count($sl['USL']);
                     foreach ($sl['USL'] AS $usl){
                         $usl['SL_ID'] = $sl['SL_ID'];
+                        $usl['DATE_IN'] = strtotime($usl['DATE_IN']);
+                        $usl['DATE_OUT'] = strtotime($usl['DATE_OUT']);
                         array_shift( $sl['USL']);
                         $sl['USL'][] = $usl;
                     }

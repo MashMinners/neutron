@@ -87,7 +87,11 @@ class StomXMLUploader
                                  stom_xml_hm_zsl_sl_c_zab, stom_xml_hm_zsl_sl_prvs, stom_xml_hm_zsl_sl_iddokt, 
                                  stom_xml_hm_zsl_sl_idcase, stom_xml_hm_zsl_sl_usl_count) 
                      VALUES ");
-        $queryUSL = ("");
+        $queryUSL = ("INSERT INTO stom_xml_hm_zsl_sl_usl (stom_xml_hm_zsl_sl_usl_idserv, stom_xml_hm_zsl_sl_usl_podr, 
+                                  stom_xml_hm_zsl_sl_usl_profil, stom_xml_hm_zsl_sl_usl_date_in, stom_xml_hm_zsl_sl_usl_date_out, 
+                                  stom_xml_hm_zsl_sl_usl_ds, stom_xml_hm_zsl_sl_usl_code_usl, 
+                                  stom_xml_hm_zsl_sl_usl_sd_id) 
+                      VALUES ");
         foreach ($hmZap AS $zap){
            $queryZSL .= (" ('{$zap['Z_SL'][0]['IDCASE']}', '{$zap['Z_SL'][0]['USL_OK']}', '{$zap['Z_SL'][0]['VIDPOM']}', 
                              '{$zap['Z_SL'][0]['FOR_POM']}', {$zap['Z_SL'][0]['DATE_Z_1']}, {$zap['Z_SL'][0]['DATE_Z_2']},
@@ -98,27 +102,23 @@ class StomXMLUploader
                             {$sl['DATE_1']}, {$sl['DATE_2']}, '{$sl['DS1']}', '{$sl['C_ZAB']}', '{$sl['PRVS']}', 
                             '{$sl['IDDOKT']}', '{$sl['IDCASE']}', {$sl['USL_COUNT']}),");
                foreach ($sl['USL'] AS $usl){
-                   $queryUSL .= ("('{$usl['IDSERV']}', '{$usl['PODR']}', '{$usl['PROFIL']}', '{$usl['DET']}',
-                                   '{$usl['DATE_IN']}', '{$usl['DATE_OUT']}', '{$usl['DS']}', '{$usl['CODE_USL']}',
-                                   '{$usl['KOL_USL']}', '{$usl['SL_ID']}'),");
+                   $queryUSL .= ("('{$usl['IDSERV']}', '{$usl['PODR']}', '{$usl['PROFIL']}', {$usl['DATE_IN']}, 
+                   {$usl['DATE_OUT']}, '{$usl['DS']}', '{$usl['CODE_USL']}', '{$usl['SL_ID']}'),");
                }
-
         }
         $queryZSL = substr($queryZSL,0,-1);
         $querySL = substr($querySL,0,-1);
         $queryUSL = substr($queryUSL,0,-1);
-        //$stmt = $this->pdo->prepare($queryPacient);
-        //$stmt->execute();
-        //$stmt = $this->pdo->prepare($queryZSL);
-        //$stmt->execute();
+        $stmt = $this->pdo->prepare($queryPacient);
+        $stmt->execute();
+        $stmt = $this->pdo->prepare($queryZSL);
+        $stmt->execute();
         $stmt = $this->pdo->prepare($querySL);
         $stmt->execute();
-        //$stmt = $this->pdo->prepare($queryUSL);
-        //$stmt->execute();
+        $stmt = $this->pdo->prepare($queryUSL);
+        $stmt->execute();
         return true;
     }
-
-
 
     public function upload(array $registry){
         $result = [];
