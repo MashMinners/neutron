@@ -51,7 +51,13 @@ class StomXMLUploader
         $stmt->execute();
     }
 
-    private function hmUpload(array $hmZap){
+    /**
+     * Метод подготавливает запос на обновление номеров полиса в таблицу stom_xml_lm, так как изначально полисов для
+     * этих пациентов нет в файл LM.xml
+     * @param array $hmZap
+     * @return string
+     */
+    private function makeHmPacientQuery(array $hmZap) : string{
         $setStatements = '';
         $ids = [];
         foreach ($hmZap AS $zap) {
@@ -60,12 +66,55 @@ class StomXMLUploader
         }
         $idsString = implode(',', $ids);
         $queryPacient = ("UPDATE stom_xml_lm SET stom_xml_lm_enp = CASE $setStatements END WHERE stom_xml_lm__id_pac IN ($idsString)");
+        return $queryPacient;
+    }
 
-        $queryZSL = ("");
-        $querySL = ("");
+    private function makeZSLQuery(array $hmZap): string {
+
+    }
+
+    private function hmUpload(array $hmZap){
+
+        $queryPacient = $this->makeHmPacientQuery($hmZap);
+        $queryZSL = ("INSERT INTO stom_xml_hm_zsl(stom_xml_hm_zsl_idcase, stom_xml_hm_zsl_usl_ok, stom_xml_hm_zsl_vidpom, 
+                                  stom_xml_hm_zsl_for_pom, stom_xml_hm_zsl_date_z_1, stom_xml_hm_zsl_date_z_2, 
+                                  stom_xml_hm_zsl_rslt, stom_xml_hm_zsl_ishod, stom_xml_hm_zsl_idsp, stom_xml_hm_zsl_oplata, 
+                                  stom_xml_hm_zsl_id_pac) 
+                      VALUES ");
+        $querySL = ("INSERT INTO stom_xml_hm_zsl_sl (stom_xml_hm_zsl_sl_sl_id, stom_xml_hm_zsl_sl_profil,
+                                 stom_xml_hm_zsl_sl_det, stom_xml_hm_zsl_sl_p_cel, stom_xml_hm_zsl_sl_nhistory, 
+                                 stom_xml_hm_zsl_sl_date_1, stom_xml_hm_zsl_sl_date_2, stom_xml_hm_zsl_sl_ds1, 
+                                 stom_xml_hm_zsl_sl_c_zab, stom_xml_hm_zsl_sl_prvs, stom_xml_hm_zsl_sl_iddokt, 
+                                 stom_xml_hm_zsl_sl_idcase, stom_xml_hm_zsl_sl_usl_count) 
+                     VALUES ");
         $queryUSL = ("");
-        $stmt = $this->pdo->prepare($queryPacient);
+        foreach ($hmZap AS $zap){
+           $queryZSL .= (" ('{$zap['Z_SL'][0]['IDCASE']}', '{$zap['Z_SL'][0]['USL_OK']}', '{$zap['Z_SL'][0]['VIDPOM']}', 
+                             '{$zap['Z_SL'][0]['FOR_POM']}', {$zap['Z_SL'][0]['DATE_Z_1']}, {$zap['Z_SL'][0]['DATE_Z_2']},
+                             '{$zap['Z_SL'][0]['RSLT']}', '{$zap['Z_SL'][0]['ISHOD']}', '{$zap['Z_SL'][0]['IDSP']}',
+                             '{$zap['Z_SL'][0]['OPLATA']}', '{$zap['Z_SL'][0]['ID_PAC']}'),");
+           $sl = $zap['Z_SL'][0]['SL'];
+           $querySL .= (" ('{$sl['SL_ID']}', '{$sl['PROFIL']}', '{$sl['DET']}', '{$sl['P_CEL']}', '{$sl['NHISTORY']}',
+                            {$sl['DATE_1']}, {$sl['DATE_2']}, '{$sl['DS1']}', '{$sl['C_ZAB']}', '{$sl['PRVS']}', 
+                            '{$sl['IDDOKT']}', '{$sl['IDCASE']}', {$sl['USL_COUNT']}),");
+               foreach ($sl['USL'] AS $usl){
+                   $queryUSL .= ("('{$usl['IDSERV']}', '{$usl['PODR']}', '{$usl['PROFIL']}', '{$usl['DET']}',
+                                   '{$usl['DATE_IN']}', '{$usl['DATE_OUT']}', '{$usl['DS']}', '{$usl['CODE_USL']}',
+                                   '{$usl['KOL_USL']}', '{$usl['SL_ID']}'),");
+               }
+
+        }
+        $queryZSL = substr($queryZSL,0,-1);
+        $querySL = substr($querySL,0,-1);
+        $queryUSL = substr($queryUSL,0,-1);
+        //$stmt = $this->pdo->prepare($queryPacient);
+        //$stmt->execute();
+        //$stmt = $this->pdo->prepare($queryZSL);
+        //$stmt->execute();
+        $stmt = $this->pdo->prepare($querySL);
         $stmt->execute();
+        //$stmt = $this->pdo->prepare($queryUSL);
+        //$stmt->execute();
         return true;
     }
 

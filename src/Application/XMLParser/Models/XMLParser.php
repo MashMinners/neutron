@@ -107,8 +107,14 @@ class XMLParser
                 $z_sl['SMO'] = $zap['PACIENT'][0]['SMO'];
                 $z_sl['NOVOR'] = $zap['PACIENT'][0]['NOVOR'];
                 $z_sl['SOC'] = $zap['PACIENT'][0]['SOC'];
+                $z_sl['DATE_Z_1'] = strtotime($z_sl['DATE_Z_1']);
+                $z_sl['DATE_Z_2'] = strtotime($z_sl['DATE_Z_2']);
                 foreach ($z_sl['SL'] AS $sl){
                     $sl['IDCASE'] = $z_sl['IDCASE'];
+                    $sl['DATE_1'] = strtotime($sl['DATE_1']);
+                    $sl['DATE_2'] = strtotime($sl['DATE_2']);
+                    $sl['C_ZAB'] = $sl['C_ZAB'] ?? null;
+                    $sl['USL_COUNT'] = count($sl['USL']);
                     foreach ($sl['USL'] AS $usl){
                         $usl['SL_ID'] = $sl['SL_ID'];
                         array_shift( $sl['USL']);
