@@ -78,6 +78,7 @@ class XMLParser
                 foreach ($sl['STOM'] as $key => $value){
                     $sl['STOM'][$key]['IDSERV'] = $sl['USL'][$key]['IDSERV'];
                     $sl['STOM'][$key]['SL_ID'] = $sl['SL_ID'];
+                    $sl['STOM'][$key]['IDCASE'] = $sl['IDCASE'];
                     $sl['STOM'][$key]['ZUB'] = $sl['STOM'][$key]['ZUB'] ?? null;
                 }
             }
@@ -86,6 +87,7 @@ class XMLParser
                 foreach ($sl['STOM'] as $key => $value){
                     $sl['STOM'][$key]['IDSERV'] = $sl['USL'][0]['IDSERV'];
                     $sl['STOM'][$key]['SL_ID'] = $sl['SL_ID'];
+                    $sl['STOM'][$key]['IDCASE'] = $sl['IDCASE'];
                     $sl['STOM'][$key]['ZUB'] = $sl['STOM'][$key]['ZUB'] ?? null;
                 }
             }

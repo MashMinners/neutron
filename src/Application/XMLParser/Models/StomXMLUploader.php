@@ -29,16 +29,16 @@ class StomXMLUploader
         $slQuery = ("INSERT INTO stom_xml_pm_sl (stom_xml_pm_sl_sl_id, stom_xml_pm_sl_idcase, stom_xml_pm_sl_card, 
                                  stom_xml_pm_sl_purp, stom_xml_pm_sl_visit_pol, stom_xml_pm_sl_visit_hom) 
                      VALUES ");
-        $stomQuery = ("INSERT INTO stom_xml_pm_sl_stom (stom_xml_pm_sl_stom_sl_id, stom_xml_pm_sl_stom_idstom, 
-                                   stom_xml_pm_sl_stom_code_usl, stom_xml_pm_sl_stom_zub, stom_xml_pm_sl_stom_kol_viz, 
-                                   stom_xml_pm_sl_stom_uet_fakt) 
+        $stomQuery = ("INSERT INTO stom_xml_pm_sl_stom (stom_xml_pm_sl_stom_sl_id, stom_xml_pm_sl_stom_sl_idcase, 
+                                   stom_xml_pm_sl_stom_idstom, stom_xml_pm_sl_stom_code_usl, stom_xml_pm_sl_stom_zub, 
+                                   stom_xml_pm_sl_stom_kol_viz, stom_xml_pm_sl_stom_uet_fakt) 
                        VALUES ");
         foreach ($pmSL AS $row){
             $slQuery .= (" ('{$row['SL_ID']}', '{$row['IDCASE']}', '{$row['CARD']}', '{$row['PURP']}', 
                             '{$row['VISIT_POL']}', '{$row['VISIT_HOM']}'),");
             foreach ($row['STOM'] AS $stom){
-                $stomQuery .= (" ('{$stom['SL_ID']}', '{$stom['IDSTOM']}', '{$stom['CODE_USL']}', '{$stom['ZUB']}', 
-                                  '{$stom['KOL_VIZ']}', '{$stom['UET_FAKT']}'),");
+                $stomQuery .= (" ('{$stom['SL_ID']}', '{$stom['IDCASE']}', '{$stom['IDSTOM']}', '{$stom['CODE_USL']}', 
+                                  '{$stom['ZUB']}', '{$stom['KOL_VIZ']}', '{$stom['UET_FAKT']}'),");
             }
         }
         //Заливка в БД случаев
@@ -90,7 +90,7 @@ class StomXMLUploader
         $queryUSL = ("INSERT INTO stom_xml_hm_zsl_sl_usl (stom_xml_hm_zsl_sl_usl_idserv, stom_xml_hm_zsl_sl_usl_podr, 
                                   stom_xml_hm_zsl_sl_usl_profil, stom_xml_hm_zsl_sl_usl_date_in, stom_xml_hm_zsl_sl_usl_date_out, 
                                   stom_xml_hm_zsl_sl_usl_ds, stom_xml_hm_zsl_sl_usl_code_usl, 
-                                  stom_xml_hm_zsl_sl_usl_sd_id) 
+                                  stom_xml_hm_zsl_sl_usl_sl_id) 
                       VALUES ");
         foreach ($hmZap AS $zap){
            $queryZSL .= (" ('{$zap['Z_SL'][0]['IDCASE']}', '{$zap['Z_SL'][0]['USL_OK']}', '{$zap['Z_SL'][0]['VIDPOM']}', 
@@ -125,7 +125,7 @@ class StomXMLUploader
         /*if($this->lmUpload($registry['LM'])){
             $result['lmMessage'] = 'LM залит';
         }*/
-        //$this->pmUpload($registry['PM']);
+        $this->pmUpload($registry['PM']);
         $this->hmUpload($registry['HM']);
         return $result;
     }
