@@ -46,3 +46,4 @@ $this->get('xml/parse', '\Application\XMLParser\Controllers\XMLParserController:
 $this->get('xml/stom/upload', '\Application\XMLParser\Controllers\StomXMLUploaderController::upload');
 #РАБОТА С АНАЛИЗАТОРОМ ДАННЫХ РЕЕСТРОВ СЧЕТОВ
 $this->get('invoice/analyzer/incorrect-purpose', '\Application\InvoiceRegisterAnalyzer\Controllers\StomRegisterAnalyzerController::findIncorrectPurpose');
+$this->get('invoice/analyzer/incorrect-zub', '\Application\InvoiceRegisterAnalyzer\Controllers\StomRegisterAnalyzerController::findIncorrectZub');
