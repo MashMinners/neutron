@@ -23,4 +23,14 @@ class StomRegisterAnalyzerController
         return new JsonResponse($result);
     }
 
+    public function findRequiredZubCode(ServerRequestInterface $request) : ResponseInterface{
+        $result = $this->analyzer->findRequiredZubCode();
+        return new JsonResponse($result);
+    }
+
+    public function findSimultaneousZubInclusion(ServerRequestInterface $request) : ResponseInterface{
+        $result = $this->analyzer->findSimultaneousZubInclusion();
+        return new JsonResponse($result);
+    }
+
 }

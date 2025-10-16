@@ -16,6 +16,13 @@ class StomRegisterAnalyzer
         '19K14.6', '19L43.3', '19M12.8', '19S00.5', '19S00.7', '19S01.4', '19S01.5', '19S02.6', '19Z01.2', '19Z01.21',
         '19Z01.22', '19Z01.23'
     ];
+
+    private $_withCode = [
+        '19K02.1', '19K02.2', '19K04.01', '19K04.02', '19K04.03', '19K04.0', '19K04.04', '19K04.05', '19K04.06',
+        '19K04.4', '19K04.41', '19K04.42', '19K04.43', '19K04.44', '19K04.45', '19K04.46', '19K04.5', '19K04.51',
+        '19K04.52', '19K04.53', '19K04.54', '19K04.55', '19K04.56', '19K04.8', '19K05.2', '19K05.31', '19K05.32',
+        '19K05.41', '19K06.8', '19K08.3'
+    ];
     public function findIncorrectPurpose(){
         /**
          * Задача выбрать те записи где больше одной услуги но цель стоит 1.0, а так же те услуги,
@@ -59,6 +66,59 @@ class StomRegisterAnalyzer
         }
         return $withoutCodes;
 
+    }
+
+        public function findRequiredZubCode(){
+        $query = ("SELECT * FROM stom_xml_pm_sl_stom
+                   INNER JOIN stom_xml_hm_zsl ON stom_xml_hm_zsl_idcase = stom_xml_pm_sl_stom_sl_idcase
+                   INNER JOIN stom_xml_lm ON stom_xml_lm__id_pac = stom_xml_hm_zsl_id_pac
+                    ");
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        $withCodes = [];
+        foreach ($result AS $single){
+            if ($single['stom_xml_pm_sl_stom_zub'] === ''){
+                if (in_array($single['stom_xml_pm_sl_stom_code_usl'], $this->_withCode)){
+                    $withCodes[] = $single;
+                }
+            }
+        }
+        return $withCodes;
+    }
+
+    public function findSimultaneousZubInclusion(){
+        /*$query = ("SELECT * FROM stom_xml_pm_sl_stom
+                   INNER JOIN stom_xml_hm_zsl ON stom_xml_hm_zsl_idcase = stom_xml_pm_sl_stom_sl_idcase
+                   INNER JOIN stom_xml_lm ON stom_xml_lm__id_pac = stom_xml_hm_zsl_id_pac   
+                   WHERE stom_xml_pm_sl_stom_idstom > 1");*/
+        $query = ("SELECT stom_xml_pm_sl_stom_sl_id FROM stom_xml_pm_sl_stom
+                   
+                   WHERE stom_xml_pm_sl_stom_idstom > 1");
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        $IDs = [];
+        foreach ($result AS $single){
+            $IDs[] = "'".$single['stom_xml_pm_sl_stom_sl_id']."'";
+        }
+        $IDs = implode(', ', $IDs);
+        $query = ("SELECT * FROM stom_xml_pm_sl_stom WHERE stom_xml_pm_sl_stom_sl_id IN ($IDs)");
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        $slIDBuffer = [];
+        $newResult = [];
+        foreach ($result AS $single){
+
+            if (in_array($single['stom_xml_pm_sl_stom_sl_id'], $slIDBuffer)){
+                $newResult[$single['stom_xml_pm_sl_stom_sl_id']][] = $single;
+            }else{
+                $newResult[$single['stom_xml_pm_sl_stom_sl_id']][] = $single;
+                $slIDBuffer[] = $single['stom_xml_pm_sl_stom_sl_id'];
+            }
+        }
+        return $newResult;
     }
 
 }

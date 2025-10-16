@@ -47,3 +47,5 @@ $this->get('xml/stom/upload', '\Application\XMLParser\Controllers\StomXMLUploade
 #РАБОТА С АНАЛИЗАТОРОМ ДАННЫХ РЕЕСТРОВ СЧЕТОВ
 $this->get('invoice/analyzer/incorrect-purpose', '\Application\InvoiceRegisterAnalyzer\Controllers\StomRegisterAnalyzerController::findIncorrectPurpose');
 $this->get('invoice/analyzer/incorrect-zub', '\Application\InvoiceRegisterAnalyzer\Controllers\StomRegisterAnalyzerController::findIncorrectZub');
+$this->get('invoice/analyzer/incorrect-required-zub', '\Application\InvoiceRegisterAnalyzer\Controllers\StomRegisterAnalyzerController::findRequiredZubCode');
+$this->get('invoice/analyzer/simultaneous-zub-inclusion', '\Application\InvoiceRegisterAnalyzer\Controllers\StomRegisterAnalyzerController::findSimultaneousZubInclusion');
