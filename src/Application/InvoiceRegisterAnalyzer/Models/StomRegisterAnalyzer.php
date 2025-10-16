@@ -97,27 +97,30 @@ class StomRegisterAnalyzer
                    WHERE stom_xml_pm_sl_stom_idstom > 1");
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
-        $result = $stmt->fetchAll();
-        $IDs = [];
-        foreach ($result AS $single){
-            $IDs[] = "'".$single['stom_xml_pm_sl_stom_sl_id']."'";
+        while ($result = $stmt->fetch()){
+            $IDs[] = "'".$result['stom_xml_pm_sl_stom_sl_id']."'";
         }
         $IDs = implode(', ', $IDs);
         $query = ("SELECT * FROM stom_xml_pm_sl_stom WHERE stom_xml_pm_sl_stom_sl_id IN ($IDs)");
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
+        $newResult = [];
+        while ($result = $stmt->fetch()){
+            $newResult[$result['stom_xml_pm_sl_stom_sl_id']][$result['stom_xml_pm_sl_stom_idstom']]['stom_xml_pm_sl_stom_code_usl'] = $result['stom_xml_pm_sl_stom_code_usl'];
+            $newResult[$result['stom_xml_pm_sl_stom_sl_id']][$result['stom_xml_pm_sl_stom_idstom']]['stom_xml_pm_sl_stom_zub']  = $result['stom_xml_pm_sl_stom_zub'];
+        }
+        /*$stmt->execute();
         $result = $stmt->fetchAll();
         $slIDBuffer = [];
         $newResult = [];
         foreach ($result AS $single){
-
             if (in_array($single['stom_xml_pm_sl_stom_sl_id'], $slIDBuffer)){
                 $newResult[$single['stom_xml_pm_sl_stom_sl_id']][] = $single;
             }else{
                 $newResult[$single['stom_xml_pm_sl_stom_sl_id']][] = $single;
                 $slIDBuffer[] = $single['stom_xml_pm_sl_stom_sl_id'];
             }
-        }
+        }*/
         return $newResult;
     }
 
