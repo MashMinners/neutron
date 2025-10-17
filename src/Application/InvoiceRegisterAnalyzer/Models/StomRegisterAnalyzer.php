@@ -23,6 +23,13 @@ class StomRegisterAnalyzer
         '19K04.52', '19K04.53', '19K04.54', '19K04.55', '19K04.56', '19K04.8', '19K05.2', '19K05.31', '19K05.32',
         '19K05.41', '19K06.8', '19K08.3'
     ];
+
+    private $_simultaneousCode = [
+        '19K02.1', '19K02.2', '19K04.01', '19K04.02', '19K04.03', '19K04.04', '19K04.05', '19K04.06', '19K04.4',
+        '19K04.41', '19K04.42', '19K04.43', '19K04.44', '19K04.45', '19K04.46', '19K04.5', '19K04.51', '19K04.52',
+        '19K04.53', '19K04.54', '19K04.55', '19K04.56', '19K04.8', '19K05.31', '19K05.41', '19K10.2', '19K10.3'
+    ];
+
     public function findIncorrectPurpose(){
         /**
          * Задача выбрать те записи где больше одной услуги но цель стоит 1.0, а так же те услуги,
@@ -109,6 +116,18 @@ class StomRegisterAnalyzer
             $newResult[$result['stom_xml_pm_sl_stom_sl_id']][$result['stom_xml_pm_sl_stom_idstom']]['stom_xml_pm_sl_stom_code_usl'] = $result['stom_xml_pm_sl_stom_code_usl'];
             $newResult[$result['stom_xml_pm_sl_stom_sl_id']][$result['stom_xml_pm_sl_stom_idstom']]['stom_xml_pm_sl_stom_zub']  = $result['stom_xml_pm_sl_stom_zub'];
         }
+        //Проработать этот момент. Нужно найти одновременное включение в случай лечения одного зуба УЕТОВ из
+        //$_simultaneousCode
+        $simultaneous = [];
+        foreach ($newResult AS $id => $single){
+            $stomID = [];
+            foreach ($single as $key => $value) {
+                if (in_array($value['stom_xml_pm_sl_stom_code_usl'], $this->_simultaneousCode) AND $value['stom_xml_pm_sl_stom_zub'] !==''){
+                    $stomID['stomID'] = $key;
+                    $stomID['zub'] = $value['stom_xml_pm_sl_stom_zub'];
+                }
+            }
+        }
         /*$stmt->execute();
         $result = $stmt->fetchAll();
         $slIDBuffer = [];
@@ -121,7 +140,8 @@ class StomRegisterAnalyzer
                 $slIDBuffer[] = $single['stom_xml_pm_sl_stom_sl_id'];
             }
         }*/
-        return $newResult;
+        return [$simultaneous, $newResult];
+        //return $newResult;
     }
 
 }
