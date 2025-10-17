@@ -120,13 +120,14 @@ class StomRegisterAnalyzer
         //$_simultaneousCode
         $simultaneous = [];
         foreach ($newResult AS $id => $single){
-            $stomID = [];
+            $buffer = [];
             foreach ($single as $key => $value) {
                 if (in_array($value['stom_xml_pm_sl_stom_code_usl'], $this->_simultaneousCode) AND $value['stom_xml_pm_sl_stom_zub'] !==''){
-                    $stomID['stomID'] = $key;
-                    $stomID['zub'] = $value['stom_xml_pm_sl_stom_zub'];
+                    $buffer['id'] = $key;
+                    $buffer['zub'] = $value['stom_xml_pm_sl_stom_zub'];
                 }
             }
+
         }
         /*$stmt->execute();
         $result = $stmt->fetchAll();
