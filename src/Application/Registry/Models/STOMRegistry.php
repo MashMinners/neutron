@@ -9,14 +9,28 @@ class STOMRegistry
     public function __construct(IConnector $connector){
         $this->pdo = $connector::connect();
     }
-    public function findDuplicates(){
-        //SELECT [1].[Полис], [1].[Номер записи в реестре случаев], [1].[Ф#И#О#], [1].[Дата рождения], [1].[Дата начала лечения], [1].[Дата окончания лечения], [1].[Диагноз основной], [1].[ФИО врача]
-        //FROM 1
-        //WHERE ((([1].[Полис]) In (SELECT [Полис] FROM [1] As Tmp GROUP BY [Полис] HAVING Count(*)>1 )))
-        //ORDER BY [1].[Полис];
+
+    private function dateConvert($tornCases){
+        $result = [];
+        foreach ($tornCases AS $tornCase){
+            $tornCase['buffer_stom_register_treatment_start'] = date('d.m.Y', $tornCase['buffer_stom_register_treatment_start']);
+            $tornCase['buffer_stom_register_treatment_end'] = date('d.m.Y', $tornCase['buffer_stom_register_treatment_end']);
+            $tornCase['buffer_stom_register_patient_date_birth'] = date('d.m.Y',  $tornCase['buffer_stom_register_patient_date_birth']);
+            $result[] = $tornCase;
+        }
+        return $result;
+    }
+
+    /**
+     * По факту жанный метод ищет дубликаты в реестре по полису. На деле это является поиском разорванных случаев
+     * по стоматологии так как повторений быть не должно
+     * @return array|false
+     */
+    public function findTornCases(){
         $query = ("SELECT buffer_stom_register_unique_entry, buffer_stom_register_patient, buffer_stom_register_patient_date_birth, 
                           buffer_stom_register_patient_insurance_policy, buffer_stom_register_treatment_start, buffer_stom_register_treatment_end, 
-                          buffer_stom_register_diagnosis, buffer_stom_register_doctor  
+                          buffer_stom_register_diagnosis, buffer_stom_register_doctor, buffer_stom_register_purpose,
+                          buffer_stom_register_ambulatory_coupon  
                    FROM buffer_stom_register
                    WHERE buffer_stom_register_patient_insurance_policy 
                    IN (SELECT buffer_stom_register_patient_insurance_policy FROM buffer_stom_register AS TMP
@@ -25,6 +39,7 @@ class STOMRegistry
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
         $result = $stmt->fetchAll();
+        $result = $this->dateConvert($result);
         return $result;
     }
 

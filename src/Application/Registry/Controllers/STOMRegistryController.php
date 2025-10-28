@@ -13,8 +13,8 @@ class STOMRegistryController
 
     }
 
-    public function findDuplicates(ServerRequestInterface $request) : ResponseInterface{
-        $result = $this->registry->findDuplicates();
+    public function findTornCases(ServerRequestInterface $request) : ResponseInterface{
+        $result = $this->registry->findTornCases();
         return new JsonResponse($result);
     }
 

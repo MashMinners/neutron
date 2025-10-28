@@ -21,7 +21,7 @@ $this->get('buffer/stom/intersections', '\Application\IntersectionsFinder\Contro
 //Цели посещения 1.0/3.0
 $this->get('buffer/stom/purposes', '\Application\IntersectionsFinder\Controllers\BufferSTOMRegistryIntersectionsFinderController::findIncorrectPurposes');
 //Поиск разорванных случаев, являются дубликатами записей по полису
-$this->get('buffer/stom/duplicates', '\Application\Registry\Controllers\STOMRegistryController::findDuplicates');
+$this->get('buffer/stom/torn-cases', '\Application\Registry\Controllers\STOMRegistryController::findTornCases');
 /**
  * Сначала ищем дубликаты - это разорванные случаи!
  * Потом объединяем их в один случай
