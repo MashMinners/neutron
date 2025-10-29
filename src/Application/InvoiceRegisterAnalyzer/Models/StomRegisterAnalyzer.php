@@ -75,7 +75,7 @@ class StomRegisterAnalyzer
 
     }
 
-        public function findRequiredZubCode(){
+    public function findRequiredZubCode(){
         $query = ("SELECT * FROM stom_xml_pm_sl_stom
                    INNER JOIN stom_xml_hm_zsl ON stom_xml_hm_zsl_idcase = stom_xml_pm_sl_stom_sl_idcase
                    INNER JOIN stom_xml_lm ON stom_xml_lm__id_pac = stom_xml_hm_zsl_id_pac
@@ -100,7 +100,6 @@ class StomRegisterAnalyzer
                    INNER JOIN stom_xml_lm ON stom_xml_lm__id_pac = stom_xml_hm_zsl_id_pac   
                    WHERE stom_xml_pm_sl_stom_idstom > 1");*/
         $query = ("SELECT stom_xml_pm_sl_stom_sl_id FROM stom_xml_pm_sl_stom
-                   
                    WHERE stom_xml_pm_sl_stom_idstom > 1");
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
@@ -120,29 +119,35 @@ class StomRegisterAnalyzer
         //$_simultaneousCode
         $simultaneous = [];
         foreach ($newResult AS $id => $single){
-            $buffer = [];
+            $zub = [];
+            $diagnosis = [];
             foreach ($single as $key => $value) {
                 if (in_array($value['stom_xml_pm_sl_stom_code_usl'], $this->_simultaneousCode) AND $value['stom_xml_pm_sl_stom_zub'] !==''){
-                    $buffer['id'] = $key;
-                    $buffer['zub'] = $value['stom_xml_pm_sl_stom_zub'];
+                    //$buffer[$key]['id'] = $key;
+                    //$buffer[$key]['zub'] = $value['stom_xml_pm_sl_stom_zub'];
+                    $zub[$key] = $value['stom_xml_pm_sl_stom_zub'];
+                    $diagnosis[$key] = $value['stom_xml_pm_sl_stom_code_usl'];
                 }
             }
-
-        }
-        /*$stmt->execute();
-        $result = $stmt->fetchAll();
-        $slIDBuffer = [];
-        $newResult = [];
-        foreach ($result AS $single){
-            if (in_array($single['stom_xml_pm_sl_stom_sl_id'], $slIDBuffer)){
-                $newResult[$single['stom_xml_pm_sl_stom_sl_id']][] = $single;
-            }else{
-                $newResult[$single['stom_xml_pm_sl_stom_sl_id']][] = $single;
-                $slIDBuffer[] = $single['stom_xml_pm_sl_stom_sl_id'];
+            if (count($zub) > count(array_unique($zub))){
+                $simultaneous[] = $id;
             }
-        }*/
-        return [$simultaneous, $newResult];
-        //return $newResult;
+        }
+        $slIDs = '';
+        foreach ($simultaneous as $single){
+            $slIDs .= "'".$single."'".', ';
+        }
+        $slIDs = substr($slIDs,0,-2);
+        $query = ("SELECT * FROM stom_xml_lm
+                   INNER JOIN stom_xml_hm_zsl ON stom_xml_hm_zsl_id_pac = stom_xml_lm__id_pac
+                   INNER JOIN stom_xml_pm_sl_stom ON stom_xml_pm_sl_stom_sl_idcase = stom_xml_hm_zsl_idcase
+                   WHERE stom_xml_pm_sl_stom_sl_id IN ($slIDs)");
+
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        return $result;
+
     }
 
 }
