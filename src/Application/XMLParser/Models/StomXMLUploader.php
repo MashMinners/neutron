@@ -122,9 +122,9 @@ class StomXMLUploader
 
     public function upload(array $registry){
         $result = [];
-        /*if($this->lmUpload($registry['LM'])){
+        if($this->lmUpload($registry['LM'])){
             $result['lmMessage'] = 'LM залит';
-        }*/
+        }
         $this->pmUpload($registry['PM']);
         $this->hmUpload($registry['HM']);
         return $result;
