@@ -57,8 +57,8 @@ class VisitsExcelUploader
 
     private function findEntryDuplicatesInDatabase(string $uniqueIDs){
         $duplicates = [];
-        $query = ("SELECT stom_visits_unique_id FROM stom_visits
-                   WHERE stom_visits.stom_visits_unique_id IN ($uniqueIDs)");
+        $query = ("SELECT visits_unique_id FROM visits
+                   WHERE visits_unique_id IN ($uniqueIDs)");
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
         $result = $stmt->fetchAll();
