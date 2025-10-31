@@ -104,7 +104,7 @@ class VisitsExcelUploader
     }
 
     public function truncate() : void {
-        $query = ("TRUNCATE TABLE `stom_visits`");
+        $query = ("TRUNCATE TABLE `visits`");
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
     }
