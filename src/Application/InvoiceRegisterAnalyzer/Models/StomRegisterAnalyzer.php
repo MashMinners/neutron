@@ -30,6 +30,13 @@ class StomRegisterAnalyzer
         '19K04.53', '19K04.54', '19K04.55', '19K04.56', '19K04.8', '19K05.31', '19K05.41', '19K10.2', '19K10.3'
     ];
 
+    /**
+     * Находит некоректные цели в случаях по стоматологии
+     * 1.0 там где 1 визит
+     * 3.0 там где 2+ визитов.
+     * Если в XML это не так метод вернет случаи как некорректные цели
+     * @return array|false
+     */
     public function findIncorrectPurpose(){
         /**
          * Задача выбрать те записи где больше одной услуги но цель стоит 1.0, а так же те услуги,
@@ -54,6 +61,11 @@ class StomRegisterAnalyzer
         return $result;
     }
 
+    /**
+     * Вернет те случаи, где проставлен зуб для списка диагнозов
+     * Если зуб для этого перечня диагнозов проставлен, то это ошибка, фонд откажет
+     * @return array
+     */
     public function findIncorrectZub(){
         $query = ("SELECT * FROM stom_xml_pm_sl_stom
                    INNER JOIN stom_xml_hm_zsl ON stom_xml_hm_zsl_idcase = stom_xml_pm_sl_stom_sl_idcase
@@ -75,6 +87,11 @@ class StomRegisterAnalyzer
 
     }
 
+    /**
+     * Вернет те случаи, где для списка диагнозов зуб не проставлен.
+     * Это являтся ошибкой, так как для этих диагнозов обязательно указания кода зуба
+     * @return array
+     */
     public function findRequiredZubCode(){
         $query = ("SELECT * FROM stom_xml_pm_sl_stom
                    INNER JOIN stom_xml_hm_zsl ON stom_xml_hm_zsl_idcase = stom_xml_pm_sl_stom_sl_idcase
@@ -94,6 +111,11 @@ class StomRegisterAnalyzer
         return $withCodes;
     }
 
+    /**
+     * Находит случаи где на один зуб! установленны диагнозы из списка
+     * Так быть не должно. На один зуб может быть установлен лишь один диагноз из списка иначе фонд откажет
+     * @return array|false
+     */
     public function findSimultaneousZubInclusion(){
         /*$query = ("SELECT * FROM stom_xml_pm_sl_stom
                    INNER JOIN stom_xml_hm_zsl ON stom_xml_hm_zsl_idcase = stom_xml_pm_sl_stom_sl_idcase
