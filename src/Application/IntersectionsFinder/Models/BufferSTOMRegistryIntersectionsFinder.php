@@ -119,7 +119,8 @@ class BufferSTOMRegistryIntersectionsFinder
     }
 
     private function devideSingleVisit(array $visits){
-        $result = [];
+        $result['correct'] = [];
+        $result['incorrect'] = [];
         foreach ($visits as $visit){
             if ($visit['buffer_stom_register_purpose'] === '1.0'){
                 $result['correct'][] = $visit;
@@ -131,7 +132,8 @@ class BufferSTOMRegistryIntersectionsFinder
     }
 
     private function devideMultiVisits(array $visits){
-        $result = [];
+        $result['correct'] = [];
+        $result['incorrect'] = [];
         foreach ($visits as $visit){
             if ($visit['buffer_stom_register_purpose'] === '3.0'){
                 $result['correct'][] = $visit;
