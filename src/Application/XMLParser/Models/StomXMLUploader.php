@@ -130,4 +130,8 @@ class StomXMLUploader
         return $result;
     }
 
+    public function truncate(){
+        //Написать очистку всех таблиц связаных с XML
+    }
+
 }
