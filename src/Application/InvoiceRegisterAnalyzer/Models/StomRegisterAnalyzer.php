@@ -30,6 +30,15 @@ class StomRegisterAnalyzer
         '19K04.53', '19K04.54', '19K04.55', '19K04.56', '19K04.8', '19K05.31', '19K05.41', '19K10.2', '19K10.3'
     ];
 
+    private function wrapWithSingleQuotes(array $data){
+        $entries = '';
+        foreach ($data as $row){
+            $entries .= "'".$row."'," ;
+        }
+        $entries = substr($entries,0,-1);
+        return $entries;
+    }
+
     /**
      * Находит некоректные цели в случаях по стоматологии
      * 1.0 там где 1 визит
@@ -170,6 +179,58 @@ class StomRegisterAnalyzer
         $result = $stmt->fetchAll();
         return $result;
 
+    }
+
+    /*
+     * Данный метод, будет возвращать те случаи из XML где:
+     * 1) Более одного первичного случая
+     * 2) Нет не единого первичного случая, только поторные
+     */
+    public function findIncorrectUSL(){
+        //Достаем все оказанные услуги
+        $query = ("SELECT * FROM stom_xml_hm_zsl_sl_usl");
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        //Разсоритровываю услуги по типу первичная/повторная - B01.065.003/B01.065.004
+        $sortedArray = [];
+        foreach ($result AS $single){
+            $sortedArray[$single['stom_xml_hm_zsl_sl_usl_sl_id']][$single['stom_xml_hm_zsl_sl_usl_code_usl']][] = $single;
+        }
+        /**
+         * Проверяю количество первичных приемов, если более чем 1 то случай ошибка
+         * Если B01.065.003 вообще нет то это тоже ошибка
+         */
+        $errors = [];
+        foreach ($sortedArray AS $key => $value){
+            if (!array_key_exists('B01.065.003',$value)){
+                $errors['haveNoPrimary'][] = $key;
+            }else{
+                $B01Count = count($value['B01.065.003']);
+                if ($B01Count > 1) {
+                    $errors['twoOrMorePrimary'][] = $key;
+                }
+            }
+        }
+        //Найти ФИО тех пациентов у которых найдены ошибки по 2 и более первичным услугам
+        $slIDs = $this->wrapWithSingleQuotes($errors['twoOrMorePrimary']);
+        $query = ("SELECT * FROM stom_xml_hm_zsl_sl AS SL
+                   INNER JOIN stom_xml_hm_zsl AS ZSL ON stom_xml_hm_zsl_idcase = SL.stom_xml_hm_zsl_sl_idcase
+                   INNER JOIN stom_xml_lm AS LM ON stom_xml_lm__id_pac = ZSL.stom_xml_hm_zsl_id_pac
+                   WHERE stom_xml_hm_zsl_sl_sl_id IN ($slIDs)");
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        //Найти ФИО тех пациентов у которых найдены ошибки по отсуствующей услуге B01.065.003
+        $slIDs = $this->wrapWithSingleQuotes($errors['haveNoPrimary']);
+        $query = ("SELECT * FROM stom_xml_hm_zsl_sl AS SL
+                   INNER JOIN stom_xml_hm_zsl AS ZSL ON stom_xml_hm_zsl_idcase = SL.stom_xml_hm_zsl_sl_idcase
+                   INNER JOIN stom_xml_lm AS LM ON stom_xml_lm__id_pac = ZSL.stom_xml_hm_zsl_id_pac
+                   WHERE stom_xml_hm_zsl_sl_sl_id IN ($slIDs)");
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        return $result;
     }
 
 }

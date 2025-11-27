@@ -33,4 +33,9 @@ class StomRegisterAnalyzerController
         return new JsonResponse($result);
     }
 
+    public function findIncorrectUSL(ServerRequestInterface $request) : ResponseInterface{
+        $result = $this->analyzer->findIncorrectUSL();
+        return new JsonResponse($result);
+    }
+
 }

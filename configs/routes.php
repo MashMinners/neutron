@@ -49,3 +49,4 @@ $this->get('invoice/analyzer/incorrect-purpose', '\Application\InvoiceRegisterAn
 $this->get('invoice/analyzer/incorrect-zub', '\Application\InvoiceRegisterAnalyzer\Controllers\StomRegisterAnalyzerController::findIncorrectZub');
 $this->get('invoice/analyzer/incorrect-required-zub', '\Application\InvoiceRegisterAnalyzer\Controllers\StomRegisterAnalyzerController::findRequiredZubCode');
 $this->get('invoice/analyzer/simultaneous-zub-inclusion', '\Application\InvoiceRegisterAnalyzer\Controllers\StomRegisterAnalyzerController::findSimultaneousZubInclusion');
+$this->get('invoice/analyzer/incorrect-usl', '\Application\InvoiceRegisterAnalyzer\Controllers\StomRegisterAnalyzerController::findIncorrectUsl');
