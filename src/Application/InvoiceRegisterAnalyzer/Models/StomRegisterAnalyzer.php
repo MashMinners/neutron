@@ -201,9 +201,19 @@ class StomRegisterAnalyzer
          */
         $errors = [];
         foreach ($sortedArray AS $key => $value){
-            if (!array_key_exists('B01.065.003',$value)){
-                $errors['haveNoPrimary'][] = $key;
-            }else{
+            //Если в случае отсуствует и B01.065.007 иB01.065.003 это значит, что в случае нет первичной услуги
+            if (!array_key_exists('B01.065.007',$value) AND !array_key_exists('B01.065.003',$value)){
+                    $errors['haveNoPrimary'][] = $key;
+            }
+            //Если в случае присутсвует более двух первичных услуг B01.065.007 -это ошибка
+            elseif(array_key_exists('B01.065.007',$value)){
+                $B01Count = count($value['B01.065.007']);
+                if ($B01Count > 1) {
+                    $errors['twoOrMorePrimary'][] = $key;
+                }
+            }
+            //Если в случае присутсвует более двух первичных услуг B01.065.003 - это ошибка
+            else{
                 $B01Count = count($value['B01.065.003']);
                 if ($B01Count > 1) {
                     $errors['twoOrMorePrimary'][] = $key;
@@ -247,8 +257,18 @@ class StomRegisterAnalyzer
     public function findIncorrectUSL(){
         $sorted = $this->getSortedUsl();
         $errors = $this->getErrorsFromSorted($sorted);
-        $twoOrMore = $this->getTwoOrMorePrimaryError($errors);
-        $haveNoPrimary = $this->getHaveNoPrimary($errors);
+        if (array_key_exists('twoOrMorePrimary', $errors)){
+            $twoOrMore = $this->getTwoOrMorePrimaryError($errors);
+        }
+        else{
+            $twoOrMore = [];
+        }
+        if (array_key_exists('haveNoPrimary', $errors)){
+            $haveNoPrimary = $this->getHaveNoPrimary($errors);
+        }
+        else {
+            $haveNoPrimary  = [];
+        }
         return ['TwoOrMore' => $twoOrMore, 'HaveNoPrimary' => $haveNoPrimary];
     }
 
