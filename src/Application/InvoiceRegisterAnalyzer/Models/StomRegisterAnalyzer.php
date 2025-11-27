@@ -178,15 +178,9 @@ class StomRegisterAnalyzer
         $stmt->execute();
         $result = $stmt->fetchAll();
         return $result;
-
     }
 
-    /*
-     * Данный метод, будет возвращать те случаи из XML где:
-     * 1) Более одного первичного случая
-     * 2) Нет не единого первичного случая, только поторные
-     */
-    public function findIncorrectUSL(){
+    private function getSortedUsl() : array {
         //Достаем все оказанные услуги
         $query = ("SELECT * FROM stom_xml_hm_zsl_sl_usl");
         $stmt = $this->pdo->prepare($query);
@@ -197,6 +191,10 @@ class StomRegisterAnalyzer
         foreach ($result AS $single){
             $sortedArray[$single['stom_xml_hm_zsl_sl_usl_sl_id']][$single['stom_xml_hm_zsl_sl_usl_code_usl']][] = $single;
         }
+        return $sortedArray;
+    }
+
+    private function getErrorsFromSorted(array $sortedArray) : array{
         /**
          * Проверяю количество первичных приемов, если более чем 1 то случай ошибка
          * Если B01.065.003 вообще нет то это тоже ошибка
@@ -212,6 +210,10 @@ class StomRegisterAnalyzer
                 }
             }
         }
+        return $errors;
+    }
+
+    private function getTwoOrMorePrimaryError(array $errors) : array{
         //Найти ФИО тех пациентов у которых найдены ошибки по 2 и более первичным услугам
         $slIDs = $this->wrapWithSingleQuotes($errors['twoOrMorePrimary']);
         $query = ("SELECT * FROM stom_xml_hm_zsl_sl AS SL
@@ -221,6 +223,10 @@ class StomRegisterAnalyzer
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
         $result = $stmt->fetchAll();
+        return $result;
+    }
+
+    private function getHaveNoPrimary(array $errors) : array {
         //Найти ФИО тех пациентов у которых найдены ошибки по отсуствующей услуге B01.065.003
         $slIDs = $this->wrapWithSingleQuotes($errors['haveNoPrimary']);
         $query = ("SELECT * FROM stom_xml_hm_zsl_sl AS SL
@@ -231,6 +237,19 @@ class StomRegisterAnalyzer
         $stmt->execute();
         $result = $stmt->fetchAll();
         return $result;
+    }
+
+    /*
+     * Данный метод, будет возвращать те случаи из XML где:
+     * 1) Более одного первичного случая
+     * 2) Нет не единого первичного случая, только поторные
+     */
+    public function findIncorrectUSL(){
+        $sorted = $this->getSortedUsl();
+        $errors = $this->getErrorsFromSorted($sorted);
+        $twoOrMore = $this->getTwoOrMorePrimaryError($errors);
+        $haveNoPrimary = $this->getHaveNoPrimary($errors);
+        return ['TwoOrMore' => $twoOrMore, 'HaveNoPrimary' => $haveNoPrimary];
     }
 
 }
