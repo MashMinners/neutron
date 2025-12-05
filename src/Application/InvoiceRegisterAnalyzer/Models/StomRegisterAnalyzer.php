@@ -233,6 +233,10 @@ class StomRegisterAnalyzer
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
         $result = $stmt->fetchAll();
+        foreach ($result AS $key => $value){
+            $result[$key]['stom_xml_hm_zsl_sl_date_1'] = date('d.m.Y', $value['stom_xml_hm_zsl_sl_date_1']);
+            $result[$key]['stom_xml_lm_dr'] = date('d.m.Y', $value['stom_xml_lm_dr']);
+        }
         return $result;
     }
 
@@ -246,6 +250,10 @@ class StomRegisterAnalyzer
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
         $result = $stmt->fetchAll();
+        foreach ($result AS $key => $value){
+            $result[$key]['stom_xml_hm_zsl_sl_date_1'] = date('d.m.Y', $value['stom_xml_hm_zsl_sl_date_1']);
+            $result[$key]['stom_xml_lm_dr'] = date('d.m.Y', $value['stom_xml_lm_dr']);
+        }
         return $result;
     }
 
@@ -254,7 +262,7 @@ class StomRegisterAnalyzer
      * 1) Более одного первичного случая
      * 2) Нет не единого первичного случая, только поторные
      */
-    public function findIncorrectUSL(){
+    public function findIncorrectServices(){
         $sorted = $this->getSortedUsl();
         $errors = $this->getErrorsFromSorted($sorted);
         if (array_key_exists('twoOrMorePrimary', $errors)){
