@@ -50,3 +50,4 @@ $this->get('invoice/analyzer/incorrect-zub', '\Application\InvoiceRegisterAnalyz
 $this->get('invoice/analyzer/incorrect-required-zub', '\Application\InvoiceRegisterAnalyzer\Controllers\StomRegisterAnalyzerController::findRequiredZubCode');
 $this->get('invoice/analyzer/simultaneous-zub-inclusion', '\Application\InvoiceRegisterAnalyzer\Controllers\StomRegisterAnalyzerController::findSimultaneousZubInclusion');
 $this->get('invoice/analyzer/incorrect-services', '\Application\InvoiceRegisterAnalyzer\Controllers\StomRegisterAnalyzerController::findIncorrectServices');
+$this->get('invoice/analyzer/incorrect-teeth', '\Application\InvoiceRegisterAnalyzer\Controllers\StomRegisterAnalyzerController::findIncorrectTeeth');

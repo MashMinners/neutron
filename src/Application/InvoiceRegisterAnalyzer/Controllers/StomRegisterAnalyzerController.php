@@ -18,18 +18,8 @@ class StomRegisterAnalyzerController
         return new JsonResponse($result);
     }
 
-    public function findIncorrectZub(ServerRequestInterface $request) : ResponseInterface{
-        $result = $this->analyzer->findIncorrectZub();
-        return new JsonResponse($result);
-    }
-
-    public function findRequiredZubCode(ServerRequestInterface $request) : ResponseInterface{
-        $result = $this->analyzer->findRequiredZubCode();
-        return new JsonResponse($result);
-    }
-
-    public function findSimultaneousZubInclusion(ServerRequestInterface $request) : ResponseInterface{
-        $result = $this->analyzer->findSimultaneousZubInclusion();
+    public function findIncorrectTeeth(ServerRequestInterface $request) : ResponseInterface{
+        $result = $this->analyzer->findIncorrectTeeth();
         return new JsonResponse($result);
     }
 

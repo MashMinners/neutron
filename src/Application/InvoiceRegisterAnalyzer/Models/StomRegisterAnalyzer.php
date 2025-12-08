@@ -75,7 +75,7 @@ class StomRegisterAnalyzer
      * Если зуб для этого перечня диагнозов проставлен, то это ошибка, фонд откажет
      * @return array
      */
-    public function findIncorrectZub(){
+    private function findIncorrectZub(){
         $query = ("SELECT * FROM stom_xml_pm_sl_stom
                    INNER JOIN stom_xml_hm_zsl ON stom_xml_hm_zsl_idcase = stom_xml_pm_sl_stom_sl_idcase
                    INNER JOIN stom_xml_lm ON stom_xml_lm__id_pac = stom_xml_hm_zsl_id_pac
@@ -86,6 +86,8 @@ class StomRegisterAnalyzer
         $withoutCodes = [];
         foreach ($result AS $single){
             if ($single['stom_xml_pm_sl_stom_zub'] !== ''){
+                $single['stom_xml_hm_zsl_date_z_1'] = date('d.m.Y', $single['stom_xml_hm_zsl_date_z_1']);
+                $single['stom_xml_hm_zsl_date_z_2'] = date('d.m.Y', $single['stom_xml_hm_zsl_date_z_2']);
                 if (in_array($single['stom_xml_pm_sl_stom_code_usl'], $this->_withoutCode)){
                     $withoutCodes[] = $single;
                 }
@@ -101,7 +103,7 @@ class StomRegisterAnalyzer
      * Это являтся ошибкой, так как для этих диагнозов обязательно указания кода зуба
      * @return array
      */
-    public function findRequiredZubCode(){
+    private function findRequiredZubCode(){
         $query = ("SELECT * FROM stom_xml_pm_sl_stom
                    INNER JOIN stom_xml_hm_zsl ON stom_xml_hm_zsl_idcase = stom_xml_pm_sl_stom_sl_idcase
                    INNER JOIN stom_xml_lm ON stom_xml_lm__id_pac = stom_xml_hm_zsl_id_pac
@@ -111,6 +113,8 @@ class StomRegisterAnalyzer
         $result = $stmt->fetchAll();
         $withCodes = [];
         foreach ($result AS $single){
+            $single['stom_xml_hm_zsl_date_z_1'] = date('d.m.Y', $single['stom_xml_hm_zsl_date_z_1']);
+            $single['stom_xml_hm_zsl_date_z_2'] = date('d.m.Y', $single['stom_xml_hm_zsl_date_z_2']);
             if ($single['stom_xml_pm_sl_stom_zub'] === ''){
                 if (in_array($single['stom_xml_pm_sl_stom_code_usl'], $this->_withCode)){
                     $withCodes[] = $single;
@@ -125,7 +129,7 @@ class StomRegisterAnalyzer
      * Так быть не должно. На один зуб может быть установлен лишь один диагноз из списка иначе фонд откажет
      * @return array|false
      */
-    public function findSimultaneousZubInclusion(){
+    private function findSimultaneousZubInclusion(){
         /*$query = ("SELECT * FROM stom_xml_pm_sl_stom
                    INNER JOIN stom_xml_hm_zsl ON stom_xml_hm_zsl_idcase = stom_xml_pm_sl_stom_sl_idcase
                    INNER JOIN stom_xml_lm ON stom_xml_lm__id_pac = stom_xml_hm_zsl_id_pac   
@@ -177,7 +181,24 @@ class StomRegisterAnalyzer
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
         $result = $stmt->fetchAll();
-        return $result;
+        $simultaneous = [];
+        foreach ($result AS $single){
+            $single['stom_xml_hm_zsl_date_z_1'] = date('d.m.Y', $single['stom_xml_hm_zsl_date_z_1']);
+            $single['stom_xml_hm_zsl_date_z_2'] = date('d.m.Y', $single['stom_xml_hm_zsl_date_z_2']);
+            $simultaneous[] = $single;
+        }
+        return $simultaneous;
+    }
+
+    public function findIncorrectTeeth() : array{
+        $incorrectTeeth = $this->findIncorrectZub();
+        $incorrectRequiredTeeth = $this->findRequiredZubCode();
+        $simultaneousTeethInclusion = $this->findSimultaneousZubInclusion();
+        return [
+            'incorrectTeeth' => $incorrectTeeth,
+            'incorrectRequiredTeeth' => $incorrectRequiredTeeth,
+            'simultaneousTeethInclusion' => $simultaneousTeethInclusion
+        ];
     }
 
     private function getSortedUsl() : array {
