@@ -131,7 +131,18 @@ class StomXMLUploader
     }
 
     public function truncate(){
-        //Написать очистку всех таблиц связаных с XML
+        $tables = [
+            'stom_xml_hm_zsl',
+            'stom_xml_hm_zsl_sl',
+            'stom_xml_hm_zsl_sl_usl',
+            'stom_xml_lm',
+            'stom_xml_pm_sl',
+            'stom_xml_pm_sl_stom'];
+        foreach ($tables as $table) {
+            $query = ("TRUNCATE TABLE `".$table."`");
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute();
+        }
     }
 
 }

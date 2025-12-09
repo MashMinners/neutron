@@ -44,6 +44,7 @@ $this->get('ln/intersections', '\Application\IntersectionsFinder\Controllers\Sic
 #РАБОТА С ПАРСЕРОМ XML
 $this->get('xml/parse', '\Application\XMLParser\Controllers\XMLParserController::parse');
 $this->get('xml/stom/upload', '\Application\XMLParser\Controllers\StomXMLUploaderController::upload');
+$this->get('xml/stom/truncate', '\Application\XMLParser\Controllers\StomXMLUploaderController::truncate');
 #РАБОТА С АНАЛИЗАТОРОМ ДАННЫХ РЕЕСТРОВ СЧЕТОВ
 $this->get('invoice/analyzer/incorrect-purpose', '\Application\InvoiceRegisterAnalyzer\Controllers\StomRegisterAnalyzerController::findIncorrectPurpose');
 $this->get('invoice/analyzer/incorrect-zub', '\Application\InvoiceRegisterAnalyzer\Controllers\StomRegisterAnalyzerController::findIncorrectZub');
