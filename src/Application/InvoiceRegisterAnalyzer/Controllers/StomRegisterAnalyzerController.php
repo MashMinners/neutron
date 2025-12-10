@@ -20,7 +20,9 @@ class StomRegisterAnalyzerController
 
     public function findIncorrectTeeth(ServerRequestInterface $request) : ResponseInterface{
         $result = $this->analyzer->findIncorrectTeeth();
-        return new JsonResponse($result);
+        //return new JsonResponse($result);
+        $response = new JsonResponse($result);
+        return  $response;
     }
 
     public function findIncorrectServices(ServerRequestInterface $request) : ResponseInterface{
