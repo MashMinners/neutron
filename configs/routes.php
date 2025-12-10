@@ -19,7 +19,7 @@ $this->delete('buffer/stom/truncate', '\Application\ExcelUploader\Controllers\Bu
 //Пересечения
 $this->get('buffer/stom/intersections', '\Application\IntersectionsFinder\Controllers\BufferSTOMRegistryIntersectionsFinderController::find');
 //Цели посещения 1.0/3.0
-$this->get('buffer/stom/purposes', '\Application\IntersectionsFinder\Controllers\BufferSTOMRegistryIntersectionsFinderController::findIncorrectPurposes');
+$this->get('buffer/stom/excel/purposes', '\Application\IntersectionsFinder\Controllers\BufferSTOMRegistryIntersectionsFinderController::findIncorrectPurposes');
 //Поиск разорванных случаев, являются дубликатами записей по полису
 $this->get('buffer/stom/torn-cases', '\Application\Registry\Controllers\STOMRegistryController::findTornCases');
 /**
@@ -46,7 +46,7 @@ $this->get('xml/parse', '\Application\XMLParser\Controllers\XMLParserController:
 $this->get('xml/stom/upload', '\Application\XMLParser\Controllers\StomXMLUploaderController::upload');
 $this->delete('xml/stom/truncate', '\Application\XMLParser\Controllers\StomXMLUploaderController::truncate');
 #РАБОТА С АНАЛИЗАТОРОМ ДАННЫХ РЕЕСТРОВ СЧЕТОВ
-$this->get('invoice/analyzer/incorrect-purpose', '\Application\InvoiceRegisterAnalyzer\Controllers\StomRegisterAnalyzerController::findIncorrectPurpose');
+$this->get('invoice/analyzer/incorrect-purposes', '\Application\InvoiceRegisterAnalyzer\Controllers\StomRegisterAnalyzerController::findIncorrectPurpose');
 $this->get('invoice/analyzer/incorrect-zub', '\Application\InvoiceRegisterAnalyzer\Controllers\StomRegisterAnalyzerController::findIncorrectZub');
 $this->get('invoice/analyzer/incorrect-required-zub', '\Application\InvoiceRegisterAnalyzer\Controllers\StomRegisterAnalyzerController::findRequiredZubCode');
 $this->get('invoice/analyzer/simultaneous-zub-inclusion', '\Application\InvoiceRegisterAnalyzer\Controllers\StomRegisterAnalyzerController::findSimultaneousZubInclusion');
