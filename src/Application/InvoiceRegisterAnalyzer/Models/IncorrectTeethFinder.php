@@ -7,6 +7,25 @@ use Engine\DTO\StructuredResponse;
 
 class IncorrectTeethFinder
 {
+    private $_withoutCode = [
+        '19ALL.0', '19B00.2', '19B37.0', '19D10.1', '19D10.10', '19K03.0', '19K03.6', '19K05.0', '19L05.1', '19K05.3',
+        '19L05.4', '19K07.5', '19K07.6', '19K11.2', '19K12.0', '19K12.1', '19K13.0', '19K13.2', '19K14.0', '19K14.1',
+        '19K14.6', '19L43.3', '19M12.8', '19S00.5', '19S00.7', '19S01.4', '19S01.5', '19S02.6', '19Z01.2', '19Z01.21',
+        '19Z01.22', '19Z01.23', '19K05.4'
+    ];
+
+    private $_withCode = [
+        '19K02.1', '19K02.2', '19K04.01', '19K04.02', '19K04.03', '19K04.0', '19K04.04', '19K04.05', '19K04.06',
+        '19K04.4', '19K04.41', '19K04.42', '19K04.43', '19K04.44', '19K04.45', '19K04.46', '19K04.5', '19K04.51',
+        '19K04.52', '19K04.53', '19K04.54', '19K04.55', '19K04.56', '19K04.8', '19K05.2', '19K05.31', '19K05.32',
+        '19K05.41', '19K06.8', '19K08.3', '19K10.2', '19K10.3'
+    ];
+
+    private $_simultaneousCode = [
+        '19K02.1', '19K02.2', '19K04.01', '19K04.02', '19K04.03', '19K04.04', '19K04.05', '19K04.06', '19K04.4',
+        '19K04.41', '19K04.42', '19K04.43', '19K04.44', '19K04.45', '19K04.46', '19K04.5', '19K04.51', '19K04.52',
+        '19K04.53', '19K04.54', '19K04.55', '19K04.56', '19K04.8', '19K05.31', '19K05.41', '19K10.2', '19K10.3'
+    ];
     public function __construct(IConnector $connector){
         $this->pdo = $connector::connect();
     }
@@ -67,14 +86,14 @@ class IncorrectTeethFinder
      * @param $simultaneousCodes
      * @return StructuredResponse
      */
-    public function findSimultaneousCasesIDs(StructuredResponse $response, $simultaneousCodes): StructuredResponse{
+    public function findSimultaneousCasesIDs(StructuredResponse $response): StructuredResponse{
         if ($response->body !== []){
             $simultaneous = [];
             foreach ($response->body AS $id => $single){
                 $zub = [];
                 $diagnosis = [];
                 foreach ($single as $key => $value) {
-                    if (in_array($value['stom_xml_pm_sl_stom_code_usl'], $simultaneousCodes) AND $value['stom_xml_pm_sl_stom_zub'] !==''){
+                    if (in_array($value['stom_xml_pm_sl_stom_code_usl'], $this->_simultaneousCode) AND $value['stom_xml_pm_sl_stom_zub'] !==''){
                         //$buffer[$key]['id'] = $key;
                         //$buffer[$key]['zub'] = $value['stom_xml_pm_sl_stom_zub'];
                         $zub[$key] = $value['stom_xml_pm_sl_stom_zub'];
@@ -111,7 +130,7 @@ class IncorrectTeethFinder
         return $response;
     }
 
-    public function findIncorrectTeethCodeInclusion(array $withoutCode) : StructuredResponse{
+    public function findIncorrectTeethCodeInclusion() : StructuredResponse{
         $query = ("SELECT * FROM stom_xml_pm_sl_stom
                    INNER JOIN stom_xml_hm_zsl ON stom_xml_hm_zsl_idcase = stom_xml_pm_sl_stom_sl_idcase
                    INNER JOIN stom_xml_lm ON stom_xml_lm__id_pac = stom_xml_hm_zsl_id_pac
@@ -126,7 +145,7 @@ class IncorrectTeethFinder
                 if ($single['stom_xml_pm_sl_stom_zub'] !== ''){
                     $single['stom_xml_hm_zsl_date_z_1'] = date('d.m.Y', $single['stom_xml_hm_zsl_date_z_1']);
                     $single['stom_xml_hm_zsl_date_z_2'] = date('d.m.Y', $single['stom_xml_hm_zsl_date_z_2']);
-                    if (in_array($single['stom_xml_pm_sl_stom_code_usl'], $withoutCode)){
+                    if (in_array($single['stom_xml_pm_sl_stom_code_usl'], $this->_withoutCode)){
                         $incorrectTeethCodeInclusion[] = $single;
                         $response->body = $incorrectTeethCodeInclusion;
                     }
@@ -148,7 +167,7 @@ class IncorrectTeethFinder
      * @param $withCode
      * @return StructuredResponse
      */
-    public function findRequiredTeethCode(array $withCode) : StructuredResponse{
+    public function findRequiredTeethCode() : StructuredResponse{
         $query = ("SELECT * FROM stom_xml_pm_sl_stom
                    INNER JOIN stom_xml_hm_zsl ON stom_xml_hm_zsl_idcase = stom_xml_pm_sl_stom_sl_idcase
                    INNER JOIN stom_xml_lm ON stom_xml_lm__id_pac = stom_xml_hm_zsl_id_pac
@@ -163,7 +182,7 @@ class IncorrectTeethFinder
                 $single['stom_xml_hm_zsl_date_z_1'] = date('d.m.Y', $single['stom_xml_hm_zsl_date_z_1']);
                 $single['stom_xml_hm_zsl_date_z_2'] = date('d.m.Y', $single['stom_xml_hm_zsl_date_z_2']);
                 if ($single['stom_xml_pm_sl_stom_zub'] === ''){
-                    if (in_array($single['stom_xml_pm_sl_stom_code_usl'], $withCode)){
+                    if (in_array($single['stom_xml_pm_sl_stom_code_usl'], $this->_withCode)){
                         $requiredTeethCode[] = $single;
                         $response->body = $requiredTeethCode;
                     }
