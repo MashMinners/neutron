@@ -19,7 +19,7 @@ $this->delete('buffer/stom/truncate', '\Application\ExcelUploader\Controllers\Bu
 //Пересечения
 $this->get('buffer/stom/intersections', '\Application\IntersectionsFinder\Controllers\BufferSTOMRegistryIntersectionsFinderController::find');
 //Цели посещения 1.0/3.0
-$this->get('buffer/stom/excel/purposes', '\Application\IntersectionsFinder\Controllers\BufferSTOMRegistryIntersectionsFinderController::findIncorrectPurposes');
+$this->get('buffer/stom/excel/incorrect-purposes', '\Application\IntersectionsFinder\Controllers\BufferSTOMRegistryIntersectionsFinderController::findIncorrectPurposes');
 //Поиск разорванных случаев, являются дубликатами записей по полису
 $this->get('buffer/stom/torn-cases', '\Application\Registry\Controllers\STOMRegistryController::findTornCases');
 /**

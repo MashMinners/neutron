@@ -105,7 +105,7 @@ class BufferSTOMRegistryIntersectionsFinder
         return $result;
     }
 
-    private function devidePurposes(array $records){
+    private function dividePurposes(array $records){
         $purpose = [];
         foreach ($records as $record){
             if ($record['buffer_stom_register_treatment_end']-$record['buffer_stom_register_treatment_start'] === 0){
@@ -118,7 +118,7 @@ class BufferSTOMRegistryIntersectionsFinder
         return $purpose;
     }
 
-    private function devideSingleVisit(array $visits){
+    private function divideSingleVisit(array $visits){
         $result['correct'] = [];
         $result['incorrect'] = [];
         foreach ($visits as $visit){
@@ -131,7 +131,7 @@ class BufferSTOMRegistryIntersectionsFinder
         return $result;
     }
 
-    private function devideMultiVisits(array $visits){
+    private function divideMultiVisits(array $visits){
         $result['correct'] = [];
         $result['incorrect'] = [];
         foreach ($visits as $visit){
@@ -146,12 +146,21 @@ class BufferSTOMRegistryIntersectionsFinder
 
     public function findIncorrectPurposeDevided(){
         $records = $this->getBufferRecords();
-        $devided = $this->devidePurposes($records);
-        $converted['single'] = $this->purposesDateConvert($devided['single']);
-        $converted['multi'] = $this->purposesDateConvert($devided['multi']);
-        $result['single'] = $this->devideSingleVisit($converted['single']);
-        $result['multi'] = $this->devideMultiVisits($converted['multi']);
-        return $result;
+        $divided = $this->dividePurposes($records);
+        $result = [];
+        if ($divided !== []){
+            $converted['single'] = $this->purposesDateConvert($divided['single']) ?? [];
+            $converted['multi'] = $this->purposesDateConvert($divided['multi']) ?? [];
+            $result['single'] = $this->divideSingleVisit($converted['single']);
+            $result['multi'] = $this->divideMultiVisits($converted['multi']);
+        }
+        $incorrect['single'] = $result['single']['incorrect'];
+        $incorrect['multi'] = $result['multi']['incorrect'];
+        if ($incorrect['single'] OR $incorrect['multi']){
+            $merged = array_merge($incorrect['single'], $incorrect['multi']);
+            return $merged;
+        }
+        return [];
     }
 
 }
