@@ -115,11 +115,22 @@ class CmisDispExcelUploader
         //$sheet->setCellValue('B2', 'Данные в ячейке B2');
 // Запись из массива
         $data = [
-            ['NUSL', 'SURNAME', '', '', '', '', '', '', ''],
+            ['NUSL', 'SURNAME', 'FIRST_NAME', 'SECOND_NAME', 'DATE_BIRTH', 'POLICY', 'TREATMENT_START', 'TREATMENT_END', 'DIAGNOSIS',
+                'APPEAL_RESULT', 'PAYMENT', 'DOCTOR', 'DISP_RESULT', 'PURP', 'SPECFIC', 'ADDRESS', 'SNILS'],
         ];
+        $row = 1;
+        foreach ($data as $rowData) {
+            $col = 'A';
+            foreach ($rowData as $cellData) {
+                $sheet->setCellValue($col . $row, $cellData);
+                $col++;
+            }
+            $row++;
+        }
+
         $row = 2; // Начинаем с третьей строки
 
-        foreach ($data as $rowData) {
+        foreach ($dataExcel as $rowData) {
             $col = 'A';
             foreach ($rowData as $cellData) {
                 $sheet->setCellValue($col . $row, $cellData);
@@ -131,7 +142,7 @@ class CmisDispExcelUploader
         $writer->save('storage/my_report.xlsx');
     }
 
-    public function excelDataToMySQLData ($file) {
+    public function excelDataToMySQLData () {
         //Получаем данные из Excel
         $cmisDispExcelData = $this->readCmisExcel('storage/CMIS_DISP.xlsx');
         $tfomsDispExcelData = $this->readTfomsExcel('storage/TFOMS_DISP.xlsx');

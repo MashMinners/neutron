@@ -14,8 +14,8 @@ class CmisDispExelUploaderController
     }
 
     public function upload(ServerRequestInterface $request) : ResponseInterface{
-        $file = 'storage/CMIS_DISP.xlsx';
-        $result = $this->uploader->excelDataToMySQLData($file);
+        //$file = 'storage/CMIS_DISP.xlsx';
+        $result = $this->uploader->excelDataToMySQLData();
         return new JsonResponse($result);
     }
 
