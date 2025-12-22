@@ -4,6 +4,8 @@ namespace Application\ExcelUploader\Models\SMO;
 
 use Engine\Database\IConnector;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class CmisDispExcelUploader
 {
@@ -106,11 +108,35 @@ class CmisDispExcelUploader
         return $result;
     }
 
+    private function generateExcel($dataExcel){
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        //$sheet->setCellValue('A1', 'Привет, мир!');
+        //$sheet->setCellValue('B2', 'Данные в ячейке B2');
+// Запись из массива
+        $data = [
+            ['NUSL', 'SURNAME', '', '', '', '', '', '', ''],
+        ];
+        $row = 2; // Начинаем с третьей строки
+
+        foreach ($data as $rowData) {
+            $col = 'A';
+            foreach ($rowData as $cellData) {
+                $sheet->setCellValue($col . $row, $cellData);
+                $col++;
+            }
+            $row++;
+        }
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('storage/my_report.xlsx');
+    }
+
     public function excelDataToMySQLData ($file) {
         //Получаем данные из Excel
         $cmisDispExcelData = $this->readCmisExcel('storage/CMIS_DISP.xlsx');
         $tfomsDispExcelData = $this->readTfomsExcel('storage/TFOMS_DISP.xlsx');
         $result = $this->compareExcel($cmisDispExcelData, $tfomsDispExcelData);
+        $this->generateExcel($result);
         return $result;
     }
 
