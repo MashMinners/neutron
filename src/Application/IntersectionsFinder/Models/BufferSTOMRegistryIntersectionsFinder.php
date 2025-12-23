@@ -154,8 +154,8 @@ class BufferSTOMRegistryIntersectionsFinder
             $result['single'] = $this->divideSingleVisit($converted['single']);
             $result['multi'] = $this->divideMultiVisits($converted['multi']);
         }
-        $incorrect['single'] = $result['single']['incorrect'];
-        $incorrect['multi'] = $result['multi']['incorrect'];
+        $incorrect['single'] = $result['single']['incorrect'] ?? [];
+        $incorrect['multi'] = $result['multi']['incorrect'] ?? [];
         if ($incorrect['single'] OR $incorrect['multi']){
             $merged = array_merge($incorrect['single'], $incorrect['multi']);
             return $merged;
