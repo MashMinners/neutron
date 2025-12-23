@@ -91,10 +91,10 @@ class CmisDispExcelUploader
             $result[$single[3]]['SURNAME'] = $fullName[0];
             $result[$single[3]]['FIRST_NAME'] = $fullName[1];
             $result[$single[3]]['SECOND_NAME'] = $fullName[2];
-            $result[$single[3]]['DATE_BIRTH'] = $cmisExcel[$single[3]][2];
+            $result[$single[3]]['DATE_BIRTH'] = date('d.m.Y', $cmisExcel[$single[3]][2]);
             $result[$single[3]]['POLICY'] = $cmisExcel[$single[3]][3];
-            $result[$single[3]]['TREATMENT_START'] = $cmisExcel[$single[3]][5];
-            $result[$single[3]]['TREATMENT_END'] = $cmisExcel[$single[3]][6];
+            $result[$single[3]]['TREATMENT_START'] = date('d.m.Y', $cmisExcel[$single[3]][5]);
+            $result[$single[3]]['TREATMENT_END'] = date('d.m.Y', $cmisExcel[$single[3]][6]);
             $result[$single[3]]['DIAGNOSIS'] = $cmisExcel[$single[3]][7];
             $result[$single[3]]['APPEAL_RESULT'] = $cmisExcel[$single[3]][8];
             $result[$single[3]]['PAYMENT'] = $tfomsExcel[$single[3]][9]; //
