@@ -53,4 +53,7 @@ $this->get('invoice/analyzer/simultaneous-zub-inclusion', '\Application\InvoiceR
 $this->get('invoice/analyzer/incorrect-services', '\Application\InvoiceRegisterAnalyzer\Controllers\StomRegisterAnalyzerController::findIncorrectServices');
 $this->get('invoice/analyzer/incorrect-teeth', '\Application\InvoiceRegisterAnalyzer\Controllers\StomRegisterAnalyzerController::findIncorrectTeeth');
 #РАБОТА С СМО
-$this->get('smo/parse/disp/cmis', '\Application\ExcelUploader\Controllers\SMO\CmisDispExelUploaderController::upload');
+//$this->get('smo/parse/disp/cmis', '\Application\ExcelUploader\Controllers\SMO\CmisDispExelUploaderController::upload');
+$this->get('smo/analyze/stom', '\Application\SMO\Controllers\ExcelSTOMAnalyzerController::analyze');
+$this->get('smo/analyze/disp', '\Application\SMO\Controllers\ExcelDispAnalyzerController::analyze');
+$this->get('smo/analyze/exam', '\Application\SMO\Controllers\ExcelExamAnalyzerController::analyze');
