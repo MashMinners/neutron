@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\XMLParser\Controllers;
+namespace Application\XmlParser\Controllers;
 
 use Application\XMLParser\Models\XMLParser;
 use Laminas\Diactoros\Response\JsonResponse;

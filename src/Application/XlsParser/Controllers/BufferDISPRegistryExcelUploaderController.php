@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Application\ExcelUploader\Controllers;
+namespace Application\XlsParser\Controllers;
 
 use Application\ExcelUploader\Models\BufferDISPRegistryExcelUploader;
 use Laminas\Diactoros\Response\JsonResponse;

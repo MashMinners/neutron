@@ -2,13 +2,15 @@
 #ИСТОРИИ БОЛЕЗНИ
 //Заливает в базу данные по случаям стационара
 $this->get('histories/upload', '\Application\ExcelUploader\Controllers\MedicalHistoriesExcelUploadController::upload');
+//Очищение таблиув с ИБ по стационару
 $this->delete('histories/truncate', '\Application\ExcelUploader\Controllers\MedicalHistoriesExcelUploadController::truncate');
 
 #ПОСЕЩЕНИЯ ПОЛИКЛИНИКИ
 $this->get('visits/upload', '\Application\ExcelUploader\Controllers\VisitsExcelUploadController::upload');
 $this->delete('visits/truncate', '\Application\ExcelUploader\Controllers\VisitsExcelUploadController::truncate');
 
-
+#ЗАГРУЗКА ФАЙЛОВ
+$this->get('file/upload', '\Application\FileUploader\Controllers\FileUploaderController::upload');
 
 
 #РАБОТА С БУФЕРНОЙ ТАБЛИЦЕЙ СТОМАТОЛОГИИ
@@ -16,12 +18,6 @@ $this->delete('visits/truncate', '\Application\ExcelUploader\Controllers\VisitsE
 $this->get('buffer/stom/upload', '\Application\ExcelUploader\Controllers\BufferSTOMRegistryExcelUploaderController::upload');
 //Очистка буфера
 $this->delete('buffer/stom/truncate', '\Application\ExcelUploader\Controllers\BufferSTOMRegistryExcelUploaderController::truncate');
-//Пересечения
-$this->get('buffer/stom/intersections', '\Application\IntersectionsFinder\Controllers\BufferSTOMRegistryIntersectionsFinderController::find');
-//Цели посещения 1.0/3.0
-$this->get('buffer/stom/excel/incorrect-purposes', '\Application\IntersectionsFinder\Controllers\BufferSTOMRegistryIntersectionsFinderController::findIncorrectPurposes');
-//Поиск разорванных случаев, являются дубликатами записей по полису
-$this->get('buffer/stom/torn-cases', '\Application\Registry\Controllers\STOMRegistryController::findTornCases');
 /**
  * Сначала ищем дубликаты - это разорванные случаи!
  * Потом объединяем их в один случай
@@ -45,16 +41,22 @@ $this->get('ln/intersections', '\Application\IntersectionsFinder\Controllers\Sic
 $this->get('xml/parse', '\Application\XMLParser\Controllers\XMLParserController::parse');
 $this->get('xml/stom/upload', '\Application\XMLParser\Controllers\StomXMLUploaderController::upload');
 $this->delete('xml/stom/truncate', '\Application\XMLParser\Controllers\StomXMLUploaderController::truncate');
-#РАБОТА С АНАЛИЗАТОРОМ ДАННЫХ РЕЕСТРОВ СЧЕТОВ
-$this->get('invoice/analyzer/incorrect-purposes', '\Application\InvoiceRegisterAnalyzer\Controllers\StomRegisterAnalyzerController::findIncorrectPurpose');
-$this->get('invoice/analyzer/incorrect-zub', '\Application\InvoiceRegisterAnalyzer\Controllers\StomRegisterAnalyzerController::findIncorrectZub');
-$this->get('invoice/analyzer/incorrect-required-zub', '\Application\InvoiceRegisterAnalyzer\Controllers\StomRegisterAnalyzerController::findRequiredZubCode');
-$this->get('invoice/analyzer/simultaneous-zub-inclusion', '\Application\InvoiceRegisterAnalyzer\Controllers\StomRegisterAnalyzerController::findSimultaneousZubInclusion');
-$this->get('invoice/analyzer/incorrect-services', '\Application\InvoiceRegisterAnalyzer\Controllers\StomRegisterAnalyzerController::findIncorrectServices');
-$this->get('invoice/analyzer/incorrect-teeth', '\Application\InvoiceRegisterAnalyzer\Controllers\StomRegisterAnalyzerController::findIncorrectTeeth');
+
 #РАБОТА С СМО
-//$this->get('smo/parse/disp/cmis', '\Application\ExcelUploader\Controllers\SMO\CmisDispExelUploaderController::upload');
+//$this->get('smo/parse/disp/cmis', '\Application\XlsParser\Controllers\SMO\CmisDispExelUploaderController::upload');
 $this->get('smo/analyze/stom', '\Application\SMO\Controllers\ExcelSTOMAnalyzerController::analyze');
 $this->get('smo/analyze/disp', '\Application\SMO\Controllers\ExcelDispAnalyzerController::analyze');
 $this->get('smo/analyze/exam', '\Application\SMO\Controllers\ExcelExamAnalyzerController::analyze');
 $this->get('smo/analyze/dpr', '\Application\SMO\Controllers\ExcelDPRAnalyzerController::analyze');
+
+#РЕЕСТРЫ СЧЕТОВ. СТОМАТОЛОГИЯ
+//Поиск не корректных целей посещения 3.0/1.0
+$this->get('invoices/stom/incorrect-purposes', '\Application\Invoices\STOM\Controllers\IncorrectPurposeFinderController::find');
+//Поиск не корректных услуг. Либо не одной первичной услуги в случае, либо 2 и более первичных услуг
+$this->get('invoices/stom/incorrect-services', '\Application\Invoices\STOM\Controllers\IncorrectServicesFinderController::find');
+//Поискне корректных диагнозов по отношению к пролеченным зубам
+$this->get('invoices/stom/incorrect-teeth', '\Application\Invoices\STOM\Controllers\IncorrectTeethFinderController::find');
+//Поиск пересечений случаев за 30 дневный период
+$this->get('invoices/stom/intersections', '\Application\Invoices\STOM\Controllers\IntersectionsFinderController::find');
+//Поиск разорванных случаев, когда на 1 пациента 2 и более случаев за 30 дней
+$this->get('invoices/stom/torn-cases', '\Application\Invoices\STOM\Controllers\TornCaseFinderController::find');
