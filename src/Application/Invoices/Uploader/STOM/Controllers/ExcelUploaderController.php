@@ -3,7 +3,6 @@
 namespace Application\Invoices\Uploader\STOM\Controllers;
 
 use Application\Invoices\Uploader\STOM\Models\ExcelUploader;
-use Application\XlsParser\ExcelParser;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
