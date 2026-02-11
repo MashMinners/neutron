@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Invoices\STOM\Models;
+namespace Application\Invoices\Analyzer\STOM\Models;
 
 use Engine\Database\IConnector;
 use Engine\DTO\StructuredResponse;

@@ -1,8 +1,8 @@
 <?php
 
-namespace Application\Invoices\STOM\Controllers;
+namespace Application\Invoices\Analyzer\STOM\Controllers;
 
-use Application\Invoices\STOM\Models\IntersectionsFinder;
+use Application\Invoices\Analyzer\STOM\Models\IntersectionsFinder;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
