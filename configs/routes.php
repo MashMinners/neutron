@@ -44,11 +44,28 @@ $this->delete('xml/stom/truncate', '\Application\XMLParser\Controllers\StomXMLUp
 
 #РАБОТА С СМО
 //$this->get('smo/parse/disp/cmis', '\Application\ExcelParser\Controllers\SMO\CmisDispExelUploaderController::upload');
-$this->get('smo/analyze/stom', '\Application\SMO\Controllers\ExcelSTOMAnalyzerController::analyze');
+//$this->get('smo/analyze/stom', '\Application\SMO\Controllers\ExcelSTOMAnalyzerController::analyze');
 $this->get('smo/analyze/disp', '\Application\SMO\Controllers\ExcelDispAnalyzerController::analyze');
-$this->get('smo/analyze/exam', '\Application\SMO\Controllers\ExcelExamAnalyzerController::analyze');
-$this->get('smo/analyze/dpr', '\Application\SMO\Controllers\ExcelDPRAnalyzerController::analyze');
-
+//$this->get('smo/analyze/exam', '\Application\SMO\Controllers\ExcelExamAnalyzerController::analyze');
+//$this->get('smo/analyze/dpr', '\Application\SMO\Controllers\ExcelDPRAnalyzerController::analyze');
+//$this->get('smo/analyze/ks', '\Application\SMO\Controllers\ExcelKSAnalyzerController::analyze');
+$this->get('smo/invoice/base', '\Application\SMO\Form14\Controllers\BaseInvoiceMakerController::makeInvoice');
+$this->get('smo/invoice/exam', '\Application\SMO\Form14\Controllers\ExamInvoiceMakerController::makeInvoice');
+$this->get('smo/invoice/exam/children', '\Application\SMO\Form14\Controllers\ExamChildrenInvoiceMakerController::makeInvoice');
+$this->get('smo/invoice/disp1', '\Application\SMO\Form14\Controllers\Disp1InvoiceMakerController::makeInvoice');
+$this->get('smo/invoice/disp2', '\Application\SMO\Form14\Controllers\Disp2InvoiceMakerController::makeInvoice');
+$this->get('smo/invoice/disp/in-depth', '\Application\SMO\Form14\Controllers\DispInDepthInvoiceMakerController::makeInvoice');
+$this->get('smo/invoice/app/dn', '\Application\SMO\Form14\Controllers\AppDNInvoiceMakerController::makeInvoice');
+$this->get('smo/invoice/app/dn/onco', '\Application\SMO\Form14\Controllers\AppDnOncoInvoiceMakerController::makeInvoice');
+$this->get('smo/invoice/dpr', '\Application\SMO\Form14\Controllers\DprInvoiceMakerController::makeInvoice');
+$this->get('smo/invoice/smp', '\Application\SMO\Form14\Controllers\SMPInvoiceMakerController::makeInvoice');
+$this->get('smo/invoice/ks', '\Application\SMO\Form14\Controllers\KSInvoiceMakerController::makeInvoice');
+$this->get('smo/invoice/ds', '\Application\SMO\Form14\Controllers\DSInvoiceMakerController::makeInvoice');
+$this->get('smo/invoice/app', '\Application\SMO\Form14\Controllers\AppInvoiceMakerController::makeInvoice');
+$this->get('smo/invoice/app/onco', '\Application\SMO\Form14\Controllers\AppOncoInvoiceMakerController::makeInvoice');
+$this->get('smo/invoice/app/onco/fap', '\Application\SMO\Form14\Controllers\AppOncoFAPInvoiceMakerController::makeInvoice');
+$this->get('smo/invoice/app/fap', '\Application\SMO\Form14\Controllers\AppFAPInvoiceMakerController::makeInvoice');
+$this->get('smo/invoice/app/diag', '\Application\SMO\Form14\Controllers\AppDiagInvoiceMakerController::makeInvoice');
 
 #РЕЕСТРЫ СЧЕТОВ. СТОМАТОЛОГИЯ. АНАЛИТИКА
 //Поиск не корректных целей посещения 3.0/1.0
@@ -63,4 +80,5 @@ $this->get('invoices/analyzer/stom/intersections', '\Application\Invoices\Analyz
 $this->get('invoices/analyzer/stom/torn-cases', '\Application\Invoices\Analyzer\STOM\Controllers\TornCaseFinderController::find');
 
 #РЕЕСТРЫ СЧЕТОВ. СТОМАТОЛОГИЯ. РАБОТА С БД
-$this->get('invoices/uploader/stom/upload-to-mysql', '\Application\Invoices\Uploader\STOM\Controllers\ExcelUploaderController::uploadToMySQL');
+$this->get('invoices/uploader/stom/excel/upload-to-mysql', '\Application\Invoices\Uploader\STOM\Controllers\ExcelUploaderController::uploadToMySQL');
+$this->get('invoices/uploader/stom/xml/upload-to-mysql', '\Application\Invoices\Uploader\STOM\Controllers\XmlUploaderController::uploadToMySQL');
