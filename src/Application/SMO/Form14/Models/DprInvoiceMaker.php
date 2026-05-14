@@ -17,7 +17,7 @@ class DprInvoiceMaker extends BaseInvoicesMaker
         $highestColumn = $sheet->getHighestColumn();
 
         $rows = $sheet->rangeToArray(
-            "$startRow:$highestColumn$highestRow", // Диапазон
+            "A12:$highestColumn$highestRow", // Диапазон
             NULL,                          // Значение для пустых ячеек
             TRUE,                          // Вычислять формулы
             TRUE,                          // Форматировать значения (даты, проценты)
@@ -44,8 +44,13 @@ class DprInvoiceMaker extends BaseInvoicesMaker
             $needle[$uniqueId]['date_start'] = $dates[0];
             $needle[$uniqueId]['date_finish'] = $dates[1];
             $needle[$uniqueId]['volumes'] = 1;
-            $needle[$uniqueId]['profile'] = 97;
-            $needle[$uniqueId]['speciality'] = 76;
+            if ($row['C'] === "Женский"){
+                $needle[$uniqueId]['profile'] = 136;
+                $needle[$uniqueId]['speciality'] = 2;
+            }else{
+                $needle[$uniqueId]['profile'] = 108;
+                $needle[$uniqueId]['speciality'] = 84;
+            }
             $needle[$uniqueId]['payment tariff'] = $row['Q'];
             $needle[$uniqueId]['cost'] = $row['R'];
             $needle[$uniqueId]['result'] = $row['S'];
