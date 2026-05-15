@@ -12,8 +12,17 @@ class BaseInvoicesMaker
         'Мужской' => 1,
         'Женский' => 2
     ];
+
+    protected function formatAcceptableFilesNames(string $file){
+        $pattern = '/([^\/]+)-(\d+)$/u';
+
+        if (preg_match($pattern, $file, $matches)) {
+            return [$matches[1], $matches[2]];
+        }
+    }
     protected function generateExcel(array $dataExcel, string $filename){
         $spreadsheet = new Spreadsheet();
+        $formattedName = $this->formatAcceptableFilesNames($filename);
         $sheet = $spreadsheet->getActiveSheet();
         // Запись из массива
         $data = [
@@ -42,7 +51,10 @@ class BaseInvoicesMaker
             $row++;
         }
         $writer = new Xlsx($spreadsheet);
-        $writer->save('storage/smo/'.$filename.'_'.date('d.m.Y_H_i_s').'.xlsx');
+        //$writer->save('storage/smo/['.$formattedName[1].'] '.$formattedName[0].'_'.date('d.m.Y_H_i_s').'.xlsx');
+        $file = 'storage/smo/['.$formattedName[1].'] '.$formattedName[0].'.xlsx';
+        $writer->save($file);
+        return $file;
     }
 
 

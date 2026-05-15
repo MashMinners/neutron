@@ -56,8 +56,8 @@ class DispInDepthInvoiceMaker extends BaseInvoicesMaker
     public function makeInvoice(string $file){
         $filename = pathinfo(basename($file), PATHINFO_FILENAME);;
         $journal = $this->readExcel($file);
-        $this->generateExcel($journal, $filename);
-        return 'Сформированный файл содержит записей: '.count($journal);
+        $generatedExcel = $this->generateExcel($journal, $filename);
+        return 'Сформированный файл '.$generatedExcel.' содержит записей: '.count($journal);
     }
 
 }

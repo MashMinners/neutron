@@ -66,6 +66,7 @@ $this->get('smo/invoice/app/onco', '\Application\SMO\Form14\Controllers\AppOncoI
 $this->get('smo/invoice/app/onco/fap', '\Application\SMO\Form14\Controllers\AppOncoFAPInvoiceMakerController::makeInvoice');
 $this->get('smo/invoice/app/fap', '\Application\SMO\Form14\Controllers\AppFAPInvoiceMakerController::makeInvoice');
 $this->get('smo/invoice/app/diag', '\Application\SMO\Form14\Controllers\AppDiagInvoiceMakerController::makeInvoice');
+$this->get('smo/invoice/aggregate', '\Application\SMO\Form14\Controllers\Form14AggregatorController::aggregate');
 
 #РЕЕСТРЫ СЧЕТОВ. СТОМАТОЛОГИЯ. АНАЛИТИКА
 //Поиск не корректных целей посещения 3.0/1.0
