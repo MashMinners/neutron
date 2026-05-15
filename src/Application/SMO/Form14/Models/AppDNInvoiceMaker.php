@@ -10,7 +10,7 @@ class AppDNInvoiceMaker extends BaseInvoicesMaker
         $spreadsheet = IOFactory::load($file);
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->removeColumn('T');
-        $startRow = 12;
+        $startRow ='A12'; //Должно быть A12
         $highestRow = $sheet->getHighestRow();
         //Нужно определять будет и последню колонку, если она пустая удалять ее, и так до тех пор пока не придет со значением
         //Этонужно определить в отдельный метод, необходимо очищать файл перед работой от пустых строк и колонок, люы потом избержать warnings

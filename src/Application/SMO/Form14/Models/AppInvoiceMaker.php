@@ -43,7 +43,7 @@ class AppInvoiceMaker extends BaseInvoicesMaker
             $needle[$position]['diagnosis'] = $row['L'];
             $needle[$position]['date_start'] = $dates[0];
             $needle[$position]['date_finish'] = $dates[1];
-            $needle[$position]['volumes'] = 1;
+            $needle[$position]['volumes'] = $row['N'];
             $needle[$position]['profile'] = $row['O'];
             $needle[$position]['speciality'] = $row['P'];
             $needle[$position]['payment tariff'] = $row['Q'];
