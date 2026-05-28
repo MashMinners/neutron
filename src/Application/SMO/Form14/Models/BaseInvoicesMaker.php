@@ -109,7 +109,7 @@ class BaseInvoicesMaker
             $row++;
         }
         $writer = new Xlsx($spreadsheet);
-        $file = 'storage/smo/[Счет ТФОМС №'.$formattedName[1].'] '.$formattedName[0].'.xlsx';
+        $file = 'storage/smo/completed/[Счет ТФОМС №'.$formattedName[1].'] '.$formattedName[0].'.xlsx';
         $writer->save($file);
         return $file;
     }
