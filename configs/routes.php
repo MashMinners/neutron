@@ -68,6 +68,8 @@ $this->get('smo/invoice/app/fap', '\Application\SMO\Form14\Controllers\AppFAPInv
 $this->get('smo/invoice/app/diag', '\Application\SMO\Form14\Controllers\AppDiagInvoiceMakerController::makeInvoice');
 $this->get('smo/invoice/aggregate', '\Application\SMO\Form14\Controllers\Form14AggregatorController::aggregate');
 
+#РАБОТА С ТФОМС
+$this->get('tfoms/upload', '\Application\TFOMS\MedicalBillingValidator\Controllers\PackagesUploaderController::upload');
 #РЕЕСТРЫ СЧЕТОВ. СТОМАТОЛОГИЯ. АНАЛИТИКА
 //Поиск не корректных целей посещения 3.0/1.0
 $this->get('invoices/analyzer/stom/incorrect-purposes', '\Application\Invoices\Analyzer\STOM\Controllers\IncorrectPurposeFinderController::find');
