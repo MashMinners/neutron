@@ -149,6 +149,7 @@ class ExcelDispAnalyzer
         //unset($rows[$highestRow-1]);
         //Получить заголовки таблицы
         $excelTableHeader = array_shift($rows);
+        unset($rows[0]);
         //$isCorrect = $this->validateExcelSchema($excelTableHeader);
         //if ($isCorrect){
         //$excelData = $this->formatCasesForJournal($rows);
@@ -171,6 +172,7 @@ class ExcelDispAnalyzer
     private function compareExcel(array $bankExcel, array $journalExcel){
         $result = [];
         $intersect = array_intersect_key($bankExcel, $journalExcel);
+        //$diff = array_diff_key($bankExcel, $journalExcel);
         $count = 1;
         foreach ($intersect as $single){
             $result[$single['uniqueId']]['COUNT']= $count;

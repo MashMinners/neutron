@@ -12,6 +12,8 @@ class FileUploaderController
     public function __construct(private FileUploader $uploader){
 
     }
+
+
     public function upload(ServerRequestInterface $request) : ResponseInterface{
         $result = $this->uploader->scanDir();
         return new JsonResponse($result);

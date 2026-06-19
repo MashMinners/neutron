@@ -70,6 +70,14 @@ $this->get('smo/invoice/aggregate', '\Application\SMO\Form14\Controllers\Form14A
 
 #РАБОТА С ТФОМС
 $this->get('tfoms/upload', '\Application\TFOMS\MedicalBillingValidator\Controllers\PackagesUploaderController::upload');
+$this->get('tfoms/distribute', '\Application\TFOMS\TargetGroupDistributor\Controllers\PatientTargetGroupDistributorController::distribute');
+
+#РЕЕСТРЫ СЧЕТОВ. ДИСПАНСЕРИЗАЦИЯ
+$this->get('invoices/validator/dp', '\Application\CMIS\InvoiceServiceValidator\DISP\Controllers\DPInvoiceValidatorController::validate');
+
+
+
+
 #РЕЕСТРЫ СЧЕТОВ. СТОМАТОЛОГИЯ. АНАЛИТИКА
 //Поиск не корректных целей посещения 3.0/1.0
 $this->get('invoices/analyzer/stom/incorrect-purposes', '\Application\Invoices\Analyzer\STOM\Controllers\IncorrectPurposeFinderController::find');

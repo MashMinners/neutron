@@ -95,9 +95,10 @@ class PackagesUploader
     private function getNonReturn(array $standard, array $successful, array $defective){
         $nonReturn = [];
         foreach ($standard as $key => $name) {
+            //Successful
             $hasZero = isset($successful[$key]) && $successful[$key] > 0;
+            //Defected
             $hasOne = isset($defective[$key]) && $defective[$key] > 0;
-
             // Невозврат: есть хотя бы одна 1, но нет ни одного 0
             if ($hasOne && !$hasZero) {
                 $nonReturn[$key] = $name;
@@ -162,11 +163,11 @@ class PackagesUploader
         $this->generateExcel($canceled, 'Canceled');
         return [
             'Всего записей' => count($excelData),
-            'Уникальные (для расчета дефект/не дефект)' => count($unique),
-            'Есть дефекты' =>  count($defected),
-            'Залиты без дефектов' =>  count($successful),
+            'Всего случаев' => count($unique),
+            'Случаи с ошибками в реестре' =>  count($defected),
+            'Случаи залитые без ошибок в реестре' =>  count($successful),
             'Удалены из оплаты' =>  count($canceled),
-            'Невозврат' =>  count($nonReturn)
+            'Не поданы на оплату' =>  count($nonReturn)
         ];
     }
 
