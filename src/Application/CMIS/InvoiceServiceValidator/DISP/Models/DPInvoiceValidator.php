@@ -37,25 +37,20 @@ class DPInvoiceValidator extends BaseDispValidator
         $validated = [];
         foreach ($uslArray AS $id => $usl){
             $age = key($usl);
-            $sampleUsl = $sample[$age];
-            $uslUsl = $usl[$age];
-            if (array_values($sample[$age]) === array_values($usl[$age])){
-                $validated['good'][] = $id;
-            }
-            else $validated['bad'][] = $id;
+            $diff = array_diff($usl[$age], $sample[$age]);
+            $validated[$id] = $diff;
         }
         return $validated;
     }
     private function getPersons(array $pers, array $validationResult){
         $validatedPersons = [];
-        $notValidatedPersons = [];
-        foreach ($validationResult['good'] AS $id){
-            $validatedPersons[$id] = $pers[$id];
+        foreach ($validationResult AS $id => $usl){
+            if (!empty($usl)){
+                $validatedPersons[$id]['PERS'] = $pers[$id];
+                $validatedPersons[$id]['USL'] = $usl;
+            }
         }
-        foreach ($validationResult['bad'] AS $id){
-            $notValidatedPersons[$id] = $pers[$id];
-        }
-        return ['validated' => $validatedPersons, 'notValidated' => $notValidatedPersons];
+        return $validatedPersons;
     }
     public function validate(array $files){
         //Получаю распарсенные XML
