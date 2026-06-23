@@ -7,6 +7,9 @@ use InvalidArgumentException;
 
 class BaseDispValidator
 {
+    private array $samples = [
+        'DP' => 'dp_sample'
+    ];
     protected function getAgeInCurrentYear($birthDate){
         // Парсим дату рождения
         $birth = DateTime::createFromFormat('Y-m-d', $birthDate);
@@ -27,6 +30,11 @@ class BaseDispValidator
         }
 
         return $age;
+    }
+
+    protected function getSample(string $type) : array{
+        $sample = include 'storage/cmis/samples/'.$this->samples[$type].'.php';
+        return $sample;
     }
 
 }

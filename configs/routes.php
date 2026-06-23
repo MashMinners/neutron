@@ -73,7 +73,7 @@ $this->get('tfoms/upload', '\Application\TFOMS\MedicalBillingValidator\Controlle
 $this->get('tfoms/distribute', '\Application\TFOMS\TargetGroupDistributor\Controllers\PatientTargetGroupDistributorController::distribute');
 
 #РЕЕСТРЫ СЧЕТОВ. ДИСПАНСЕРИЗАЦИЯ
-$this->get('invoices/validator/dp', '\Application\CMIS\InvoiceServiceValidator\DISP\Controllers\DPInvoiceValidatorController::validate');
+$this->get('cmis/invoices/validate/dp', '\Application\CMIS\InvoiceServiceValidator\DISP\Controllers\DPInvoiceValidatorController::validate');
 
 
 
