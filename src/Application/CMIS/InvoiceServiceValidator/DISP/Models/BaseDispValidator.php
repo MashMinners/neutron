@@ -9,11 +9,10 @@ class BaseDispValidator
 {
     protected function getAgeInCurrentYear($birthDate){
         // Парсим дату рождения
-        $birth = DateTime::createFromFormat('d.m.Y', $birthDate);
+        $birth = DateTime::createFromFormat('Y-m-d', $birthDate);
         if (!$birth) {
-            throw new InvalidArgumentException('Неверный формат даты. Используйте дд.мм.гггг');
+            throw new InvalidArgumentException('Неверный формат даты. Используйте ГГГГ-ММ-ДД');
         }
-
         // Текущая дата
         $now = new DateTime();
 

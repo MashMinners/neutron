@@ -9,13 +9,13 @@ use SimpleXMLElement;
 class BaseInvoiceXmlParser
 {
     private $folder = 'storage/cmis/';
-    protected function getXmlFileName(array $files, string $pattern){
+    private function getXmlFileName(array $files, string $pattern){
         $filtered = array_filter($files, function($item) use ($pattern){
             return preg_match($pattern, $item);
         });
         return ((string)reset($filtered));
     }
-    protected function simpleXmlToArray(SimpleXMLElement $xmlObject): array
+    private function simpleXmlToArray(SimpleXMLElement $xmlObject): array
     {
         $array = [];
         foreach ($xmlObject->children() as $node) {
@@ -54,77 +54,16 @@ class BaseInvoiceXmlParser
         }
         return $array;
     }
-    protected function parseD(string $file){
-        $path = $this->folder.$file;
-        $xml = simplexml_load_file($path);
-        $array = $this->simpleXmlToArray($xml);
-        foreach ($array['ZAP'] AS $key => $value){
-            $idPac =$value['PACIENT'][0]['ID_PAC'];
-            foreach ($value['Z_SL'][0]['SL'][0]['USL'] AS $key => $value){
-                $data[$idPac][] = $value['CODE_USL'];
-            }
+    public function parseXML(array $files) : array{
+        $xmlFiles['D'] = $this->getXmlFileName($files, '/^D/');
+        $xmlFiles['F'] = $this->getXmlFileName($files, '/^F/');
+        $xmlFiles['L'] = $this->getXmlFileName($files, '/^L/');
+        foreach ($xmlFiles AS $key => $file){
+            $path = $this->folder.$file;
+            $xml = simplexml_load_file($path);
+            $array[$key] = $this->simpleXmlToArray($xml);
         }
-        return $data;
-    }
-
-    protected function parseF(string $file){
-
-    }
-
-    protected function getAgeInCurrentYear($birthDate){
-        $birth = DateTime::createFromFormat('Y-m-d', $birthDate);
-        if (!$birth) {
-            throw new InvalidArgumentException('Неверный формат даты. Используйте ГГГГ-ММ-ДД');
-        }
-
-        // Текущая дата
-        $now = new DateTime();
-
-        // Вычисляем возраст
-        $age = $now->format('Y') - $birth->format('Y');
-
-        // Проверяем, был ли уже день рождения в этом году
-        $birthdayThisYear = new DateTime($now->format('Y') . '-' . $birth->format('m-d'));
-
-        if ($now < $birthdayThisYear) {
-            $age--; // Если день рождения ещё не наступил, уменьшаем возраст на 1
-        }
-
-        return $age;
-    }
-
-    protected function compare(array $dData, array $lData){
-
-        $data =[];
-        foreach ($lData AS $key=> $value){
-            $data[$key] = $this->getAgeInCurrentYear($value['DR']);
-        }
-        foreach ($dData AS $key => $value){
-            //$result[$key]['AGE'] = $data[$key];
-            $result[$key][$data[$key]] = $value;
-        }
-        return $result;
-    }
-    protected function parseL(string $file){
-        $path = $this->folder.$file;
-        $xml = simplexml_load_file($path);
-        $array = $this->simpleXmlToArray($xml);
-        foreach ($array['PERS'] AS $key => $value){
-            $result[$value['ID_PAC']] = $value;
-        }
-        return $result;
-    }
-
-
-    public function parseXML(array $files){
-        $d = $this->getXmlFileName($files, '/^D/');
-        $f = $this->getXmlFileName($files, '/^F/');
-        $l = $this->getXmlFileName($files, '/^L/');
-        $dData = $this->parseD($d);
-        $lData = $this->parseL($l);
-        //Здесь я получаю массив с услугами отсортированными по пациенту и возрасту
-        $compare = $this->compare($dData, $lData);
-        return ['D' => $d, 'F' => $f, 'L'=> $l];
+        return $array;
     }
 
 }
