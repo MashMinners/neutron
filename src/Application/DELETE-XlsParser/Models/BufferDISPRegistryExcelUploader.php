@@ -104,6 +104,11 @@ class BufferDISPRegistryExcelUploader
                                buffer_disp_register_diagnosis, buffer_disp_register_doctor, buffer_disp_register_disp_sign, 
                                buffer_disp_register_unique_entry, buffer_disp_register_purpose) VALUES");
         foreach ($excelData AS $row) {
+            /**
+             * Так как данные из Ексель могут содержать различные заголовки, мы должны брать только данные заголовки ячеек
+             * которых определены в схеме класса. Но предварительно нужно проверить совпадают ли заголовки с теми, что указаны в схеме
+             */
+            //$query .= (" ('$row[$schema[0]]', '$row[$schema[1]]', '$row[$schema[2]]', $row[$schema[3]]... etc'),");
             $query .= (" ('$row[0]', '$row[1]', '$row[2]', $row[3],  $row[4], '$row[5]', '$row[6]', '$row[7]', '$row[8]', '$row[9]'),");
         };
         //Вставляем данные в БД

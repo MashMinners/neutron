@@ -10,7 +10,9 @@ class BaseDispValidator
     private array $samples = [
         'DP' => 'dp_sample'
     ];
-    protected function getAgeInCurrentYear($birthDate){
+
+    //Данная функция определяет возвраст на текущую дату
+    protected function getAgeInCurrentYearByCurrentDate($birthDate){
         // Парсим дату рождения
         $birth = DateTime::createFromFormat('Y-m-d', $birthDate);
         if (!$birth) {
@@ -30,6 +32,22 @@ class BaseDispValidator
         }
 
         return $age;
+    }
+
+    //Данная функция определяет сколько лет пациенту будет в текущем году
+    protected function getAgeInCurrentYear(string $birthDate){
+        // Парсим дату рождения
+        $birth = DateTime::createFromFormat('Y-m-d', $birthDate);
+        if (!$birth) {
+            return null; // Неверный формат
+        }
+
+        $currentYear = (int) date('Y');
+        $birthYear = (int) $birth->format('Y');
+
+        // Возраст в текущем календарном году = текущий год - год рождения
+        // Потому что день рождения в этом году обязательно наступит
+        return $currentYear - $birthYear;
     }
 
     protected function getSample(string $type) : array{

@@ -27,7 +27,9 @@ class DPInvoiceValidator extends BaseDispValidator
             $data[$key] = $this->getAgeInCurrentYear($value['DR']);
         }
         foreach ($usl AS $key => $value){
-            $result[$key][$data[$key]] = $value;
+            //$result[$key][$data[$key]] = $value;
+            $result[$key]['USL'][$data[$key]] = $value;
+            $result[$key]['PERS'] = $pers[$key];
         }
         return $result;
     }
@@ -36,18 +38,26 @@ class DPInvoiceValidator extends BaseDispValidator
         $sample = $this->getSample('DP');
         $validated = [];
         foreach ($uslArray AS $id => $usl){
-            $age = key($usl);
-            $diff = array_diff($usl[$age], $sample[$age]);
-            $validated[$id] = $diff;
+            $age = key($usl['USL']);
+            $diff = array_diff($usl['USL'][$age], $sample[$age][$usl['PERS']['W']]);
+            $validated[$id]['PERS'] = $usl['PERS'];
+            $validated[$id]['USL'] = $diff;
         }
         return $validated;
     }
     private function getPersons(array $pers, array $validationResult){
-        $validatedPersons = [];
+        /*$validatedPersons = [];
         foreach ($validationResult AS $id => $usl){
             if (!empty($usl)){
                 $validatedPersons[$id]['PERS'] = $pers[$id];
                 $validatedPersons[$id]['USL'] = $usl;
+            }
+        }
+        return $validatedPersons;*/
+        $validatedPersons = [];
+        foreach ($validationResult AS $id => $result){
+            if (!empty($result['USL'])){
+                $validatedPersons[$id] = $result;
             }
         }
         return $validatedPersons;
