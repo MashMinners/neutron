@@ -41,6 +41,7 @@ class DPInvoiceValidator extends BaseDispValidator
             $age = key($usl['USL']);
             $diff = array_diff($usl['USL'][$age], $sample[$age][$usl['PERS']['W']]);
             $validated[$id]['PERS'] = $usl['PERS'];
+            $validated[$id]['PERS']['AGE'] = $age;
             $validated[$id]['USL'] = $diff;
         }
         return $validated;
@@ -72,7 +73,7 @@ class DPInvoiceValidator extends BaseDispValidator
         //Валидации сгруппированных по возрасту услуг с шаблонами соответствующих фонду
         $validationResult = $this->validateWithSample($uslGroupedByAge);
         $persons = $this->getPersons($pers, $validationResult);
-        return $persons;
+        return ['Количество записей всего' => count($data['L']['PERS']), 'Количество записей с ошибками' => count($persons), 'Записи' => $persons];
     }
 
 }
