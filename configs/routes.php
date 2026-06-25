@@ -74,6 +74,7 @@ $this->get('tfoms/distribute', '\Application\TFOMS\TargetGroupDistributor\Contro
 
 #РЕЕСТРЫ СЧЕТОВ. ДИСПАНСЕРИЗАЦИЯ
 $this->get('cmis/invoices/validate/dp', '\Application\CMIS\InvoiceServiceValidator\DISP\Controllers\DPInvoiceValidatorController::validate');
+$this->get('cmis/invoices/validate/da', '\Application\CMIS\InvoiceServiceValidator\DISP\Controllers\DAInvoiceValidatorController::validate');
 
 
 

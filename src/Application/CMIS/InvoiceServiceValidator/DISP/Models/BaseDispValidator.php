@@ -8,7 +8,8 @@ use InvalidArgumentException;
 class BaseDispValidator
 {
     private array $samples = [
-        'DP' => 'dp_sample'
+        'DP' => 'dp_sample',
+        'DA' => 'da_sample'
     ];
 
     //Данная функция определяет возвраст на текущую дату
