@@ -10,9 +10,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class ExcelGenerator
 {
-    public function generate(array $persons){
-        $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
+    private function generateHeader($sheet){
         $row = 1;
         $col = 'A';
         $header = ['ID_PAC', 'Фамилия', 'Имя', 'Отчество', 'Пол', 'Дата рождения', 'СНИЛС', 'ОКАТО 1', 'ОКАТО 2', 'Возвраст'];
@@ -31,6 +29,10 @@ class ExcelGenerator
             $sheet->getStyle($col.$row)->getFont()->setBold(true);
             $col++;
         }
+        return $sheet;
+    }
+
+    private function generateBody($sheet, $persons){
         $row = 2;
         foreach ($persons AS $person){
             $pers = $person['PERS'];
@@ -56,7 +58,16 @@ class ExcelGenerator
                 $row++;
             }
         }
-        $file = 'File';
+        $sheet->mergeCells("A$row:J$row");
+        $sheet->setCellValue("A$row", 'Всего случаев с ошибками '.count($persons));
+        return $sheet;
+    }
+    public function generate(array $persons){
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheetWithHeader = $this->generateHeader($sheet);
+        $this->generateBody($sheetWithHeader, $persons);
+        $file = 'Диспансеризация 1 этап';
         $writer = new Xlsx($spreadsheet);
         $file = 'storage/cmis/completed/'.$file.'.xlsx';
         $writer->save($file);
