@@ -42,6 +42,7 @@ class DPInvoiceValidator extends BaseDispValidator
         //Валидации сгруппированных по возрасту услуг с шаблонами соответствующих фонду
         $validationResult = $this->validateWithSample($uslGroupedByAge);
         $persons = $this->getPersons($validationResult);
+        (new ExcelGenerator())->generate($persons);
         return ['Количество записей всего' => count($data['L']['PERS']), 'Количество записей с ошибками' => count($persons), 'Записи' => $persons];
     }
 
