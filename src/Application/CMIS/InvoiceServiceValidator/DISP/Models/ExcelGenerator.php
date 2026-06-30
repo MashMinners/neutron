@@ -62,14 +62,13 @@ class ExcelGenerator
         $sheet->setCellValue("A$row", 'Всего случаев с ошибками '.count($persons));
         return $sheet;
     }
-    public function generate(array $persons){
+    public function generate(array $persons, $fileName){
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $sheetWithHeader = $this->generateHeader($sheet);
         $this->generateBody($sheetWithHeader, $persons);
-        $file = 'Диспансеризация 1 этап';
         $writer = new Xlsx($spreadsheet);
-        $file = 'storage/cmis/completed/'.$file.'.xlsx';
+        $file = 'storage/cmis/completed/'.$fileName.'.xlsx';
         $writer->save($file);
     }
 

@@ -33,6 +33,7 @@ class DAInvoiceValidator extends BaseDispValidator
         $uslGroupedWithPers = $this->getUslGroupedWithPers($usl, $pers);
         $validationResult = $this->validateWithSample($uslGroupedWithPers);
         $persons = $this->getPersons($validationResult);
+        (new ExcelGenerator())->generate($persons, 'Диспансеризация углубленная');
         return ['Количество записей всего' => count($data['L']['PERS']), 'Количество записей с ошибками' => count($persons), 'Записи' => $persons];
     }
 
