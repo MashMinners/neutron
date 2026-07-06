@@ -77,7 +77,7 @@ class PatientTargetGroupDistributor
             $row++;
         }
         $writer = new Xlsx($spreadsheet);
-        $file = 'storage/tfoms/distributed/'.$filename.'.xlsx';
+        $file = 'storage/tfoms/TargetDistributor/completed/'.$filename.'.xlsx';
         $writer->save($file);
         return $file;
     }
