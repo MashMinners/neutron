@@ -64,6 +64,7 @@ $this->get('smo/invoice/aggregate', '\Application\SMO\Form14\Controllers\Form14A
 
 #РАБОТА С ТФОМС
 $this->get('tfoms/billing-validator/validate/stac', '\Application\TFOMS\MedicalBillingValidator\STAC\Controllers\ValidatorController::validate');
+$this->get('tfoms/billing-validator/match/stac', '\Application\TFOMS\MedicalBillingValidator\STAC\Controllers\GuaranteedPaymentsMatcherController::match');
 $this->get('tfoms/distribute', '\Application\TFOMS\TargetGroupDistributor\Controllers\PatientTargetGroupDistributorController::distribute');
 
 #CMIS. ВАЛИДАЦИЯ РЕЕСТРОВ СЧЕТОВ. ДИСПАНСЕРИЗАЦИЯ

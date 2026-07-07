@@ -5,6 +5,11 @@ namespace Application\TFOMS\MedicalBillingValidator\STAC\Models;
 use Application\TFOMS\MedicalBillingValidator\Base\DataParser;
 use Application\TFOMS\MedicalBillingValidator\Base\ResultFileMaker;
 
+/**
+ * Данный класс принимает на вход данные в виде .ods в которых прописаны случаи заливки и отказов из ТФОМС
+ * Далее он находит уникальное количество случаев которые поданы, сколько из них успешно залито и сколько не приняты
+ * ФОНДом к оплате т.е. они не попадут в счета. Так же он показывает случае исключенные из оплаты сотрудниками ФОНДа
+ */
 class Validator
 {
     public function __construct(private DataParser $parser, private ResultFileMaker $maker){
