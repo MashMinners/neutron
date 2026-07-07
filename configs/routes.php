@@ -43,12 +43,6 @@ $this->get('xml/stom/upload', '\Application\XMLParser\Controllers\StomXMLUploade
 $this->delete('xml/stom/truncate', '\Application\XMLParser\Controllers\StomXMLUploaderController::truncate');
 
 #РАБОТА С СМО
-//$this->get('smo/parse/disp/cmis', '\Application\ExcelParser\Controllers\SMO\CmisDispExelUploaderController::upload');
-//$this->get('smo/analyze/stom', '\Application\SMO\Controllers\ExcelSTOMAnalyzerController::analyze');
-$this->get('smo/analyze/disp', '\Application\SMO\Controllers\ExcelDispAnalyzerController::analyze');
-//$this->get('smo/analyze/exam', '\Application\SMO\Controllers\ExcelExamAnalyzerController::analyze');
-//$this->get('smo/analyze/dpr', '\Application\SMO\Controllers\ExcelDPRAnalyzerController::analyze');
-//$this->get('smo/analyze/ks', '\Application\SMO\Controllers\ExcelKSAnalyzerController::analyze');
 $this->get('smo/invoice/base', '\Application\SMO\Form14\Controllers\BaseInvoiceMakerController::makeInvoice');
 $this->get('smo/invoice/exam', '\Application\SMO\Form14\Controllers\ExamInvoiceMakerController::makeInvoice');
 $this->get('smo/invoice/exam/children', '\Application\SMO\Form14\Controllers\ExamChildrenInvoiceMakerController::makeInvoice');
@@ -69,15 +63,12 @@ $this->get('smo/invoice/app/diag', '\Application\SMO\Form14\Controllers\AppDiagI
 $this->get('smo/invoice/aggregate', '\Application\SMO\Form14\Controllers\Form14AggregatorController::aggregate');
 
 #РАБОТА С ТФОМС
-$this->get('tfoms/upload', '\Application\TFOMS\MedicalBillingValidator\Controllers\PackagesUploaderController::upload');
+$this->get('tfoms/billing-validator/validate/stac', '\Application\TFOMS\MedicalBillingValidator\STAC\Controllers\ValidatorController::validate');
 $this->get('tfoms/distribute', '\Application\TFOMS\TargetGroupDistributor\Controllers\PatientTargetGroupDistributorController::distribute');
 
-#РЕЕСТРЫ СЧЕТОВ. ДИСПАНСЕРИЗАЦИЯ
+#CMIS. ВАЛИДАЦИЯ РЕЕСТРОВ СЧЕТОВ. ДИСПАНСЕРИЗАЦИЯ
 $this->get('cmis/invoices/validate/dp', '\Application\CMIS\InvoiceServiceValidator\DISP\Controllers\DPInvoiceValidatorController::validate');
 $this->get('cmis/invoices/validate/da', '\Application\CMIS\InvoiceServiceValidator\DISP\Controllers\DAInvoiceValidatorController::validate');
-
-
-
 
 #РЕЕСТРЫ СЧЕТОВ. СТОМАТОЛОГИЯ. АНАЛИТИКА
 //Поиск не корректных целей посещения 3.0/1.0
