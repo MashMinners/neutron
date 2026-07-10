@@ -2,13 +2,12 @@
 
 namespace Application\TFOMS\MedicalBillingValidator\STAC\Models;
 
-use Application\TFOMS\MedicalBillingValidator\Base\DataParser;
 use Application\TFOMS\MedicalBillingValidator\Base\ResultFileMaker;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class GuaranteedPaymentsMatcher
 {
-    public function __construct(private DataParser $parser, private ResultFileMaker $maker){
+    public function __construct(private ResultFileMaker $maker){
 
     }
     private $successFile = 'storage/tfoms/BillingValidator/Successful.xlsx';

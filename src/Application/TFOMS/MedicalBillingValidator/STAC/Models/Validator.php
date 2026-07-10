@@ -29,6 +29,18 @@ class Validator
     private function getSuccessful($data){
         $successful =[];
         foreach ($data AS $key => $value){
+            //if ($value['H'] === '0' && $value['I'] === '0'){
+            if ($value['H'] === '0'){
+                $uniqueId = $value['A'].'-'.$value['B'].'-'.$value['C'].'-'.$value['D'].'-'.$value['M'].'-'.$value['N'].'-'.$value['O'].'-'.$value['P'];
+                $successful[$uniqueId] = $value;
+            }
+        }
+        return $successful;
+    }
+
+    private function getTakenForPayment(array $data){
+        $successful =[];
+        foreach ($data AS $key => $value){
             if ($value['H'] === '0' && $value['I'] === '0'){
                 $uniqueId = $value['A'].'-'.$value['B'].'-'.$value['C'].'-'.$value['D'].'-'.$value['M'].'-'.$value['N'].'-'.$value['O'].'-'.$value['P'];
                 $successful[$uniqueId] = $value;
@@ -109,6 +121,8 @@ class Validator
         $successful = $this->getSuccessful($unique);
         //Получить данные по удаленным из оплаты записям
         $canceled = $this->getCanceled($unique);
+        //Получаю те записи которые фонд принял на оплату
+        $forPayment = $this->getTakenForPayment($unique);
         //На выходе должно получаться столько же записей,сколько и вошло, но с унифицированным идентификатором
         $unifiedUnique = $this->unify($unique);
         //На выходе должно получаться столько же записей,сколько и вошло, но с унифицированным идентификатором
@@ -127,10 +141,12 @@ class Validator
         $this->maker->generateExcel($successful, 'Successful');
         $this->maker->generateExcel($nonReturn, 'Non Return');
         $this->maker->generateExcel($canceled, 'Canceled');
+        $this->maker->generateExcel($forPayment, 'For Payment');
         return [
             'Всего записей' => count($excelData),
             'Уникальные случаи' => count($uniqueCase),
             'Случаи залитые без ошибок в реестре' =>  count($successful),
+            'Приняты на оплату' => count($forPayment),
             'Удалены из оплаты' =>  count($canceled),
             'Не поданы на оплату' =>  count($nonReturn)
         ];
