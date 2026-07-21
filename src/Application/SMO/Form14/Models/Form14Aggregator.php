@@ -4,7 +4,8 @@ namespace Application\SMO\Form14\Models;
 
 class Form14Aggregator
 {
-    private string $pathFolder = "storage/smo/";
+    private string $invoiceFolder = "storage/smo/invoices/";
+
     private array$acceptableFiles = [
         '1й этап дисп',
         '2й этап дисп',
@@ -43,25 +44,26 @@ class Form14Aggregator
         'СМП' => SMPInvoiceMaker::class
     ];
 
-    private function formatAcceptableFilesNames(string $file){
+    private function formatAcceptableInvoiceFilesNames(string $file){
         $pattern = '/([^\/]+)-(\d+)\.xlsx$/u';;
 
         if (preg_match($pattern, $file, $matches)) {
             return [$matches[1], $matches[2]];
         }
     }
+
     public function aggregate(){
-        $files = glob($this->pathFolder . '*.xlsx');
+        $files = glob($this->invoiceFolder . '*.xlsx');
         //Сравниваем название файлов с допустимыми и по тем чьи названия совпали делаем переработку файлов по очереди
         $filesNames = [];
         foreach ($files AS $file){
-            $formatted = $this->formatAcceptableFilesNames($file);
+            $formatted = $this->formatAcceptableInvoiceFilesNames($file);
             $filesNames[$file] = $formatted[0];
         }
         $accepted = array_intersect($filesNames, $this->acceptableFiles);
         $message = [];
-        foreach ($accepted AS $file => $maker){
-            $message[] = (new $this->makers[$maker])->makeInvoice($file);
+        foreach ($accepted AS $invoice => $maker){
+            $message[] = (new $this->makers[$maker])->makeInvoice($invoice);
         }
         return $message;
     }
