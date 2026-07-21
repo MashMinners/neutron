@@ -12,7 +12,12 @@ class GuaranteedPaymentsMatcher
     }
     private $successFile = 'storage/tfoms/BillingValidator/Successful.xlsx';
     private $guaranteedFile = 'storage/tfoms/BillingValidator/KSDS.xlsx';
-    public function getSuccessful(){
+
+    /**
+     * Данный метод получает данные из файла Successful.xlsx который был сформирован заранее в Validator->validate()
+     * @return \mixed[][]
+     */
+    private function getSuccessful(){
         $spreadsheet = IOFactory::load($this->successFile);
         $sheet = $spreadsheet->getActiveSheet();
         $startRow = 'A1';
@@ -72,7 +77,7 @@ class GuaranteedPaymentsMatcher
      * Возвращает ID записей из первой таблицы,
      * которых НЕТ во второй (не гарантированные)
      */
-    public function findMissing(array $indicatedWithUnique): array
+    private function findMissing(array $indicatedWithUnique): array
     {
         //Истории болезни залитые в ФОНД, но не повявившиеся в счете
         $missed = array_diff_key($indicatedWithUnique['Successful'], $indicatedWithUnique['Guaranteed']);
