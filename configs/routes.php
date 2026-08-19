@@ -70,6 +70,9 @@ $this->get('tfoms/distribute', '\Application\TFOMS\TargetGroupDistributor\Contro
 #CMIS. ВАЛИДАЦИЯ РЕЕСТРОВ СЧЕТОВ. ДИСПАНСЕРИЗАЦИЯ
 $this->get('cmis/invoices/validate/dp', '\Application\CMIS\InvoiceServiceValidator\DISP\Controllers\DPInvoiceValidatorController::validate');
 $this->get('cmis/invoices/validate/da', '\Application\CMIS\InvoiceServiceValidator\DISP\Controllers\DAInvoiceValidatorController::validate');
+#CMIS. ВАЛИДАЦИЯ РЕЕСТРОВ ПРИКРЕПЛЕНИЯ НАСЕЛЕНИЯ. ДИСПАНСЕРИЗАЦИЯ
+$this->get('cmis/attachment/validate/disp', '\Application\CMIS\AttachmentValidator\Controllers\DispAttachmentValidatorController::validate');
+$this->get('cmis/attachment/validate/stac', '\Application\CMIS\AttachmentValidator\Controllers\StacAttachmentValidatorController::validate');
 
 #РЕЕСТРЫ СЧЕТОВ. СТОМАТОЛОГИЯ. АНАЛИТИКА
 //Поиск не корректных целей посещения 3.0/1.0
