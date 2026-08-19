@@ -29,7 +29,7 @@ class AppDNInvoiceMaker extends BaseInvoicesMaker
         $position = 1;
         foreach ($rows AS $row){
             $dates = explode(' - ', $row['M']);
-            $uniqueId = $row['J'].'-'.$dates[0].'-'.$dates[1];
+            $uniqueId = $row['J'].'-'.$row['L'].'-'.$dates[0].'-'.$dates[1];
             $needle[$uniqueId]['position'] = $position;
             $needle[$uniqueId]['full_name'] = $row['B'];
             //$needle[$uniqueId]['gender'] = $this->gender[$row['C']];
