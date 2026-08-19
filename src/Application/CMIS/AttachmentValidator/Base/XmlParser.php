@@ -1,10 +1,10 @@
 <?php
 
-namespace Application\CMIS\AttachmentValidator\Models;
+namespace Application\CMIS\AttachmentValidator\Base;
 
 use SimpleXMLElement;
 
-class BaseInvoiceXmlParser
+class XmlParser
 {
     private $folder = 'storage/cmis/attachment/';
     private function simpleXmlToArray(SimpleXMLElement $xmlObject): array

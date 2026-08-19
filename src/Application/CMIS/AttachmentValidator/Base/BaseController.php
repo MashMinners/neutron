@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\CMIS\AttachmentValidator\Controllers;
+namespace Application\CMIS\AttachmentValidator\Base;
 
 
 class BaseController

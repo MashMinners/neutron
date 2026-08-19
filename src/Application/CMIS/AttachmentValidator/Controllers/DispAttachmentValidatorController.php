@@ -2,8 +2,9 @@
 
 namespace Application\CMIS\AttachmentValidator\Controllers;
 
+use Application\CMIS\AttachmentValidator\Base\BaseController;
+use Application\CMIS\AttachmentValidator\Base\ExcelGenerator;
 use Application\CMIS\AttachmentValidator\Models\DispAttachmentValidator;
-use Application\CMIS\AttachmentValidator\Models\ExcelGenerator;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

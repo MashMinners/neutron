@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\CMIS\AttachmentValidator\Models;
+namespace Application\CMIS\AttachmentValidator\Base;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Border;

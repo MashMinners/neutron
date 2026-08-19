@@ -2,9 +2,11 @@
 
 namespace Application\CMIS\AttachmentValidator\Models;
 
+use Application\CMIS\AttachmentValidator\Base\XmlParser;
+
 class DispAttachmentValidator extends BaseAttachmentValidator
 {
-    public function __construct(private BaseInvoiceXmlParser $parser){
+    public function __construct(private XmlParser $parser){
 
     }
     /*

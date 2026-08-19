@@ -43,23 +43,7 @@ $this->get('xml/stom/upload', '\Application\XMLParser\Controllers\StomXMLUploade
 $this->delete('xml/stom/truncate', '\Application\XMLParser\Controllers\StomXMLUploaderController::truncate');
 
 #РАБОТА С СМО
-$this->get('smo/invoice/base', '\Application\SMO\Form14\Controllers\BaseInvoiceMakerController::makeInvoice');
-$this->get('smo/invoice/exam', '\Application\SMO\Form14\Controllers\ExamInvoiceMakerController::makeInvoice');
-$this->get('smo/invoice/exam/children', '\Application\SMO\Form14\Controllers\ExamChildrenInvoiceMakerController::makeInvoice');
-$this->get('smo/invoice/disp1', '\Application\SMO\Form14\Controllers\Disp1InvoiceMakerController::makeInvoice');
-$this->get('smo/invoice/disp2', '\Application\SMO\Form14\Controllers\Disp2InvoiceMakerController::makeInvoice');
-$this->get('smo/invoice/disp/in-depth', '\Application\SMO\Form14\Controllers\DispInDepthInvoiceMakerController::makeInvoice');
-$this->get('smo/invoice/app/dn', '\Application\SMO\Form14\Controllers\AppDNInvoiceMakerController::makeInvoice');
-$this->get('smo/invoice/app/dn/onco', '\Application\SMO\Form14\Controllers\AppDnOncoInvoiceMakerController::makeInvoice');
-$this->get('smo/invoice/dpr', '\Application\SMO\Form14\Controllers\DprInvoiceMakerController::makeInvoice');
-$this->get('smo/invoice/smp', '\Application\SMO\Form14\Controllers\SMPInvoiceMakerController::makeInvoice');
-$this->get('smo/invoice/ks', '\Application\SMO\Form14\Controllers\KSInvoiceMakerController::makeInvoice');
-$this->get('smo/invoice/ds', '\Application\SMO\Form14\Controllers\DSInvoiceMakerController::makeInvoice');
-$this->get('smo/invoice/app', '\Application\SMO\Form14\Controllers\AppInvoiceMakerController::makeInvoice');
-$this->get('smo/invoice/app/onco', '\Application\SMO\Form14\Controllers\AppOncoInvoiceMakerController::makeInvoice');
-$this->get('smo/invoice/app/onco/fap', '\Application\SMO\Form14\Controllers\AppOncoFAPInvoiceMakerController::makeInvoice');
-$this->get('smo/invoice/app/fap', '\Application\SMO\Form14\Controllers\AppFAPInvoiceMakerController::makeInvoice');
-$this->get('smo/invoice/app/diag', '\Application\SMO\Form14\Controllers\AppDiagInvoiceMakerController::makeInvoice');
+//Генерирует файлы счетов в СМО по 14 форме
 $this->get('smo/invoice/aggregate', '\Application\SMO\Form14\Controllers\Form14AggregatorController::aggregate');
 
 #РАБОТА С ТФОМС
@@ -68,10 +52,15 @@ $this->get('tfoms/billing-validator/match/stac', '\Application\TFOMS\MedicalBill
 $this->get('tfoms/distribute', '\Application\TFOMS\TargetGroupDistributor\Controllers\PatientTargetGroupDistributorController::distribute');
 
 #CMIS. ВАЛИДАЦИЯ РЕЕСТРОВ СЧЕТОВ. ДИСПАНСЕРИЗАЦИЯ
+//Валидирует услуги предоставленные в XML из CMIS со списком услуг из справочника ТФОМС по 1 этапу диспансеризации и проф. осмотрам
 $this->get('cmis/invoices/validate/dp', '\Application\CMIS\InvoiceServiceValidator\DISP\Controllers\DPInvoiceValidatorController::validate');
+//Валидирует услуги предоставленные в XML из CMIS со списком услуг из справочника ТФОМС по углубленной диспансеризации
 $this->get('cmis/invoices/validate/da', '\Application\CMIS\InvoiceServiceValidator\DISP\Controllers\DAInvoiceValidatorController::validate');
+
 #CMIS. ВАЛИДАЦИЯ РЕЕСТРОВ ПРИКРЕПЛЕНИЯ НАСЕЛЕНИЯ. ДИСПАНСЕРИЗАЦИЯ
+//Ищет среди записей в реестре XML по диспансеризации людей, у которых не проставлено прикрепление в CMIS. Файлы D, F, L
 $this->get('cmis/attachment/validate/disp', '\Application\CMIS\AttachmentValidator\Controllers\DispAttachmentValidatorController::validate');
+//Ищет среди записей в реестре XML по стационару людей, у которых не проставлено прикрепление в CMIS. Файлы S, H, L
 $this->get('cmis/attachment/validate/stac', '\Application\CMIS\AttachmentValidator\Controllers\StacAttachmentValidatorController::validate');
 
 #РЕЕСТРЫ СЧЕТОВ. СТОМАТОЛОГИЯ. АНАЛИТИКА
@@ -79,13 +68,9 @@ $this->get('cmis/attachment/validate/stac', '\Application\CMIS\AttachmentValidat
 $this->get('invoices/analyzer/stom/incorrect-purposes', '\Application\Invoices\Analyzer\STOM\Controllers\IncorrectPurposeFinderController::find');
 //Поиск не корректных услуг. Либо не одной первичной услуги в случае, либо 2 и более первичных услуг
 $this->get('invoices/analyzer/stom/incorrect-services', '\Application\Invoices\Analyzer\STOM\Controllers\IncorrectServicesFinderController::find');
-//Поискне корректных диагнозов по отношению к пролеченным зубам
+//Поиск некорректных диагнозов по отношению к пролеченным зубам
 $this->get('invoices/analyzer/stom/incorrect-teeth', '\Application\Invoices\Analyzer\STOM\Controllers\IncorrectTeethFinderController::find');
 //Поиск пересечений случаев за 30 дневный период
 $this->get('invoices/analyzer/stom/intersections', '\Application\Invoices\Analyzer\STOM\Controllers\IntersectionsFinderController::find');
 //Поиск разорванных случаев, когда на 1 пациента 2 и более случаев за 30 дней
 $this->get('invoices/analyzer/stom/torn-cases', '\Application\Invoices\Analyzer\STOM\Controllers\TornCaseFinderController::find');
-
-#РЕЕСТРЫ СЧЕТОВ. СТОМАТОЛОГИЯ. РАБОТА С БД
-$this->get('invoices/uploader/stom/excel/upload-to-mysql', '\Application\Invoices\Uploader\STOM\Controllers\ExcelUploaderController::uploadToMySQL');
-$this->get('invoices/uploader/stom/xml/upload-to-mysql', '\Application\Invoices\Uploader\STOM\Controllers\XmlUploaderController::uploadToMySQL');
