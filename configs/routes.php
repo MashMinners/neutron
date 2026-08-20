@@ -1,23 +1,23 @@
 <?php
 #ИСТОРИИ БОЛЕЗНИ
 //Заливает в базу данные по случаям стационара
-$this->get('histories/upload', '\Application\ExcelUploader\Controllers\MedicalHistoriesExcelUploadController::upload');
+//$this->get('histories/upload', '\Application\ExcelUploader\Controllers\MedicalHistoriesExcelUploadController::upload');
 //Очищение таблиув с ИБ по стационару
-$this->delete('histories/truncate', '\Application\ExcelUploader\Controllers\MedicalHistoriesExcelUploadController::truncate');
+//$this->delete('histories/truncate', '\Application\ExcelUploader\Controllers\MedicalHistoriesExcelUploadController::truncate');
 
 #ПОСЕЩЕНИЯ ПОЛИКЛИНИКИ
-$this->get('visits/upload', '\Application\ExcelUploader\Controllers\VisitsExcelUploadController::upload');
-$this->delete('visits/truncate', '\Application\ExcelUploader\Controllers\VisitsExcelUploadController::truncate');
+//$this->get('visits/upload', '\Application\ExcelUploader\Controllers\VisitsExcelUploadController::upload');
+//$this->delete('visits/truncate', '\Application\ExcelUploader\Controllers\VisitsExcelUploadController::truncate');
 
 #ЗАГРУЗКА ФАЙЛОВ
-$this->get('file/upload', '\Application\FileUploader\Controllers\FileUploaderController::upload');
+//$this->get('file/upload', '\Application\FileUploader\Controllers\FileUploaderController::upload');
 
 
 #РАБОТА С БУФЕРНОЙ ТАБЛИЦЕЙ СТОМАТОЛОГИИ
 //Загрузка реестров
-$this->get('buffer/stom/upload', '\Application\ExcelUploader\Controllers\BufferSTOMRegistryExcelUploaderController::upload');
+//$this->get('buffer/stom/upload', '\Application\ExcelUploader\Controllers\BufferSTOMRegistryExcelUploaderController::upload');
 //Очистка буфера
-$this->delete('buffer/stom/truncate', '\Application\ExcelUploader\Controllers\BufferSTOMRegistryExcelUploaderController::truncate');
+//$this->delete('buffer/stom/truncate', '\Application\ExcelUploader\Controllers\BufferSTOMRegistryExcelUploaderController::truncate');
 /**
  * Сначала ищем дубликаты - это разорванные случаи!
  * Потом объединяем их в один случай
@@ -26,21 +26,21 @@ $this->delete('buffer/stom/truncate', '\Application\ExcelUploader\Controllers\Bu
 
 #РАБОТА С БУФЕРНОЙ ТАБЛИЦЕЙ ДИСПАНСЕРИЗАЦИИ
 //Загрузка реестров
-$this->get('buffer/disp/upload', '\Application\ExcelUploader\Controllers\BufferDISPRegistryExcelUploaderController::upload');
+//$this->get('buffer/disp/upload', '\Application\ExcelUploader\Controllers\BufferDISPRegistryExcelUploaderController::upload');
 //Очистка буфера
-$this->delete('buffer/disp/truncate', '\Application\ExcelUploader\Controllers\BufferDISPRegistryExcelUploaderController::truncate');
+//$this->delete('buffer/disp/truncate', '\Application\ExcelUploader\Controllers\BufferDISPRegistryExcelUploaderController::truncate');
 //Пересечения
-$this->get('buffer/disp/intersections', '\Application\IntersectionsFinder\Controllers\BufferDISPRegistryIntersectionsFinderController::find');
+//$this->get('buffer/disp/intersections', '\Application\IntersectionsFinder\Controllers\BufferDISPRegistryIntersectionsFinderController::find');
 
 #РАБОТА С БУФЕРНОЙ ТАБЛИЦЕЙ ПО ЛИСТКАМ НЕТРУДОСПОСОБНОСТИ
-$this->get('ln/upload', '\Application\ExcelUploader\Controllers\SickNoteExcelUploaderController::upload');
-$this->get('ln/truncate', '\Application\ExcelUploader\Controllers\SickNoteExcelUploaderController::truncate');
-$this->get('ln/intersections', '\Application\IntersectionsFinder\Controllers\SickNoteIntersectionsFinderController::find');
+//$this->get('ln/upload', '\Application\ExcelUploader\Controllers\SickNoteExcelUploaderController::upload');
+//$this->get('ln/truncate', '\Application\ExcelUploader\Controllers\SickNoteExcelUploaderController::truncate');
+//$this->get('ln/intersections', '\Application\IntersectionsFinder\Controllers\SickNoteIntersectionsFinderController::find');
 
 #РАБОТА С ПАРСЕРОМ XML
-$this->get('xml/parse', '\Application\XMLParser\Controllers\XMLParserController::parse');
-$this->get('xml/stom/upload', '\Application\XMLParser\Controllers\StomXMLUploaderController::upload');
-$this->delete('xml/stom/truncate', '\Application\XMLParser\Controllers\StomXMLUploaderController::truncate');
+//$this->get('xml/parse', '\Application\XMLParser\Controllers\XMLParserController::parse');
+//$this->get('xml/stom/upload', '\Application\XMLParser\Controllers\StomXMLUploaderController::upload');
+//$this->delete('xml/stom/truncate', '\Application\XMLParser\Controllers\StomXMLUploaderController::truncate');
 
 #РАБОТА С СМО
 //Генерирует файлы счетов в СМО по 14 форме
@@ -56,6 +56,9 @@ $this->get('tfoms/distribute', '\Application\TFOMS\TargetGroupDistributor\Contro
 $this->get('cmis/invoices/validate/dp', '\Application\CMIS\InvoiceServiceValidator\DISP\Controllers\DPInvoiceValidatorController::validate');
 //Валидирует услуги предоставленные в XML из CMIS со списком услуг из справочника ТФОМС по углубленной диспансеризации
 $this->get('cmis/invoices/validate/da', '\Application\CMIS\InvoiceServiceValidator\DISP\Controllers\DAInvoiceValidatorController::validate');
+
+#CMIS. ВАЛИДАЦИЯ РЕЕСТРОВ СЧЕТОВ. СТОМАТОЛОГИЯ
+$this->get('cmis/invoices/stom/intersections', '\Application\CMIS\InvoiceServiceValidator\STOM\Controllers\IntersectionsFinderController::find');
 
 #CMIS. ВАЛИДАЦИЯ РЕЕСТРОВ ПРИКРЕПЛЕНИЯ НАСЕЛЕНИЯ. ДИСПАНСЕРИЗАЦИЯ
 //Ищет среди записей в реестре XML по диспансеризации людей, у которых не проставлено прикрепление в CMIS. Файлы D, F, L
