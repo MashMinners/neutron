@@ -69,14 +69,33 @@ class IntersectionsFinder
         return $intersections;
     }
 
+    private function assembleDataSet(array $intersections) : array{
+        $dataSet = [];
+        $i = 0;
+        foreach ($intersections AS $intersection){
+            $dataSet[$i]['DATE_IN_TFOMS'] = $intersection['DATE_IN_TFOMS'];
+            $dataSet[$i]['DATE_OUT_TFOMS'] = $intersection['DATE_OUT_TFOMS'];
+            $dataSet[$i]['DATE_IN'] = $intersection['DATE_IN'];
+            $dataSet[$i]['DATE_OUT'] = $intersection['DATE_OUT'];
+            $dataSet[$i]['FAM'] = $intersection['FAM'];
+            $dataSet[$i]['IM'] = $intersection['IM'];
+            $dataSet[$i]['OT'] = $intersection['OT'];
+            $dataSet[$i]['DR'] = $intersection['DR'];
+            $dataSet[$i]['ENP'] = $intersection['ENP'];
+            $dataSet[$i]['SNILS'] = $intersection['SNILS'];
+            $i++;
+        }
+        return $dataSet;
+    }
+
     public function findIntersections(){
         $xls = $this->parser->parseExcel();
         $xml = $this->parser->parseXML();
         $xlsForMatch = $this->getXlsMatchArray($xls);
         $xmlForMatch = $this->getXmlMatchArray($xml);
         $intersections = $this->compareXmlAndXls($xmlForMatch, $xlsForMatch);
-        (new ExcelGenerator())->generate($intersections, 'Пересчения с фондом');
-        return count($intersections);
+        $dataSet = $this->assembleDataSet($intersections);
+        return $dataSet;
     }
 
 }

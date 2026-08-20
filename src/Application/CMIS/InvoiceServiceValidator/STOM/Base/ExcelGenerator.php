@@ -10,11 +10,9 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class ExcelGenerator
 {
-    private function generateHeader($sheet){
+    private function generateHeader($sheet, $header){
         $row = 1;
         $col = 'A';
-        $header = ['Дата начала (ФОНД)', 'Дата окнчания (ФОНД)', 'Дата начала (РЕЕСТР)', 'Дата окончания (РЕЕСТР)',
-            'Фамилия', 'Имя', 'Отчество', 'Дата рождения', 'Полис', 'СНИЛС'];
         foreach ($header AS $singleHeader){
             $sheet->setCellValue($col . $row, $singleHeader);
             $sheet->getStyle($col.$row)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
@@ -32,11 +30,11 @@ class ExcelGenerator
         }
         return $sheet;
     }
-    private function generateBody($sheet, $patients){
+    private function generateBody($sheet, $data){
         $row = 2;
-        foreach ($patients AS $patient){
+        foreach ($data AS $single){
             $col = 'A';
-            foreach ($patient AS $key => $value){
+            foreach ($single AS $key => $value){
                 $sheet->setCellValue($col . $row, $value);
                 $sheet->getStyle($col.$row)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
                 $sheet->getStyle($col.$row)
@@ -49,30 +47,11 @@ class ExcelGenerator
         }
         return $sheet;
     }
-    private function assembleDataSet(array $intersections) : array{
-        $dataSet = [];
-        $i = 0;
-        foreach ($intersections AS $intersection){
-            $dataSet[$i]['DATE_IN_TFOMS'] = $intersection['DATE_IN_TFOMS'];
-            $dataSet[$i]['DATE_OUT_TFOMS'] = $intersection['DATE_OUT_TFOMS'];
-            $dataSet[$i]['DATE_IN'] = $intersection['DATE_IN'];
-            $dataSet[$i]['DATE_OUT'] = $intersection['DATE_OUT'];
-            $dataSet[$i]['FAM'] = $intersection['FAM'];
-            $dataSet[$i]['IM'] = $intersection['IM'];
-            $dataSet[$i]['OT'] = $intersection['OT'];
-            $dataSet[$i]['DR'] = $intersection['DR'];
-            $dataSet[$i]['ENP'] = $intersection['ENP'];
-            $dataSet[$i]['SNILS'] = $intersection['SNILS'];
-            $i++;
-        }
-        return $dataSet;
-    }
-    public function generate(array $intersections, $fileName){
+    public function generate(string $fileName, array $xlsHeader, array $xlsBody,){
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-        $sheetWithHeader = $this->generateHeader($sheet);
-        $dataSet = $this->assembleDataSet($intersections);
-        $this->generateBody($sheetWithHeader, $dataSet);
+        $sheetWithHeader = $this->generateHeader($sheet, $xlsHeader);
+        $this->generateBody($sheetWithHeader, $xlsBody);
         $writer = new Xlsx($spreadsheet);
         $file = 'storage/cmis/completed/'.$fileName.'.xlsx';
         $writer->save($file);
