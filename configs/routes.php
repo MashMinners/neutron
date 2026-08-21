@@ -59,6 +59,7 @@ $this->get('cmis/invoices/validate/da', '\Application\CMIS\InvoiceServiceValidat
 
 #CMIS. ВАЛИДАЦИЯ РЕЕСТРОВ СЧЕТОВ. СТОМАТОЛОГИЯ
 $this->get('cmis/invoices/stom/intersections', '\Application\CMIS\InvoiceServiceValidator\STOM\Controllers\IntersectionsFinderController::find');
+$this->get('cmis/invoices/stom/incorrect-purposes', '\Application\CMIS\InvoiceServiceValidator\STOM\Controllers\IncorrectPurposeFinderController::find');
 
 #CMIS. ВАЛИДАЦИЯ РЕЕСТРОВ ПРИКРЕПЛЕНИЯ НАСЕЛЕНИЯ. ДИСПАНСЕРИЗАЦИЯ
 //Ищет среди записей в реестре XML по диспансеризации людей, у которых не проставлено прикрепление в CMIS. Файлы D, F, L
