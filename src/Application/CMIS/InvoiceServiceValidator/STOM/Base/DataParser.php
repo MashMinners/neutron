@@ -7,7 +7,7 @@ use SimpleXMLElement;
 
 class DataParser
 {
-    private string $directory = "storage/cmis/intersections/";
+    private string $directory = "storage/cmis/";
     public function parseExcel(){
         // Ищем файлы .ods и .xlsx
         $odsFiles = glob($this->directory . '*.ods');

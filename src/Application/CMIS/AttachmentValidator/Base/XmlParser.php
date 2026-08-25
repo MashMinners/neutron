@@ -6,7 +6,7 @@ use SimpleXMLElement;
 
 class XmlParser
 {
-    private $folder = 'storage/cmis/attachment/';
+    private $folder = 'storage/cmis/';
     private function simpleXmlToArray(SimpleXMLElement $xmlObject): array
     {
         $array = [];
