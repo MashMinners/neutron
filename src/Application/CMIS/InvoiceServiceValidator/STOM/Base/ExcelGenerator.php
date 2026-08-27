@@ -39,8 +39,8 @@ class ExcelGenerator
                 $sheet->getStyle($col.$row)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
                 $sheet->getStyle($col.$row)
                     ->getFill()
-                    ->setFillType(Fill::FILL_SOLID)
-                    ->getStartColor()->setARGB('FFD3D3D3');
+                    ->setFillType(Fill::FILL_SOLID);
+                    //->getStartColor()->setARGB('FFD3D3D3');
                 $col++;
             }
             $row++;

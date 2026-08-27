@@ -8,6 +8,15 @@ use SimpleXMLElement;
 class DataParser
 {
     private string $directory = "storage/cmis/";
+
+    public function getExcelFieldsKeys(array $workSchema, array $excelTableHeader){
+        $excelFieldsKeys = [];
+        //Получаем по имени заголовка его ключ, для того чтобы по этому ключу искать данные
+        foreach ($workSchema as $key => $value){
+            $excelFieldsKeys[$value] = array_keys($excelTableHeader, $value)[0];
+        }
+        return $excelFieldsKeys;
+    }
     public function parseExcel(){
         // Ищем файлы .ods и .xlsx
         $odsFiles = glob($this->directory . '*.ods');
@@ -28,7 +37,7 @@ class DataParser
                 TRUE,                          // Форматировать значения (даты, проценты)
                 TRUE                           // Использовать индексы строк/столбцов в массиве
             );
-            array_shift($rows);
+            //array_shift($rows); xls должен возвращаться с заголовком
             $result = array_merge($result, $rows);
         }
         return $result;

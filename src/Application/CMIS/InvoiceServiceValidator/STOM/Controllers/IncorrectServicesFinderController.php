@@ -17,7 +17,7 @@ class IncorrectServicesFinderController
 
     public function find(ServerRequestInterface $request) : ResponseInterface {
         $result = $this->finder->findIncorrectServices();
-        $xlsHeader = ['Дата начала', 'Дата окончания', 'Фамилия', 'Имя', 'Отчество', 'Дата рождения', 'СНИЛС'];
+        $xlsHeader = ['Фамилия', 'Имя', 'Отчество', 'Дата рождения', 'СНИЛС'];
         $this->generator->generate('Две и более первичных', $xlsHeader, $result['twoOrMorePrimary']);
         $this->generator->generate('Ниодной первичной', $xlsHeader, $result['haveNoPrimary']);
         return new JsonResponse('Две и более первичных  '.count($result['twoOrMorePrimary']).' Ниодной первичной  '.count($result['haveNoPrimary']));

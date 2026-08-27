@@ -13,10 +13,25 @@ class IntersectionsFinder
     }
 
     private function getXlsMatchArray(array $xls){
+        $workSchema = [
+            'ФИО пациента',
+            'Полис',
+            'Профиль МП',
+            'Дата начала',
+            'Дата окончания'
+        ];
+        //Получаю заголовок xls
+        $xlsHeader = array_shift($xls);
+        /**
+         * Так как xls выгружаемый на разных компах зависит от настроенного профиля, то поиск по столбцам(буквам) некорретен
+         * Значит поиск будет происходить по заголовку, где заголовок = буква которая указывает на столбец озаглавленный заголовком
+         * Например Полис => 'D'
+         */
+        $excelFieldsKeys = $this->parser->getExcelFieldsKeys($workSchema, $xlsHeader);
         $array = [];
         foreach ($xls AS $single){
-            $array[$single['D'].'-'.(int)$single['M']]['DATE_IN'] = strtotime($single['G']);
-            $array[$single['D'].'-'.(int)$single['M']]['DATE_OUT'] = strtotime($single['H']);
+            $array[$single[$excelFieldsKeys['Полис']].'-'.(int)$single[$excelFieldsKeys['Профиль МП']]]['DATE_IN'] = strtotime($single[$excelFieldsKeys['Дата начала']]);
+            $array[$single[$excelFieldsKeys['Полис']].'-'.(int)$single[$excelFieldsKeys['Профиль МП']]]['DATE_OUT'] = strtotime($single[$excelFieldsKeys['Дата окончания']]);
         }
         return $array;
     }
