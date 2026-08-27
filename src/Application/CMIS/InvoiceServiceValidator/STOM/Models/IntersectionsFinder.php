@@ -14,7 +14,6 @@ class IntersectionsFinder
 
     private function getXlsMatchArray(array $xls){
         $workSchema = [
-            'ФИО пациента',
             'Полис',
             'Профиль МП',
             'Дата начала',
