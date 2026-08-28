@@ -62,6 +62,7 @@ $this->get('cmis/invoices/stom/intersections', '\Application\CMIS\InvoiceService
 $this->get('cmis/invoices/stom/incorrect-purposes', '\Application\CMIS\InvoiceServiceValidator\STOM\Controllers\IncorrectPurposeFinderController::find');
 $this->get('cmis/invoices/stom/torn-cases', '\Application\CMIS\InvoiceServiceValidator\STOM\Controllers\TornCasesFinderController::find');
 $this->get('cmis/invoices/stom/incorrect-services', '\Application\CMIS\InvoiceServiceValidator\STOM\Controllers\IncorrectServicesFinderController::find');
+$this->get('cmis/invoices/stom/incorrect-teeth', '\Application\CMIS\InvoiceServiceValidator\STOM\Controllers\IncorrectTeethFinderController::find');
 
 #CMIS. ВАЛИДАЦИЯ РЕЕСТРОВ ПРИКРЕПЛЕНИЯ НАСЕЛЕНИЯ. ДИСПАНСЕРИЗАЦИЯ
 //Ищет среди записей в реестре XML по диспансеризации людей, у которых не проставлено прикрепление в CMIS. Файлы D, F, L
