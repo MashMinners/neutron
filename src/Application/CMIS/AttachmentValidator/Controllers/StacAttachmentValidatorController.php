@@ -16,8 +16,16 @@ class StacAttachmentValidatorController extends BaseController
 
     }
 
-    public function validate(ServerRequestInterface $request) : ResponseInterface {
+    private function getFiles(){
         $files = $this->scanDir();
+        $xmlFiles['S'] = $this->getXmlFileName($files, '/\/S/');
+        $xmlFiles['H'] = $this->getXmlFileName($files, '/\/H/');
+        $xmlFiles['L'] = $this->getXmlFileName($files, '/\/L/');
+        return $xmlFiles;
+    }
+
+    public function validate(ServerRequestInterface $request) : ResponseInterface {
+        $files = $this->getFiles();
         $result = $this->validator->validate($files);
         $this->generator->generate($result, 'Неприкрепленные [Стационар]');
         return new JsonResponse('Количество непрекрепленных '.count($result));

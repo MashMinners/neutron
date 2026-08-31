@@ -6,7 +6,6 @@ use SimpleXMLElement;
 
 class XmlParser
 {
-    private $folder = 'storage/cmis/';
     private function simpleXmlToArray(SimpleXMLElement $xmlObject): array
     {
         $array = [];
@@ -48,8 +47,7 @@ class XmlParser
     }
     public function parseXML(array $files) : array{
         foreach ($files AS $key => $file){
-            $path = $this->folder.$file;
-            $xml = simplexml_load_file($path);
+            $xml = simplexml_load_file($file);
             $array[$key] = $this->simpleXmlToArray($xml);
         }
         return $array;

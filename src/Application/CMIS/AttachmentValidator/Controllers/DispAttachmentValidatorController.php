@@ -16,8 +16,16 @@ class DispAttachmentValidatorController extends BaseController
 
     }
 
-    public function validate(ServerRequestInterface $request) : ResponseInterface {
+    private function getFiles(){
         $files = $this->scanDir();
+        $xmlFiles['D'] = $this->getXmlFileName($files, '/\/D/');
+        $xmlFiles['F'] = $this->getXmlFileName($files, '/\/F/');
+        $xmlFiles['L'] = $this->getXmlFileName($files, '/\/L/');
+        return $xmlFiles;
+    }
+
+    public function validate(ServerRequestInterface $request) : ResponseInterface {
+        $files = $this->getFiles();
         $result = $this->validator->validate($files);
         $this->generator->generate($result, 'Неприкрепленные [Диспансеризация]');
         return new JsonResponse('Количество непрекрепленных '.count($result));

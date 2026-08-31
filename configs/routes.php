@@ -1,47 +1,4 @@
 <?php
-#ИСТОРИИ БОЛЕЗНИ
-//Заливает в базу данные по случаям стационара
-//$this->get('histories/upload', '\Application\ExcelUploader\Controllers\MedicalHistoriesExcelUploadController::upload');
-//Очищение таблиув с ИБ по стационару
-//$this->delete('histories/truncate', '\Application\ExcelUploader\Controllers\MedicalHistoriesExcelUploadController::truncate');
-
-#ПОСЕЩЕНИЯ ПОЛИКЛИНИКИ
-//$this->get('visits/upload', '\Application\ExcelUploader\Controllers\VisitsExcelUploadController::upload');
-//$this->delete('visits/truncate', '\Application\ExcelUploader\Controllers\VisitsExcelUploadController::truncate');
-
-#ЗАГРУЗКА ФАЙЛОВ
-//$this->get('file/upload', '\Application\FileUploader\Controllers\FileUploaderController::upload');
-
-
-#РАБОТА С БУФЕРНОЙ ТАБЛИЦЕЙ СТОМАТОЛОГИИ
-//Загрузка реестров
-//$this->get('buffer/stom/upload', '\Application\ExcelUploader\Controllers\BufferSTOMRegistryExcelUploaderController::upload');
-//Очистка буфера
-//$this->delete('buffer/stom/truncate', '\Application\ExcelUploader\Controllers\BufferSTOMRegistryExcelUploaderController::truncate');
-/**
- * Сначала ищем дубликаты - это разорванные случаи!
- * Потом объединяем их в один случай
- * Далее мы ищем PURPOSES чтобы знать где поменять цели с 1.0 на 3.0
- */
-
-#РАБОТА С БУФЕРНОЙ ТАБЛИЦЕЙ ДИСПАНСЕРИЗАЦИИ
-//Загрузка реестров
-//$this->get('buffer/disp/upload', '\Application\ExcelUploader\Controllers\BufferDISPRegistryExcelUploaderController::upload');
-//Очистка буфера
-//$this->delete('buffer/disp/truncate', '\Application\ExcelUploader\Controllers\BufferDISPRegistryExcelUploaderController::truncate');
-//Пересечения
-//$this->get('buffer/disp/intersections', '\Application\IntersectionsFinder\Controllers\BufferDISPRegistryIntersectionsFinderController::find');
-
-#РАБОТА С БУФЕРНОЙ ТАБЛИЦЕЙ ПО ЛИСТКАМ НЕТРУДОСПОСОБНОСТИ
-//$this->get('ln/upload', '\Application\ExcelUploader\Controllers\SickNoteExcelUploaderController::upload');
-//$this->get('ln/truncate', '\Application\ExcelUploader\Controllers\SickNoteExcelUploaderController::truncate');
-//$this->get('ln/intersections', '\Application\IntersectionsFinder\Controllers\SickNoteIntersectionsFinderController::find');
-
-#РАБОТА С ПАРСЕРОМ XML
-//$this->get('xml/parse', '\Application\XMLParser\Controllers\XMLParserController::parse');
-//$this->get('xml/stom/upload', '\Application\XMLParser\Controllers\StomXMLUploaderController::upload');
-//$this->delete('xml/stom/truncate', '\Application\XMLParser\Controllers\StomXMLUploaderController::truncate');
-
 #РАБОТА С СМО
 //Генерирует файлы счетов в СМО по 14 форме
 $this->get('smo/invoice/aggregate', '\Application\SMO\Form14\Controllers\Form14AggregatorController::aggregate');

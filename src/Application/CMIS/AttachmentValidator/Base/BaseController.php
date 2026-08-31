@@ -5,16 +5,17 @@ namespace Application\CMIS\AttachmentValidator\Base;
 
 class BaseController
 {
-    public function scanDir(){
-        $dir = 'storage/cmis/attachment/'; // путь к директории
-        $files = scandir($dir);
-        $result = [];
-        foreach ($files as $file) {
-            if ($file != "." && $file != "..") { // Пропуск ссылок на текущую/родительскую директории
-                $result[] = $file;
-            }
-        }
-        return $result;
+    private string $directory = 'storage/cmis/';
+    protected function scanDir(){
+        $files = glob($this->directory . '*.xml');
+        return $files;
+    }
+
+    protected function getXmlFileName(array $files, string $pattern){
+        $filtered = array_filter($files, function($item) use ($pattern){
+            return preg_match($pattern, $item);
+        });
+        return ((string)reset($filtered));
     }
 
 }

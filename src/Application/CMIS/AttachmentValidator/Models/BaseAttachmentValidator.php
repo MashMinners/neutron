@@ -4,13 +4,6 @@ namespace Application\CMIS\AttachmentValidator\Models;
 
 class BaseAttachmentValidator
 {
-    protected function getXmlFileName(array $files, string $pattern){
-        $filtered = array_filter($files, function($item) use ($pattern){
-            return preg_match($pattern, $item);
-        });
-        return ((string)reset($filtered));
-    }
-
     protected function getUnAttachedPacientIDs(array $D){
         $unAttachedRecord = [];
         foreach ($D['ZAP'] as $key => $value) {
@@ -25,7 +18,7 @@ class BaseAttachmentValidator
         return $unAttachedPacientIDs;
     }
 
-    protected function getUnAttachedPatients(array $PERS, array $pacientIDs){
+    protected function personify(array $PERS, array $pacientIDs) : array{
         $unAttachedPatients = [];
         foreach ($PERS AS $key => $value){
             if (in_array($value['ID_PAC'], $pacientIDs)){
