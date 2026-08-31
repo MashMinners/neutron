@@ -4,7 +4,7 @@ namespace Application\CMIS\InvoiceServiceValidator\STOM\Models;
 
 use Application\CMIS\InvoiceServiceValidator\STOM\Base\DataParser;
 
-class IncorrectTeethFinder
+class SimultaneousTeethInclusionFinder
 {
     public function __construct(private DataParser $parser)
     {
@@ -53,7 +53,7 @@ class IncorrectTeethFinder
         return $multipleStom;
     }
 
-    private function findSimultaneousTeethInclusion(array $multipleStom){
+    private function findSimultaneousCases(array $multipleStom){
         $simultaneousCases = [];
         foreach ($multipleStom as $idCase => $value) {
             $simultaneousTeethInclusion = [];
@@ -137,13 +137,13 @@ class IncorrectTeethFinder
         return $dataSet;
     }
 
-    public function findIncorrectTeeth(){
+    public function findSimultaneousTeethInclusion(){
         $xml = $this->parser->parseXML();
         $multipleStom = $this->getMultipleStom($xml);
-        $simultaneousCases = $this->findSimultaneousTeethInclusion($multipleStom);
+        $simultaneousCases = $this->findSimultaneousCases($multipleStom);
         $p = $this->personify($xml, $simultaneousCases);
         $ds = $this->assembleDataSet($p);
-        $a = 1;
+        return $ds;
     }
 
 }
