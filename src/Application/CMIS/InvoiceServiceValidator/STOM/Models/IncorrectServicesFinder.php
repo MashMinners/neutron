@@ -13,7 +13,6 @@ class IncorrectServicesFinder
 
     private function getMultipleCases(array $xml){
         $multipleCases = [];
-        $multipleCases1 = [];
         foreach ($xml['H']['ZAP'] AS $single){
             $cases = $single['Z_SL'][0]['SL'][0]['USL'];
             if (count($cases) > 1){
@@ -22,7 +21,6 @@ class IncorrectServicesFinder
                    $arr[] = $case['CODE_USL'];
                 }
                 //Если в случае отсуствует и B01.065.007 и B01.065.003 это значит, что в случае нет первичной услуги
-                $needles = ['B01.065.003', 'B01.067.001', 'B01.065.001', 'B01.064.003', 'B01.065.007'];
                 if (!in_array('B01.065.003',$arr) AND !in_array('B01.067.001',$arr)
                     AND !in_array('B01.065.001',$arr) AND !in_array('B01.064.003',$arr)
                     AND !in_array('B01.065.007',$arr)){
@@ -73,8 +71,6 @@ class IncorrectServicesFinder
                         $multipleCases['twoOrMorePrimary'][] = $single['PACIENT'][0]['ID_PAC'];
                     }
                 }
-
-
             }
         }
         return $multipleCases;
