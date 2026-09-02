@@ -35,7 +35,14 @@ class SimultaneousTeethInclusionFinder
         '04397483592' => 'Кузьмина С.М.',
         '12978613304' => 'Кулагина А.А.',
         '06785590318' => 'Нагаслаева В.А.',
-        '05641628460' => 'Усатых Е.В.'
+        '05641628460' => 'Усатых Е.В.',
+        '16063971874' => 'Пинчук М.С.',
+        '04400616402' => 'Мухо Л.А.',
+        '12964746903' => 'Марченко Д.С.',
+        '04402655624' => 'Гавриш Е.Ю.',
+        '04151462819' => 'Вонгай И.П.',
+        '15897783656' => 'Лобачева А.О.',
+        '10218700299' => 'Бочаров Д.Е.'
     ];
 
     /**
@@ -58,7 +65,7 @@ class SimultaneousTeethInclusionFinder
         foreach ($multipleStom as $idCase => $value) {
             $simultaneousTeethInclusion = [];
             foreach ($value AS $stom){
-                if (in_array($stom['CODE_USL'], $this->_simultaneousCode) AND $stom['ZUB'] !==''){
+                if (in_array($stom['CODE_USL'], $this->_simultaneousCode) AND array_key_exists('ZUB', $stom) AND $stom['ZUB'] !==''){
                     $simultaneousTeethInclusion[] = $stom['ZUB'];
                 }
             }
@@ -97,7 +104,7 @@ class SimultaneousTeethInclusionFinder
                 $personified[$pers['ID_PAC']] = $pers;
             }
         }
-        //Здесь нужно получить стоматологическую информаию о диагнозе и зубах
+        //Здесь нужно получить стоматологическую информацию о диагнозе и зубах
         foreach ($xml['P']['SL'] AS $sl){
             $idCase = $sl['IDCASE'];
             if(in_array($idCase, $simultaneousCases)){
@@ -120,21 +127,41 @@ class SimultaneousTeethInclusionFinder
 
     private function assembleDataSet(array $records){
         $dataSet = [];
-        $i = 0;
         foreach ($records AS $record){
             foreach ($record['STOM'] AS $stom){
-                $dataSet[$i]['FAM'] = $record['FAM'];
-                $dataSet[$i]['IM'] = $record['IM'];
-                $dataSet[$i]['OT'] = $record['OT'];
-                $dataSet[$i]['DR'] = date('d.m.Y', strtotime($record['DR']));
-                $dataSet[$i]['SNILS'] = $record['SNILS'];
-                $dataSet[$i]['ZUB'] = $stom['ZUB'];
-                $dataSet[$i]['CODE_USL'] = $stom['CODE_USL'];
-                $dataSet[$i]['IDDOKT'] = $record['IDDOKT'];
-                $i++;
+                if(array_key_exists('ZUB', $stom)){
+                    $uniqueID = $record['SNILS'].'-'.$stom['ZUB'];
+                    $dataSet[$uniqueID]['FAM'] = $record['FAM'];
+                    $dataSet[$uniqueID]['IM'] = $record['IM'];
+                    $dataSet[$uniqueID]['OT'] = $record['OT'];
+                    $dataSet[$uniqueID]['DR'] = date('d.m.Y', strtotime($record['DR']));
+                    $dataSet[$uniqueID]['SNILS'] = $record['SNILS'];
+                    $dataSet[$uniqueID]['CODE_USL'] = $stom['CODE_USL'];
+                    $dataSet[$uniqueID]['IDDOKT'] = $record['IDDOKT'];
+                    $dataSet[$uniqueID]['ZUB'][$stom['ZUB']][] = $stom['CODE_USL'];
+                }
             }
         }
-        return $dataSet;
+        $needle = [];
+        $i = 0;
+        foreach ($dataSet AS $single){
+            foreach ($single['ZUB'] AS $teeth => $diagnosis){
+                if (count($diagnosis) > 1){
+                    foreach ($diagnosis AS $singleDiag){
+                        $needle[$i]['FAM'] = $single['FAM'];
+                        $needle[$i]['IM'] = $single['IM'];
+                        $needle[$i]['OT'] = $single['OT'];
+                        $needle[$i]['DR'] = $single['DR'];
+                        $needle[$i]['SNILS'] = $single['SNILS'];
+                        $needle[$i]['ZUB'] = $teeth;
+                        $needle[$i]['CODE_USL'] = $singleDiag;
+                        $needle[$i]['IDDOKT'] = $single['IDDOKT'];
+                        $i++;
+                    }
+                }
+            }
+        }
+        return $needle;
     }
 
     public function findSimultaneousTeethInclusion(){
