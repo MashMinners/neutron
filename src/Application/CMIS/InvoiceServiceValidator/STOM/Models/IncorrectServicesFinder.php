@@ -13,6 +13,7 @@ class IncorrectServicesFinder
 
     private function getMultipleCases(array $xml){
         $multipleCases = [];
+        $multipleCases1 = [];
         foreach ($xml['H']['ZAP'] AS $single){
             $cases = $single['Z_SL'][0]['SL'][0]['USL'];
             if (count($cases) > 1){
@@ -21,20 +22,14 @@ class IncorrectServicesFinder
                    $arr[] = $case['CODE_USL'];
                 }
                 //Если в случае отсуствует и B01.065.007 и B01.065.003 это значит, что в случае нет первичной услуги
-                if (!in_array('B01.065.007',$arr) AND !in_array('B01.065.003',$arr)){
+                $needles = ['B01.065.003', 'B01.067.001', 'B01.065.001', 'B01.064.003', 'B01.065.007'];
+                if (!in_array('B01.065.003',$arr) AND !in_array('B01.067.001',$arr)
+                    AND !in_array('B01.065.001',$arr) AND !in_array('B01.064.003',$arr)
+                    AND !in_array('B01.065.007',$arr)){
                     $multipleCases['haveNoPrimary'][] = $single['PACIENT'][0]['ID_PAC'];
                 }
-                //Если в случае присутсвует более двух первичных услуг B01.065.007 -это ошибка
-                elseif(in_array('B01.065.007',$arr)){
-                    $counts = array_count_values($arr);
-                    $search = 'B01.065.007';
-                    $B01Count = $counts[$search] ?? 0;
-                    if ($B01Count > 1) {
-                        $multipleCases['twoOrMorePrimary'][] = $single['PACIENT'][0]['ID_PAC'];
-                    }
-                }
-                //Если в случае присутсвует более двух первичных услуг B01.065.003 - это ошибка
-                else{
+                //Если в случае присутсвует более двух первичных услуг B01.065.003 -это ошибка
+                elseif(in_array('B01.065.003',$arr)){
                     $counts = array_count_values($arr);
                     $search = 'B01.065.003';
                     $B01Count = $counts[$search] ?? 0;
@@ -42,6 +37,43 @@ class IncorrectServicesFinder
                         $multipleCases['twoOrMorePrimary'][] = $single['PACIENT'][0]['ID_PAC'];
                     }
                 }
+                //Если в случае присутсвует более двух первичных услуг B01.067.001 -это ошибка
+                elseif(in_array('B01.067.001',$arr)){
+                    $counts = array_count_values($arr);
+                    $search = 'B01.067.001';
+                    $B01Count = $counts[$search] ?? 0;
+                    if ($B01Count > 1) {
+                        $multipleCases['twoOrMorePrimary'][] = $single['PACIENT'][0]['ID_PAC'];
+                    }
+                }
+                //Если в случае присутсвует более двух первичных услуг B01.065.001 - это ошибка
+                elseif(in_array('B01.065.001',$arr)){
+                    $counts = array_count_values($arr);
+                    $search = 'B01.065.001';
+                    $B01Count = $counts[$search] ?? 0;
+                    if ($B01Count > 1) {
+                        $multipleCases['twoOrMorePrimary'][] = $single['PACIENT'][0]['ID_PAC'];
+                    }
+                }
+                //Если в случае присутсвует более двух первичных услуг B01.064.003 - это ошибка
+                elseif(in_array('B01.064.003',$arr)){
+                    $counts = array_count_values($arr);
+                    $search = 'B01.064.003';
+                    $B01Count = $counts[$search] ?? 0;
+                    if ($B01Count > 1) {
+                        $multipleCases['twoOrMorePrimary'][] = $single['PACIENT'][0]['ID_PAC'];
+                    }
+                }
+                //Если в случае присутсвует более двух первичных услуг B01.065.007 - это ошибка
+                else{
+                    $counts = array_count_values($arr);
+                    $search = 'B01.065.007';
+                    $B01Count = $counts[$search] ?? 0;
+                    if ($B01Count > 1) {
+                        $multipleCases['twoOrMorePrimary'][] = $single['PACIENT'][0]['ID_PAC'];
+                    }
+                }
+
 
             }
         }
@@ -65,7 +97,7 @@ class IncorrectServicesFinder
         foreach ($records AS $record){
             $dataSet[$i]['FAM'] = $record['FAM'];
             $dataSet[$i]['IM'] = $record['IM'];
-            $dataSet[$i]['OT'] = $record['OT'];
+            $dataSet[$i]['OT'] = array_key_exists('OT', $record) ? $record['OT'] : '';
             $dataSet[$i]['DR'] = date('d.m.Y', strtotime($record['DR']));
             $dataSet[$i]['SNILS'] = $record['SNILS'];
             $i++;
