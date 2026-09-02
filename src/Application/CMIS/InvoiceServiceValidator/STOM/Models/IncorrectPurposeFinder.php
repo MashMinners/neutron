@@ -35,19 +35,23 @@ class IncorrectPurposeFinder
         $incorrectPurposes = [];
         foreach ($xml['H']['ZAP'] AS $single){
             foreach ($single['Z_SL'][0]['SL'][0]['USL'] AS $usl){
-                $uslCount = count($single['Z_SL'][0]['SL'][0]['USL']);
-                $uniqueID = $single['PACIENT'][0]['ENP'].'-'.$usl['PROFIL'];
-                $pCEL = $single['Z_SL'][0]['SL'][0]['P_CEL'];
-                if ($uslCount  === 1 AND $usl['DS'] === 'Z01.2' AND $pCEL === '3.0'){
-                    $incorrectPurposes[$uniqueID]['DATE_IN'] = date('d.m.Y', strtotime($usl['DATE_IN']));
-                    $incorrectPurposes[$uniqueID]['DATE_OUT'] = date('d.m.Y', strtotime($usl['DATE_OUT']));
-                    $incorrectPurposes[$uniqueID]['PROFIL'] = $usl['PROFIL'];
-                    $incorrectPurposes[$uniqueID]['CODE_USL'] = $usl['CODE_USL'];
-                    $incorrectPurposes[$uniqueID]['DS'] = $usl['DS'];
-                    $incorrectPurposes[$uniqueID]['ENP'] = $single['PACIENT'][0]['ENP'];
-                    $incorrectPurposes[$uniqueID]['ID_PAC'] = $single['PACIENT'][0]['ID_PAC'];
-                    $incorrectPurposes[$uniqueID]['P_CEL'] = $pCEL;
+                //Обязательная проверка на наличие полиса, если его нет, пациент в любом случае не будет принят ФОНДом
+                if (array_key_exists('ENP', $single['PACIENT'][0])){
+                    $uslCount = count($single['Z_SL'][0]['SL'][0]['USL']);
+                    $uniqueID = $single['PACIENT'][0]['ENP'].'-'.$usl['PROFIL'];
+                    $pCEL = $single['Z_SL'][0]['SL'][0]['P_CEL'];
+                    if ($uslCount  === 1 AND $usl['DS'] === 'Z01.2' AND $pCEL === '3.0'){
+                        $incorrectPurposes[$uniqueID]['DATE_IN'] = date('d.m.Y', strtotime($usl['DATE_IN']));
+                        $incorrectPurposes[$uniqueID]['DATE_OUT'] = date('d.m.Y', strtotime($usl['DATE_OUT']));
+                        $incorrectPurposes[$uniqueID]['PROFIL'] = $usl['PROFIL'];
+                        $incorrectPurposes[$uniqueID]['CODE_USL'] = $usl['CODE_USL'];
+                        $incorrectPurposes[$uniqueID]['DS'] = $usl['DS'];
+                        $incorrectPurposes[$uniqueID]['ENP'] = $single['PACIENT'][0]['ENP'];
+                        $incorrectPurposes[$uniqueID]['ID_PAC'] = $single['PACIENT'][0]['ID_PAC'];
+                        $incorrectPurposes[$uniqueID]['P_CEL'] = $pCEL;
+                    }
                 }
+
             }
         }
         $array = [];
