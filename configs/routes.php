@@ -26,6 +26,8 @@ $this->get('cmis/invoices/stom/simultaneous-teeth', '\Application\CMIS\InvoiceSe
 $this->get('cmis/attachment/validate/disp', '\Application\CMIS\AttachmentValidator\Controllers\DispAttachmentValidatorController::validate');
 //Ищет среди записей в реестре XML по стационару людей, у которых не проставлено прикрепление в CMIS. Файлы S, H, L
 $this->get('cmis/attachment/validate/stac', '\Application\CMIS\AttachmentValidator\Controllers\StacAttachmentValidatorController::validate');
+//Ищет среди записей в реестре XML по стоматологии людей, у которых не проставлено прикрепление в CMIS. Файлы P, H, L
+$this->get('cmis/attachment/validate/stom', '\Application\CMIS\AttachmentValidator\Controllers\StomAttachmentValidatorController::validate');
 
 #РЕЕСТРЫ СЧЕТОВ. СТОМАТОЛОГИЯ. АНАЛИТИКА
 //Поиск не корректных целей посещения 3.0/1.0
