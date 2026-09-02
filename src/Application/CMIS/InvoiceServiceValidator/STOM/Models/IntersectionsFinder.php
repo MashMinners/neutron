@@ -29,8 +29,8 @@ class IntersectionsFinder
         $excelFieldsKeys = $this->parser->getExcelFieldsKeys($workSchema, $xlsHeader);
         $array = [];
         foreach ($xls AS $single){
-            $array[$single[$excelFieldsKeys['Полис']].'-'.(int)$single[$excelFieldsKeys['Профиль МП']]]['DATE_IN'] = strtotime($single[$excelFieldsKeys['Дата начала']]);
-            $array[$single[$excelFieldsKeys['Полис']].'-'.(int)$single[$excelFieldsKeys['Профиль МП']]]['DATE_OUT'] = strtotime($single[$excelFieldsKeys['Дата окончания']]);
+                $array[$single[$excelFieldsKeys['Полис']].'-'.(int)$single[$excelFieldsKeys['Профиль МП']]]['DATE_IN'] = strtotime($single[$excelFieldsKeys['Дата начала']]);
+                $array[$single[$excelFieldsKeys['Полис']].'-'.(int)$single[$excelFieldsKeys['Профиль МП']]]['DATE_OUT'] = strtotime($single[$excelFieldsKeys['Дата окончания']]);
         }
         return $array;
     }
@@ -38,13 +38,18 @@ class IntersectionsFinder
     private function getXmlMatchArray(array $xml){
         $result = [];
         foreach ($xml['H']['ZAP'] AS $single){
-            foreach ($single['Z_SL'][0]['SL'][0]['USL'] AS $usl){
-                $result[$single['PACIENT'][0]['ENP'].'-'.$usl['PROFIL']]['DATE_IN'] = strtotime($usl['DATE_IN']);
-                $result[$single['PACIENT'][0]['ENP'].'-'.$usl['PROFIL']]['DATE_OUT'] = strtotime($usl['DATE_OUT']);
-                $result[$single['PACIENT'][0]['ENP'].'-'.$usl['PROFIL']]['PROFIL'] = $usl['PROFIL'];
-                $result[$single['PACIENT'][0]['ENP'].'-'.$usl['PROFIL']]['CODE_USL'] = $usl['CODE_USL'];
-                $result[$single['PACIENT'][0]['ENP'].'-'.$usl['PROFIL']]['ENP'] = $single['PACIENT'][0]['ENP'];
-                $result[$single['PACIENT'][0]['ENP'].'-'.$usl['PROFIL']]['ID_PAC'] = $single['PACIENT'][0]['ID_PAC'];
+            /**
+             * Здесь должна быть проверка на наличие полиса, так как если полиса нет, то случай не будет оплачен ФОНДом
+             */
+            if (array_key_exists('ENP', $single['PACIENT'][0])){
+                foreach ($single['Z_SL'][0]['SL'][0]['USL'] AS $usl){
+                    $result[$single['PACIENT'][0]['ENP'].'-'.$usl['PROFIL']]['DATE_IN'] = strtotime($usl['DATE_IN']);
+                    $result[$single['PACIENT'][0]['ENP'].'-'.$usl['PROFIL']]['DATE_OUT'] = strtotime($usl['DATE_OUT']);
+                    $result[$single['PACIENT'][0]['ENP'].'-'.$usl['PROFIL']]['PROFIL'] = $usl['PROFIL'];
+                    $result[$single['PACIENT'][0]['ENP'].'-'.$usl['PROFIL']]['CODE_USL'] = $usl['CODE_USL'];
+                    $result[$single['PACIENT'][0]['ENP'].'-'.$usl['PROFIL']]['ENP'] = $single['PACIENT'][0]['ENP'];
+                    $result[$single['PACIENT'][0]['ENP'].'-'.$usl['PROFIL']]['ID_PAC'] = $single['PACIENT'][0]['ID_PAC'];
+                }
             }
         }
         $array = [];
@@ -53,7 +58,7 @@ class IntersectionsFinder
                 if ($pers['ID_PAC'] === $value['ID_PAC']){
                     $value['FAM'] = $pers['FAM'];
                     $value['IM'] = $pers['IM'];
-                    $value['OT'] = $pers['OT'];
+                    $value['OT'] = array_key_exists('OT', $pers) ?: '';
                     $value['DR'] = date('d.m.Y', strtotime($pers['DR']));
                     $value['SNILS'] = $pers['SNILS'];
                 }
