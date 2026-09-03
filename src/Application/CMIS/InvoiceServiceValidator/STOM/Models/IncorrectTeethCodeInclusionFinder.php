@@ -64,7 +64,7 @@ class IncorrectTeethCodeInclusionFinder
         return $dataSet;
     }
 
-    private function findInclusions(array $xml){
+    private function findInclusionCases(array $xml){
         $incorrectTeethCodeInclusion = [];
         foreach ($xml['P']['SL'] AS $sl){
             foreach ($sl['STOM'] AS $stom){
@@ -80,7 +80,7 @@ class IncorrectTeethCodeInclusionFinder
 
     public function findIncorrectTeethCodeInclusion(){
         $xml = $this->parser->parseXML();
-        $inclusionCases = $this->findInclusions($xml);
+        $inclusionCases = $this->findInclusionCases($xml);
         $personified = $this->personify($xml, $inclusionCases);
         $ds = $this->assembleDataSet($personified);
         return $ds;
