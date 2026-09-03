@@ -11,20 +11,6 @@ class SimultaneousTeethInclusionFinder
 
     }
 
-    private $_withoutCode = [
-        '19ALL.0', '19B00.2', '19B37.0', '19D10.1', '19D10.10', '19K03.0', '19K03.6', '19K05.0', '19L05.1', '19K05.3',
-        '19L05.4', '19K07.5', '19K07.6', '19K11.2', '19K12.0', '19K12.1', '19K13.0', '19K13.2', '19K14.0', '19K14.1',
-        '19K14.6', '19L43.3', '19M12.8', '19S00.5', '19S00.7', '19S01.4', '19S01.5', '19S02.6', '19Z01.2', '19Z01.21',
-        '19Z01.22', '19Z01.23', '19K05.4'
-    ];
-
-    private $_withCode = [
-        '19K02.1', '19K02.2', '19K04.01', '19K04.02', '19K04.03', '19K04.0', '19K04.04', '19K04.05', '19K04.06',
-        '19K04.4', '19K04.41', '19K04.42', '19K04.43', '19K04.44', '19K04.45', '19K04.46', '19K04.5', '19K04.51',
-        '19K04.52', '19K04.53', '19K04.54', '19K04.55', '19K04.56', '19K04.8', '19K05.2', '19K05.31', '19K05.32',
-        '19K05.41', '19K06.8', '19K08.3', '19K10.2', '19K10.3'
-    ];
-
     private $_simultaneousCode = [
         '19K02.1', '19K02.2', '19K04.01', '19K04.02', '19K04.03', '19K04.04', '19K04.05', '19K04.06', '19K04.4',
         '19K04.41', '19K04.42', '19K04.43', '19K04.44', '19K04.45', '19K04.46', '19K04.5', '19K04.51', '19K04.52',
@@ -88,18 +74,15 @@ class SimultaneousTeethInclusionFinder
     }
 
     private function personify(array $xml, array $simultaneousCases){
-        //$idPACs = [];
         $personified = [];
         //Задача получить пару IDCASE = ID_PAC
         foreach ($xml['H']['ZAP'] AS $zap){
             if (in_array($zap['Z_SL'][0]['IDCASE'], $simultaneousCases)){
                 $casePacs[$zap['Z_SL'][0]['IDCASE']] =  $zap['PACIENT'][0]['ID_PAC'];
-                //$idPACs[] = $zap['PACIENT'][0]['ID_PAC'];
             }
         }
         //Персонифицирую случаи
         foreach ($xml['L']['PERS'] AS $pers){
-            //if (in_array($pers['ID_PAC'], $idPACs)){
             if (in_array($pers['ID_PAC'], $casePacs)){
                 $personified[$pers['ID_PAC']] = $pers;
             }
