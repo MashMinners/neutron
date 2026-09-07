@@ -13,6 +13,8 @@ $this->get('tfoms/distribute', '\Application\TFOMS\TargetGroupDistributor\Contro
 $this->get('cmis/invoices/validate/dp', '\Application\CMIS\InvoiceServiceValidator\DISP\Controllers\DPInvoiceValidatorController::validate');
 //Валидирует услуги предоставленные в XML из CMIS со списком услуг из справочника ТФОМС по углубленной диспансеризации
 $this->get('cmis/invoices/validate/da', '\Application\CMIS\InvoiceServiceValidator\DISP\Controllers\DAInvoiceValidatorController::validate');
+//Поиск пересечений случаев диспансеризации и случае лечения в стационаре
+$this->get('cmis/invoices/disp/intersections/stac', '\Application\CMIS\InvoiceServiceValidator\DISP\Controllers\IntersectionsFinderController::find');
 
 #CMIS. ВАЛИДАЦИЯ РЕЕСТРОВ СЧЕТОВ. СТОМАТОЛОГИЯ
 $this->get('cmis/invoices/stom/intersections', '\Application\CMIS\InvoiceServiceValidator\STOM\Controllers\IntersectionsFinderController::find');
