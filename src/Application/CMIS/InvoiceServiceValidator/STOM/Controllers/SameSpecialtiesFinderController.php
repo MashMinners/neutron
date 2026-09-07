@@ -16,10 +16,10 @@ class SameSpecialtiesFinderController
 
     public function find(ServerRequestInterface $request) : ResponseInterface {
         $result = $this->finder->findSameSpecialties();
-        $xlsHeader = ['Дата начала (ФОНД)', 'Дата окнчания (ФОНД)', 'Дата начала (РЕЕСТР)', 'Дата окончания (РЕЕСТР)',
-            'Фамилия', 'Имя', 'Отчество', 'Дата рождения', 'Полис', 'СНИЛС'];
-        $this->generator->generate('Пересчения с фондом', $xlsHeader, $result);
-        return new JsonResponse('Количество пересечений '.count($result));
+        $xlsHeader = ['Фамилия', 'Имя', 'Отчество', 'Дата рождения', 'СНИЛС', 'Врач открывший случай', 'Профиль',
+            'PRVS',  'Врач совместитель',  'Услуга',  'Диагноз',  'Профиль совместителя',  'PRVS совместителя',];
+        $this->generator->generate('Совмещения по одной специальности', $xlsHeader, $result);
+        return new JsonResponse('Количество совмещений '.count($result));
     }
 
 }

@@ -40,33 +40,24 @@ class SameSpecialtiesFinder
             if (array_key_exists($pers['ID_PAC'], $differentSpecialistCases)){
                 $differentSpecialistCase = $differentSpecialistCases[$idPac];
                 foreach ($differentSpecialistCase['DIFFDOKT'] AS $diffDokt){
-                    $personified[$i][$idPac]['FAM'] = $pers['FAM'];
-                    $personified[$i][$idPac]['IM'] = $pers['IM'];
-                    $personified[$i][$idPac]['OT'] = array_key_exists('OT', $pers) ? $pers['OT'] : '';
-                    $personified[$i][$idPac]['DR'] = date('d.m.Y', strtotime($pers['DR']));
-                    $personified[$i][$idPac]['SNILS'] = $pers['SNILS'];;
-                    $personified[$i][$idPac]['IDDOKT'] = $this->doctors[$differentSpecialistCases[$idPac]['IDDOKT']];
-                    $personified[$i][$idPac]['IDDOKT-PROFIL'] = $differentSpecialistCases[$idPac]['PROFIL'];
-                    $personified[$i][$idPac]['IDDOKT-PRVS'] = $differentSpecialistCases[$idPac]['PRVS'];
-                    $personified[$i][$idPac]['DIFFDOKT'] = $this->doctors[$diffDokt['CODE_MD']];
-                    $personified[$i][$idPac]['DIFFDOKT-USL'] = $diffDokt['CODE_USL'];
-                    $personified[$i][$idPac]['DIFFDOKT-DS'] = $diffDokt['DS'];
-                    $personified[$i][$idPac]['DIFFDOKT-PROFIL'] = $diffDokt['PROFIL'];
-                    $personified[$i][$idPac]['DIFFDOKT-PRVS'] = $diffDokt['PRVS'];
+                    $personified[$i]['FAM'] = $pers['FAM'];
+                    $personified[$i]['IM'] = $pers['IM'];
+                    $personified[$i]['OT'] = array_key_exists('OT', $pers) ? $pers['OT'] : '';
+                    $personified[$i]['DR'] = date('d.m.Y', strtotime($pers['DR']));
+                    $personified[$i]['SNILS'] = $pers['SNILS'];;
+                    $personified[$i]['IDDOKT'] = $this->doctors[$differentSpecialistCases[$idPac]['IDDOKT']];
+                    $personified[$i]['IDDOKT-PROFIL'] = $differentSpecialistCases[$idPac]['PROFIL'];
+                    $personified[$i]['IDDOKT-PRVS'] = $differentSpecialistCases[$idPac]['PRVS'];
+                    $personified[$i]['DIFFDOKT'] = $this->doctors[$diffDokt['CODE_MD']];
+                    $personified[$i]['DIFFDOKT-USL'] = $diffDokt['CODE_USL'];
+                    $personified[$i]['DIFFDOKT-DS'] = $diffDokt['DS'];
+                    $personified[$i]['DIFFDOKT-PROFIL'] = $diffDokt['PROFIL'];
+                    $personified[$i]['DIFFDOKT-PRVS'] = $diffDokt['PRVS'];
                     $i++;
                 }
             }
         }
         return $personified;
-    }
-
-    private function assembleDataSet(array $records){
-        $dataSet = [];
-        $i = 0;
-        foreach ($records AS $record){
-            $a = array_key_first($record);
-            $a = 1;
-        }
     }
 
     private function findMultipleUslCases(array $xml){
@@ -109,8 +100,8 @@ class SameSpecialtiesFinder
         $multipleUslCases = $this->findMultipleUslCases($xml);
         $differentSpecialistCases = $this->findDifferentSpecialistCases($multipleUslCases);
         $personified = $this->personify($xml, $differentSpecialistCases);
-        $ds = $this->assembleDataSet($personified);
-        return $ds;
+        //$ds = $this->assembleDataSet($personified);
+        return $personified;
     }
 
 }
