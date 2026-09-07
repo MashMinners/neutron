@@ -4,11 +4,46 @@ namespace Application\CMIS\InvoiceServiceValidator\DISP\Models;
 
 use DateTime;
 use InvalidArgumentException;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use SimpleXMLElement;
 
 class BaseInvoiceXmlParser
 {
-    private $folder = 'storage/cmis/';
+    private $directory = 'storage/cmis/';
+
+    public function getExcelFieldsKeys(array $workSchema, array $excelTableHeader){
+        $excelFieldsKeys = [];
+        //Получаем по имени заголовка его ключ, для того чтобы по этому ключу искать данные
+        foreach ($workSchema as $key => $value){
+            $excelFieldsKeys[$value] = array_keys($excelTableHeader, $value)[0];
+        }
+        return $excelFieldsKeys;
+    }
+    public function parseExcel(){
+        // Ищем файлы .ods и .xlsx
+        $odsFiles = glob($this->directory . '*.ods');
+        $xlsxFiles = glob($this->directory . '*.xlsx');
+        // Объединяем массивы
+        $files = array_merge($odsFiles, $xlsxFiles);
+        $result = [];
+        foreach ($files AS $file){
+            $spreadsheet = IOFactory::load($file);
+            $sheet = $spreadsheet->getActiveSheet();
+            $startRow = 'A2';
+            $highestRow = $sheet->getHighestRow();
+            $highestColumn = $sheet->getHighestColumn();
+            $rows = $sheet->rangeToArray(
+                "$startRow:$highestColumn$highestRow", // Диапазон
+                NULL,                          // Значение для пустых ячеек
+                TRUE,                          // Вычислять формулы
+                TRUE,                          // Форматировать значения (даты, проценты)
+                TRUE                           // Использовать индексы строк/столбцов в массиве
+            );
+            //array_shift($rows); xls должен возвращаться с заголовком
+            $result = array_merge($result, $rows);
+        }
+        return $result;
+    }
     private function getXmlFileName(array $files, string $pattern){
         $filtered = array_filter($files, function($item) use ($pattern){
             return preg_match($pattern, $item);
@@ -59,7 +94,7 @@ class BaseInvoiceXmlParser
         $xmlFiles['F'] = $this->getXmlFileName($files, '/^F/');
         $xmlFiles['L'] = $this->getXmlFileName($files, '/^L/');
         foreach ($xmlFiles AS $key => $file){
-            $path = $this->folder.$file;
+            $path = $this->directory.$file;
             $xml = simplexml_load_file($path);
             $array[$key] = $this->simpleXmlToArray($xml);
         }
