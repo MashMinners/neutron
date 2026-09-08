@@ -32,7 +32,6 @@ class DPInvoiceValidatorController
         $xlsHeader = ['ID_PAC', 'Фамилия', 'Имя', 'Отчество', 'Пол', 'Дата рождения', 'СНИЛС', 'ОКАТО 1', 'ОКАТО 2', 'Возвраст'];
         $this->generator->generate('Диспансеризация 1 этап. Ошибки валидации', $xlsHeader, $result);
         return new JsonResponse('Количество случаев с ошибками по услугам '.count($result));
-
     }
 
 }
