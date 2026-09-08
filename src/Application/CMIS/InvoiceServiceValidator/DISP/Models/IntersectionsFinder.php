@@ -2,9 +2,11 @@
 
 namespace Application\CMIS\InvoiceServiceValidator\DISP\Models;
 
+use Application\CMIS\InvoiceServiceValidator\DISP\Base\DataParser;
+
 class IntersectionsFinder
 {
-    public function __construct(private BaseInvoiceXmlParser $parser){
+    public function __construct(private DataParser $parser){
 
     }
 

@@ -1,13 +1,11 @@
 <?php
 
-namespace Application\CMIS\InvoiceServiceValidator\DISP\Models;
+namespace Application\CMIS\InvoiceServiceValidator\DISP\Base;
 
-use DateTime;
-use InvalidArgumentException;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use SimpleXMLElement;
 
-class BaseInvoiceXmlParser
+class DataParser
 {
     private $directory = 'storage/cmis/';
 
