@@ -2,7 +2,7 @@
 
 namespace Application\CMIS\InvoiceServiceValidator\STOM\Controllers;
 
-use Application\CMIS\InvoiceServiceValidator\Base\ExcelGenerator;
+use Application\CMIS\InvoiceServiceValidator\STOM\Base\ExcelGenerator;
 use Application\CMIS\InvoiceServiceValidator\STOM\Models\SameSpecialtiesFinder;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;

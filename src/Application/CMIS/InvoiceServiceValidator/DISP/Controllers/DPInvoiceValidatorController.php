@@ -3,13 +3,14 @@
 namespace Application\CMIS\InvoiceServiceValidator\DISP\Controllers;
 
 use Application\CMIS\InvoiceServiceValidator\DISP\Models\DPInvoiceValidator;
+use Application\CMIS\InvoiceServiceValidator\DISP\Models\ExcelGenerator;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 class DPInvoiceValidatorController
 {
-    public function __construct(private DPInvoiceValidator $validator)
+    public function __construct(private DPInvoiceValidator $validator, private ExcelGenerator $generator)
     {
 
     }
@@ -28,7 +29,10 @@ class DPInvoiceValidatorController
     public function validate(ServerRequestInterface $request) : ResponseInterface{
         $files = $this->scanDir();
         $result = $this->validator->validate($files);
-        return new JsonResponse($result);
+        $xlsHeader = ['ID_PAC', 'Фамилия', 'Имя', 'Отчество', 'Пол', 'Дата рождения', 'СНИЛС', 'ОКАТО 1', 'ОКАТО 2', 'Возвраст'];
+        $this->generator->generate('Диспансеризация 1 этап. Ошибки валидации', $xlsHeader, $result);
+        return new JsonResponse('Количество пересечений '.count($result));
+
     }
 
 }

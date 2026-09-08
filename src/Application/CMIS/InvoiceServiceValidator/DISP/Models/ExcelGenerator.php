@@ -10,10 +10,10 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class ExcelGenerator
 {
-    private function generateHeader($sheet){
+    private function generateHeader($sheet, $header){
         $row = 1;
         $col = 'A';
-        $header = ['ID_PAC', 'Фамилия', 'Имя', 'Отчество', 'Пол', 'Дата рождения', 'СНИЛС', 'ОКАТО 1', 'ОКАТО 2', 'Возвраст'];
+        //$header = ['ID_PAC', 'Фамилия', 'Имя', 'Отчество', 'Пол', 'Дата рождения', 'СНИЛС', 'ОКАТО 1', 'ОКАТО 2', 'Возвраст'];
         foreach ($header AS $singleHeader){
             $sheet->setCellValue($col . $row, $singleHeader);
             $sheet->getStyle($col.$row)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
@@ -62,11 +62,11 @@ class ExcelGenerator
         $sheet->setCellValue("A$row", 'Всего случаев с ошибками '.count($persons));
         return $sheet;
     }
-    public function generate(array $persons, $fileName){
+    public function generate(string $fileName, array $xlsHeader, array $xlsBody){
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-        $sheetWithHeader = $this->generateHeader($sheet);
-        $this->generateBody($sheetWithHeader, $persons);
+        $sheetWithHeader = $this->generateHeader($sheet, $xlsHeader);
+        $this->generateBody($sheetWithHeader, $xlsBody);
         $writer = new Xlsx($spreadsheet);
         $file = 'storage/cmis/completed/'.$fileName.'.xlsx';
         $writer->save($file);

@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\CMIS\InvoiceServiceValidator\Base;
+namespace Application\CMIS\InvoiceServiceValidator\STOM\Base;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Border;

@@ -2,7 +2,7 @@
 
 namespace Application\CMIS\InvoiceServiceValidator\STOM\Models;
 
-use Application\CMIS\InvoiceServiceValidator\Base\DataParser;
+use Application\CMIS\InvoiceServiceValidator\STOM\Base\DataParser;
 
 class SameSpecialtiesFinder
 {
