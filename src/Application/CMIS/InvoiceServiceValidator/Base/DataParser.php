@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\CMIS\InvoiceServiceValidator\STOM\Base;
+namespace Application\CMIS\InvoiceServiceValidator\Base;
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use SimpleXMLElement;

@@ -2,8 +2,7 @@
 
 namespace Application\CMIS\InvoiceServiceValidator\STOM\Models;
 
-use Application\CMIS\InvoiceServiceValidator\STOM\Base\DataParser;
-use Application\CMIS\InvoiceServiceValidator\STOM\Base\ExcelGenerator;
+use Application\CMIS\InvoiceServiceValidator\Base\DataParser;
 
 class IntersectionsFinder
 {
