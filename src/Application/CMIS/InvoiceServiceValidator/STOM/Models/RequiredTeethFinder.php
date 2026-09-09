@@ -42,6 +42,12 @@ class RequiredTeethFinder
                 $personified[$needleIDPac]['CODE_USL'] = $requiredCases[$idCase]['CODE_USL'];
             }
         }
+        foreach ($xml['H']['ZAP'] AS $zap){
+            $zapIdPac = $zap['PACIENT'][0]['ID_PAC'];
+            if (in_array($zapIdPac, $casePacs)){
+                $personified[$zapIdPac]['ENP'] = array_key_exists('ENP', $zap['PACIENT'][0]) ? $zap['PACIENT'][0]['ENP'] : '';
+            }
+        }
         return $personified;
     }
 
@@ -54,6 +60,7 @@ class RequiredTeethFinder
             $dataSet[$i]['OT'] = array_key_exists('OT', $record) ? $record['OT'] : '';
             $dataSet[$i]['DR'] = date('d.m.Y', strtotime($record['DR']));
             $dataSet[$i]['SNILS'] = $record['SNILS'];
+            $dataSet[$i]['ENP'] = $record['ENP'];
             $dataSet[$i]['ZUB'] = 'Не проставлен';
             $dataSet[$i]['CODE_USL'] = $record['CODE_USL'];
             $i++;
