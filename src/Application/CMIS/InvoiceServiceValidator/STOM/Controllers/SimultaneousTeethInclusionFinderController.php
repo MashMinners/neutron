@@ -16,7 +16,7 @@ class SimultaneousTeethInclusionFinderController
 
     public function find(ServerRequestInterface $request) : ResponseInterface {
         $result = $this->finder->findSimultaneousTeethInclusion();
-        $xlsHeader = ['Фамилия', 'Имя', 'Отчество', 'Дата рождения', 'СНИЛС', 'Зуб', 'Диагноз', 'Врач открывший случай'];
+        $xlsHeader = ['Фамилия', 'Имя', 'Отчество', 'Дата рождения', 'СНИЛС', 'Полис', 'Зуб', 'Диагноз', 'Врач открывший случай'];
         $this->generator->generate('Пересечения на один зуб. Два диагноза', $xlsHeader, $result);
         return new JsonResponse('Количество пересечений на один зуб. Два диагноза '.count($result));
     }

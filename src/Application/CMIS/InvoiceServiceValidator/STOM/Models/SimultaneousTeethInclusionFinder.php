@@ -103,6 +103,7 @@ class SimultaneousTeethInclusionFinder
                 $needleIDPac = $casePacs[$idCase];
                 //Врач создавший случай, открывший талон (не нужен, но добавлен дабы сохранить логику поиска на будущее)
                 $personified[$needleIDPac]['IDDOKT'] = $this->doctors[$sl['IDDOKT']];
+                $personified[$needleIDPac]['ENP'] = array_key_exists('ENP', $zap['PACIENT'][0]) ? $zap['PACIENT'][0]['ENP'] : '';
             }
         }
         return $personified;
@@ -119,6 +120,7 @@ class SimultaneousTeethInclusionFinder
                     $dataSet[$uniqueID]['OT'] = $record['OT'];
                     $dataSet[$uniqueID]['DR'] = date('d.m.Y', strtotime($record['DR']));
                     $dataSet[$uniqueID]['SNILS'] = $record['SNILS'];
+                    $dataSet[$uniqueID]['ENP'] = $record['ENP'];
                     $dataSet[$uniqueID]['CODE_USL'] = $stom['CODE_USL'];
                     $dataSet[$uniqueID]['IDDOKT'] = $record['IDDOKT'];
                     $dataSet[$uniqueID]['ZUB'][$stom['ZUB']][] = $stom['CODE_USL'];
@@ -136,6 +138,7 @@ class SimultaneousTeethInclusionFinder
                         $needle[$i]['OT'] = $single['OT'];
                         $needle[$i]['DR'] = $single['DR'];
                         $needle[$i]['SNILS'] = $single['SNILS'];
+                        $needle[$i]['ENP'] = $single['ENP'];
                         $needle[$i]['ZUB'] = $teeth;
                         $needle[$i]['CODE_USL'] = $singleDiag;
                         $needle[$i]['IDDOKT'] = $single['IDDOKT'];
