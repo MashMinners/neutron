@@ -16,7 +16,7 @@ class TornCasesFinderController
 
     public function find(ServerRequestInterface $request) : ResponseInterface {
         $result = $this->finder->findTornCases();
-        $xlsHeader = ['Фамилия', 'Имя', 'Отчество', 'Дата рождения', 'СНИЛС'];
+        $xlsHeader = ['Фамилия', 'Имя', 'Отчество', 'Дата рождения', 'СНИЛС', 'Полис'];
         $this->generator->generate('Разорванные случаи', $xlsHeader, $result);
         return new JsonResponse('Количество разорванных случаев '.count($result));
     }

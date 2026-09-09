@@ -11,17 +11,19 @@ class TornCasesFinder
 
     }
     private function findRecurringPatients(array $xml){
-        $enp = [];
-        foreach ($xml['H']['ZAP'] AS $single){
-            $enp[] = $single['PACIENT'][0]['ID_PAC'];
+        $idPacs = [];
+        foreach ($xml['H']['ZAP'] AS $zap){
+            $idPacs[] = $zap['PACIENT'][0]['ID_PAC'];
+            $enp[$zap['PACIENT'][0]['ID_PAC']] = array_key_exists('ENP', $zap['PACIENT'][0]) ? $zap['PACIENT'][0]['ENP'] : '';
         }
-        $counts = array_count_values($enp);
+        $counts = array_count_values($idPacs);
         $duplicates = array_keys(array_filter($counts, fn($count) => $count > 1));
         $recurring = [];
-        foreach ($xml['L']['PERS'] AS $single){
-            $idPac = $single['ID_PAC'];
+        foreach ($xml['L']['PERS'] AS $pers){
+            $idPac = $pers['ID_PAC'];
+            $pers['ENP'] = $enp[$idPac];
             if (in_array($idPac, $duplicates)){
-                $recurring[$single['ID_PAC']] = $single;
+                $recurring[$pers['ID_PAC']] = $pers;
             }
         }
         return $recurring;
@@ -36,6 +38,7 @@ class TornCasesFinder
             $dataSet[$i]['OT'] = $record['OT'];
             $dataSet[$i]['DR'] = date('d.m.Y', strtotime($record['DR']));
             $dataSet[$i]['SNILS'] = $record['SNILS'];
+            $dataSet[$i]['ENP'] = $record['ENP'];
             $i++;
         }
         return $dataSet;
