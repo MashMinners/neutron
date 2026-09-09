@@ -25,9 +25,6 @@ class IncorrectTeethCodeInclusionFinder
             if (array_key_exists($zapIdCase, $inclusionCases)){
                 $casePacs[$zap['Z_SL'][0]['IDCASE']] =  $zap['PACIENT'][0]['ID_PAC'];
             }
-            //if (in_array($zap['Z_SL'][0]['IDCASE'], $inclusionCases)){
-                //$casePacs[$zap['Z_SL'][0]['IDCASE']] =  $zap['PACIENT'][0]['ID_PAC'];
-            //}
         }
         //Персонифицирую случаи
         foreach ($xml['L']['PERS'] AS $pers){
@@ -45,6 +42,12 @@ class IncorrectTeethCodeInclusionFinder
                 $personified[$needleIDPac]['CODE_USL'] = $inclusionCases[$idCase]['CODE_USL'];
             }
         }
+        foreach ($xml['H']['ZAP'] AS $zap){
+            $zapIdPac = $zap['PACIENT'][0]['ID_PAC'];
+            if (in_array($zapIdPac, $casePacs)){
+                $personified[$zapIdPac]['ENP'] = array_key_exists('ENP', $zap['PACIENT'][0]) ? $zap['PACIENT'][0]['ENP'] : '';
+            }
+        }
         return $personified;
     }
 
@@ -57,6 +60,7 @@ class IncorrectTeethCodeInclusionFinder
             $dataSet[$i]['OT'] = array_key_exists('OT', $record) ? $record['OT'] : '';
             $dataSet[$i]['DR'] = date('d.m.Y', strtotime($record['DR']));
             $dataSet[$i]['SNILS'] = $record['SNILS'];
+            $dataSet[$i]['ENP'] = $record['ENP'];
             $dataSet[$i]['ZUB'] = $record['ZUB'];
             $dataSet[$i]['CODE_USL'] = $record['CODE_USL'];
             $i++;
