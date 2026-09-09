@@ -78,10 +78,16 @@ class IncorrectServicesFinder
 
     private function personify(array $xml, array $multipleCases){
         $personified = [];
-        foreach ($xml['L']['PERS'] AS $single){
-            $idPac = $single['ID_PAC'];
-            if (in_array($idPac, $multipleCases)){
-                $personified[$single['ID_PAC']] = $single;
+        foreach ($xml['L']['PERS'] AS $pers){
+            $persIdPac = $pers['ID_PAC'];
+            if (in_array($persIdPac, $multipleCases)){
+                $personified[$pers['ID_PAC']] = $pers;
+            }
+        }
+        foreach ($xml['H']['ZAP'] AS $zap){
+            $zapIdPac = $zap['PACIENT'][0]['ID_PAC'];
+            if (in_array($zapIdPac, $multipleCases)){
+                $personified[$zapIdPac]['ENP'] = array_key_exists('ENP', $zap['PACIENT'][0]) ? $zap['PACIENT'][0]['ENP'] : '';
             }
         }
         return $personified;
@@ -96,6 +102,7 @@ class IncorrectServicesFinder
             $dataSet[$i]['OT'] = array_key_exists('OT', $record) ? $record['OT'] : '';
             $dataSet[$i]['DR'] = date('d.m.Y', strtotime($record['DR']));
             $dataSet[$i]['SNILS'] = $record['SNILS'];
+            $dataSet[$i]['ENP'] = $record['ENP'];
             $i++;
         }
         return $dataSet;
