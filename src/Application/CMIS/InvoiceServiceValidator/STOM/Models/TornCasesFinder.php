@@ -46,7 +46,7 @@ class TornCasesFinder
     public function findTornCases(){
         $xml = $this->parser->parseXML();
         $recurring = $this->findRecurringPatients($xml);
-        $dataSet = $this->assembleDataSet($recurring, $xml['L']['PERS']);
+        $dataSet = $this->assembleDataSet($recurring);
         return $dataSet;
     }
 
