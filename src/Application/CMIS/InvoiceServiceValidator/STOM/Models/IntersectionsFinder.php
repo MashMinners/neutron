@@ -57,7 +57,7 @@ class IntersectionsFinder
                 if ($pers['ID_PAC'] === $value['ID_PAC']){
                     $value['FAM'] = $pers['FAM'];
                     $value['IM'] = $pers['IM'];
-                    $value['OT'] = array_key_exists('OT', $pers) ?: '';
+                    $value['OT'] = array_key_exists('OT', $pers) ? $value['OT'] : '';
                     $value['DR'] = date('d.m.Y', strtotime($pers['DR']));
                     $value['SNILS'] = $pers['SNILS'];
                 }
