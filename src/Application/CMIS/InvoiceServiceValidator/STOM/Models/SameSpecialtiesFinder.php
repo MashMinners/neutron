@@ -45,6 +45,7 @@ class SameSpecialtiesFinder
                     $personified[$i]['OT'] = array_key_exists('OT', $pers) ? $pers['OT'] : '';
                     $personified[$i]['DR'] = date('d.m.Y', strtotime($pers['DR']));
                     $personified[$i]['SNILS'] = $pers['SNILS'];;
+                    $personified[$i]['ENP'] = $differentSpecialistCase['ENP'];
                     $personified[$i]['IDDOKT'] = $this->doctors[$differentSpecialistCases[$idPac]['IDDOKT']];
                     $personified[$i]['IDDOKT-PROFIL'] = $differentSpecialistCases[$idPac]['PROFIL'];
                     $personified[$i]['IDDOKT-PRVS'] = $differentSpecialistCases[$idPac]['PRVS'];
@@ -57,6 +58,7 @@ class SameSpecialtiesFinder
                 }
             }
         }
+
         return $personified;
     }
 
@@ -67,6 +69,7 @@ class SameSpecialtiesFinder
                 if (count($sl['USL']) > 1){
                     $idPac = $zap['PACIENT'][0]['ID_PAC'];
                     $multipleUslCases[$idPac] = $sl;
+                    $multipleUslCases[$idPac]['ENP'] = array_key_exists('ENP', $zap['PACIENT'][0]) ? $zap['PACIENT'][0]['ENP'] : '';
                 }
             }
 
@@ -84,6 +87,7 @@ class SameSpecialtiesFinder
                     $differentSpecialistCases[$idPac]['IDDOKT'] = $idDokt;
                     $differentSpecialistCases[$idPac]['PROFIL'] = $case['PROFIL'];
                     $differentSpecialistCases[$idPac]['PRVS'] = $case['PRVS'];
+                    $differentSpecialistCases[$idPac]['ENP'] = $case['ENP'];
                     $differentSpecialistCases[$idPac]['DIFFDOKT'][$codeMD]['CODE_MD'] = $codeMD;
                     $differentSpecialistCases[$idPac]['DIFFDOKT'][$codeMD]['CODE_USL'] = $usl['CODE_USL'];
                     $differentSpecialistCases[$idPac]['DIFFDOKT'][$codeMD]['DS'] = $usl['DS'];
